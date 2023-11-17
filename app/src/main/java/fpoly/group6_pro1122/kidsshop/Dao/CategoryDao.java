@@ -42,6 +42,25 @@ public class CategoryDao {
         }
         return list;
     }
+    public Category getID(int id){
+        SQLiteDatabase database = dbHelper.getReadableDatabase();
+        Category category = null;
+        Cursor cursor = null;
+        try{
+            cursor = database.rawQuery("SELECT * FROM Category WHERE category_id = ?",new String[]{String.valueOf(id)});
+            if (cursor!= null && cursor.moveToFirst()){
+                category = new Category(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3) );
+            }else {
+                Toast.makeText(context, "Không tồn tại", Toast.LENGTH_SHORT).show();
+            }
+        }finally {
+            if (cursor!= null){
+                cursor.close();
+            }
+            database.close();
+        }
+        return category;
+    }
     public boolean deleteTL(int id){
         SQLiteDatabase database = dbHelper.getWritableDatabase();
         long kq = database.delete("Category","category_id = ?",new String[]{String.valueOf(id)});
@@ -56,6 +75,16 @@ public class CategoryDao {
         values.put("image",category.getImage());
         long kq = database.insert("Category",null,values);
         category.setCategory_id((int) kq);
+        return kq != -1;
+    }
+    public boolean updateTL(Category category){
+        SQLiteDatabase database = dbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("name",category.getName());
+        values.put("describe",category.getDescribe());
+        values.put("name",category.getName());
+        values.put("image",category.getImage());
+        long kq = database.update("Category",values,"category_id = ?",new String[]{String.valueOf(category.getCategory_id())});
         return kq != -1;
     }
 }

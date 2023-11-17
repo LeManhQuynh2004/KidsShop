@@ -39,7 +39,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="right"
-                        android:background="@color/red"
+                        android:background="@drawable/hinhtron"
                         android:padding="2dp"
                         android:text="0"
                         android:textColor="@color/white"
