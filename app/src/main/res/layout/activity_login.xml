@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp"
     android:orientation="vertical"
+    android:padding="10dp"
     tools:context=".Login">
 
     <ImageView
@@ -19,43 +19,43 @@
         android:id="@+id/edt_User_Login"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:layout_marginBottom="10dp"
         android:background="@drawable/edt_login"
         android:hint="Tên Đăng Nhập"
-        android:padding="10dp"
-        android:layout_marginBottom="10dp"
-        />
+        android:padding="10dp" />
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp">
 
 
-    <EditText
-        android:id="@+id/edt_pass_login"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@drawable/edt_login"
-        android:hint="Mật khẩu"
-        android:padding="10dp"
-        />
+        <EditText
+            android:id="@+id/edt_pass_login"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/edt_login"
+            android:hint="Mật khẩu"
+            android:padding="10dp" />
+
         <TextView
             android:id="@+id/show_login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end|center"
-            android:text="Hiển thị"
-            android:textSize="13dp"
             android:layout_marginRight="10dp"
+            android:text="Hiển thị"
             android:textColor="#2196F3"
-            android:textStyle="bold"
-            />
+            android:textSize="13dp"
+            android:textStyle="bold" />
 
     </FrameLayout>
+
     <Spinner
         android:id="@+id/spn_login"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        />
+        android:layout_height="wrap_content" />
+
     <CheckBox
         android:id="@+id/remember_login"
         android:layout_width="wrap_content"
@@ -63,28 +63,42 @@
         android:text="Lưu mật khẩu"
         android:textColor="#2196f3"
         android:textColorHint="#2196f3"
-        android:textStyle="bold"
-        android:textSize="15dp"/>
+        android:textSize="15dp"
+        android:textStyle="bold" />
+
     <Button
         android:id="@+id/btn_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
+        android:layout_marginBottom="15dp"
+        android:background="@drawable/btn_login"
         android:text="Đăng Nhập"
         android:textSize="20dp"
         android:textStyle="bold"
-        app:backgroundTint="@null"
-        android:background="@drawable/btn_login"
-        android:layout_marginBottom="15dp"
-        />
-    <TextView
-        android:id="@+id/tv_forgot_login"
+        app:backgroundTint="@null" />
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Quên mật khẩu?"
-        android:textSize="19dp"
-        android:gravity="center"
-        android:textStyle="bold"
-        android:textColor="#2196f3"
-        />
+        android:gravity="center">
+        <TextView
+            android:id="@+id/tv_forgot_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Quên mật khẩu?"
+            android:textColor="#2196f3"
+            android:textSize="19dp"
+            android:textStyle="bold"
+            android:layout_marginRight="10dp"/>
+        <TextView
+            android:id="@+id/tv_dki_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Đăng ký"
+            android:textSize="18dp"
+            android:textColor="#2196f3"
+            android:textStyle="bold"/>
+    </LinearLayout>
 </LinearLayout>
