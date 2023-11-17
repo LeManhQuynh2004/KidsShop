@@ -170,6 +170,7 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"/>
         <TextView
+            android:id="@+id/tv_signUp"
             android:textStyle="bold"
             android:textSize="16sp"
             android:text="SIGN UP"

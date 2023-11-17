@@ -95,4 +95,13 @@ public class UserDao {
         boolean result = cursor.getCount() > 0;
         return result;
     }
+    public boolean isEmailExists(String email) {
+        SQLiteDatabase sqLiteDatabase = dbHelper.getReadableDatabase();
+        String sql = "SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_EMAIL + "=?";
+        String[] selectionArgs = new String[]{email};
+        Cursor cursor = sqLiteDatabase.rawQuery(sql, selectionArgs);
+        boolean result = cursor.getCount() > 0;
+        cursor.close();
+        return result;
+    }
 }
