@@ -8,16 +8,15 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import fpoly.group6_pro1122.kidsshop.Database.Db_helper;
+import fpoly.group6_pro1122.kidsshop.Database.Db_Helper;
 import fpoly.group6_pro1122.kidsshop.Model.Category;
 
 public class CategoryDao {
-    Db_helper dbHelper;
     Context context;
 
-    public CategoryDao(Db_helper dbHelper, Context context) {
-        this.dbHelper = dbHelper;
-        this.context = context;
+    Db_Helper dbHelper;
+    public CategoryDao(Context context) {
+        dbHelper = new Db_Helper(context);
     }
     public ArrayList<Category> getAll(){
         SQLiteDatabase database = dbHelper.getReadableDatabase();
