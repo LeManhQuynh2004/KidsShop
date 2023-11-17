@@ -11,8 +11,10 @@
       android:layout_height="wrap_content"
       android:orientation="vertical">
       <ImageView
+          android:adjustViewBounds="true"
+          android:scaleType="centerCrop"
           android:id="@+id/img_item_product"
-          android:src="@color/orange"
+          android:src="@drawable/image"
           android:layout_width="match_parent"
           android:layout_height="200dp"/>
       <LinearLayout
@@ -33,7 +35,8 @@
               android:layout_marginTop="5dp">
               <TextView
                   android:id="@+id/tv_price_item_product"
-                  android:textSize="16sp"
+                  android:textSize="17sp"
+                  android:textStyle="bold"
                   android:text="$1000"
                   android:textColor="@color/orange"
                   android:layout_width="0dp"

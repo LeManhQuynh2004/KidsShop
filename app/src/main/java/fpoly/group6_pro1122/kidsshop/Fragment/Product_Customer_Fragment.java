@@ -12,10 +12,10 @@ import fpoly.group6_pro1122.kidsshop.R;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link Product_Fragment#newInstance} factory method to
+ * Use the {@link Product_Customer_Fragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Product_Fragment extends Fragment {
+public class Product_Customer_Fragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -26,7 +26,7 @@ public class Product_Fragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public Product_Fragment() {
+    public Product_Customer_Fragment() {
         // Required empty public constructor
     }
 
@@ -39,8 +39,8 @@ public class Product_Fragment extends Fragment {
      * @return A new instance of fragment ProductFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static Product_Fragment newInstance(String param1, String param2) {
-        Product_Fragment fragment = new Product_Fragment();
+    public static Product_Customer_Fragment newInstance(String param1, String param2) {
+        Product_Customer_Fragment fragment = new Product_Customer_Fragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -61,6 +61,6 @@ public class Product_Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_product, container, false);
+        return inflater.inflate(R.layout.fragment_product_customer, container, false);
     }
 }
