@@ -2,23 +2,22 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".Fragment.Product_Admin_Fragment">
+    android:layout_height="match_parent">
     <androidx.appcompat.widget.Toolbar
         android:background="@color/blue"
-        android:id="@+id/toolbar_product_admin"
+        android:id="@+id/toolbar_category_admin"
         android:layout_alignParentTop="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
     <androidx.recyclerview.widget.RecyclerView
         android:padding="5dp"
-        android:layout_below="@id/toolbar_product_admin"
-        android:id="@+id/recyclerView_Product_admin"
+        android:layout_below="@id/toolbar_category_admin"
+        android:id="@+id/recyclerView_Category_admin"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_product_admin"
+        android:id="@+id/btn_add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"

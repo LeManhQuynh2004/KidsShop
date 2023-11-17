@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import fpoly.group6_pro1122.kidsshop.R;
 
 
-public class Category_Fragment extends Fragment {
+public class Category_User_Fragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

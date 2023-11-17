@@ -47,13 +47,13 @@
             android:layout_height="match_parent"
                 android:gravity="center">
             <ImageView
-                android:id="@+id/bt_update_item_product_admin"
+                android:id="@+id/btn_update_item_describe_admin"
                 android:src="@drawable/pen"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_marginRight="5dp"/>
             <ImageView
-                android:id="@+id/bt_delete_item_product_admin"
+                android:id="@+id/btn_delete_item_describe_admin"
                 android:src="@drawable/remove"
                 android:layout_width="30dp"
                 android:layout_height="30dp"/>
