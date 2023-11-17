@@ -13,6 +13,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.provider.MediaStore;
@@ -25,9 +26,12 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
 
 import fpoly.group6_pro1122.kidsshop.Adapter.Category_Spinner;
+import fpoly.group6_pro1122.kidsshop.Adapter.Product_Admin_Adapter;
 import fpoly.group6_pro1122.kidsshop.Dao.CategoryDao;
 import fpoly.group6_pro1122.kidsshop.Dao.ProductDao;
 import fpoly.group6_pro1122.kidsshop.Model.Category;
@@ -39,7 +43,6 @@ public class Product_Admin_Fragment extends Fragment {
     RecyclerView recyclerView;
     Toolbar toolbar;
     Spinner spinner_category;
-
     Category_Spinner categorySpinner;
     Uri imageUri;
     CategoryDao categoryDao;
@@ -48,7 +51,8 @@ public class Product_Admin_Fragment extends Fragment {
     ImageView imgUpLoad;
     ProductDao productDao;
     ArrayList<Product> list_product = new ArrayList<>();
-    int category_id;
+    int category_id,selectedPosition;
+    Product_Admin_Adapter product_admin_adapter;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -58,12 +62,15 @@ public class Product_Admin_Fragment extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerView_Product_admin);
         productDao = new ProductDao(getContext());
         list_product = productDao.SelectAll();
+        product_admin_adapter = new Product_Admin_Adapter(getContext(),list_product);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setAdapter(product_admin_adapter);
         view.findViewById(R.id.fab_product_admin).setOnClickListener(v -> {
-
+            showDialog(0,null);
         });
         return view;
     }
-    private void showDialog(){
+    private void showDialog(int type,Product product){
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.dialog_product, null);
         builder.setView(dialogView);
@@ -74,6 +81,23 @@ public class Product_Admin_Fragment extends Fragment {
         ed_describe = dialogView.findViewById(R.id.ed_describe_dialog_product);
         imgUpLoad = dialogView.findViewById(R.id.img_dialog_product);
         spinner_category = dialogView.findViewById(R.id.spinner_category_id_dialog);
+
+        if (type != 0) {
+            ed_name.setText(product.getProduct_name());
+            ed_price.setText(product.getProduct_price() + "");
+            ed_describe.setText(product.getDescribe());
+            ed_quantity.setText(product.getQuantity() + "");
+            for (int i = 0; i < list_category.size(); i++) {
+                if (product.getCategory_id() == list_category.get(i).getCategory_id()) {
+                    selectedPosition = i;
+                }
+            }
+            spinner_category.setSelection(selectedPosition);
+            Glide.with(getContext())
+                    .load(product.getImage())
+                    .placeholder(R.drawable.image)
+                    .into(imgUpLoad);
+        }
 
         imgUpLoad.setOnClickListener(view1 -> {
             Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -99,23 +123,47 @@ public class Product_Admin_Fragment extends Fragment {
             String price = ed_price.getText().toString().trim();
             String quantity = ed_quantity.getText().toString().trim();
             String describe = ed_describe.getText().toString().trim();
-            if(validateForm(name,price,quantity,describe)  && imageUri != null){
-                String imagePath = imageUri.toString();
-                Product productNew = new Product();
-                productNew.setProduct_name(name);
-                productNew.setQuantity(Integer.parseInt(quantity));
-                productNew.setProduct_price(Integer.parseInt(price));
-                productNew.setDescribe(describe);
-                productNew.setImage(imagePath);
-                productNew.setCategory_id(category_id);
-                if (productDao.insertData(productNew)) {
-                    Toast.makeText(getContext(), R.string.add_success, Toast.LENGTH_SHORT).show();
-                    list_product.add(productNew);
-                    alertDialog.dismiss();
-                } else {
-                    Toast.makeText(getContext(), R.string.add_not_success, Toast.LENGTH_SHORT).show();
+            if(type == 0){
+                if(validateForm(name,price,quantity,describe)  && imageUri != null){
+                    String imagePath = imageUri.toString();
+                    Product productNew = new Product();
+                    productNew.setProduct_name(name);
+                    productNew.setQuantity(Integer.parseInt(quantity));
+                    productNew.setProduct_price(Integer.parseInt(price));
+                    productNew.setDescribe(describe);
+                    productNew.setImage(imagePath);
+                    productNew.setCategory_id(category_id);
+                    if (productDao.insertData(productNew)) {
+                        Toast.makeText(getContext(), R.string.add_success, Toast.LENGTH_SHORT).show();
+                        updateUI();
+                        alertDialog.dismiss();
+                    } else {
+                        Toast.makeText(getContext(), R.string.add_not_success, Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }else{
+                if(validateForm(name,price,describe,quantity)){
+                    product.setProduct_name(name);
+                    product.setProduct_price(Integer.parseInt(price));
+                    product.setQuantity(Integer.parseInt(quantity));
+                    product.setDescribe(describe);
+                    product.setCategory_id(category_id);
+                    if (imageUri != null) {
+                        product.setImage(imageUri.toString());
+                    } else {
+                        product.setImage(product.getImage());
+                    }
+
+                    if(productDao.updateData(product)){
+                        Toast.makeText(getContext(),R.string.update_success, Toast.LENGTH_SHORT).show();
+                        updateUI();
+                        alertDialog.dismiss();
+                    }else{
+                        Toast.makeText(getContext(),R.string.update_not_success, Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
+
         });
         dialogView.findViewById(R.id.bt_cancle_dialog_product).setOnClickListener(dv ->{
             alertDialog.dismiss();
@@ -147,5 +195,10 @@ public class Product_Admin_Fragment extends Fragment {
             isCheck = false;
         }
         return isCheck;
+    }
+    private void updateUI() {
+        list_product.clear();
+        list_product.addAll(productDao.SelectAll());
+        product_admin_adapter.notifyDataSetChanged();
     }
 }

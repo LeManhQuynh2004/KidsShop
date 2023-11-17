@@ -3,6 +3,8 @@ package fpoly.group6_pro1122.kidsshop.Fragment;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Handler;
 import android.os.Looper;
@@ -12,31 +14,44 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
+import fpoly.group6_pro1122.kidsshop.Adapter.Product_Customer_Adapter;
+import fpoly.group6_pro1122.kidsshop.Dao.ProductDao;
+import fpoly.group6_pro1122.kidsshop.Model.Product;
 import fpoly.group6_pro1122.kidsshop.R;
 
 public class Home_Fragment extends Fragment {
     View view;
     ImageView imageShow;
     int index;
-
     private Handler handler;
-
     public static final String TAG = "Home_Fragment";
-    int[] imageResIds = {R.drawable.banner1, R.drawable.banner2, R.drawable.banner1,R.drawable.banner2};
+    RecyclerView recyclerView;
+    ProductDao productDao;
+    ArrayList<Product> list_product = new ArrayList<>();
+    int Columns = 2;
+    Product_Customer_Adapter productCustomerAdapter;
+    int[] imageResIds = {R.drawable.banner1, R.drawable.banner2, R.drawable.banner3,R.drawable.banner4};
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_home, container, false);
+        recyclerView = view.findViewById(R.id.recyclerView_Product_customer);
+        productDao = new ProductDao(getContext());
+        list_product = productDao.SelectAll();
+        productCustomerAdapter = new Product_Customer_Adapter(getContext(),list_product);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(),Columns);
+        recyclerView.setLayoutManager(gridLayoutManager);
+
         imageShow = view.findViewById(R.id.imageShow);
         imageShow.setImageResource(R.drawable.banner1);
         handler = new Handler(Looper.getMainLooper());
         startRead();
         return view;
     }
-
     private void startRead() {
         handler.postDelayed(new Runnable() {
             @Override

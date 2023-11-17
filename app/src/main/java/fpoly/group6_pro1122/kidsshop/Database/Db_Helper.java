@@ -43,6 +43,10 @@ public class Db_Helper extends SQLiteOpenHelper {
                         "phoneNumber TEXT," +
                         "role INTEGER NOT NULL)";
         sqLiteDatabase.execSQL(CreateTableUser);
+        String insertDefaultAdmin = "INSERT INTO User (email, password,role) VALUES ('quynhlm.dev@gmail.com','123',0)";
+        sqLiteDatabase.execSQL(insertDefaultAdmin);
+        String insertDefaultCustomer = "INSERT INTO User (email, password,role) VALUES ('chinhtd.dev@gmail.com','123',1)";
+        sqLiteDatabase.execSQL(insertDefaultCustomer);
     }
 
     @Override
