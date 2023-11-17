@@ -1,32 +1,30 @@
 package fpoly.group6_pro1122.kidsshop.Model;
 
 public class User {
-    private String username;
     private String password;
     private String fullname;
     private String email;
     private String  image;
+    private String phone;
     private int role;
 
     public User() {
     }
 
-    public User(String username, String password, String fullname, String email, String image, int role) {
-        this.username = username;
+    public User(String password, String fullname, String email, String image,String
+                phone, int role) {
+
         this.password = password;
         this.fullname = fullname;
         this.email = email;
         this.image = image;
+        this.phone = phone;
         this.role = role;
     }
 
-    public String getUsername() {
-        return username;
-    }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+
+
 
     public String getPassword() {
         return password;
@@ -66,5 +64,12 @@ public class User {
 
     public void setRole(int role) {
         this.role = role;
+    }
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }
