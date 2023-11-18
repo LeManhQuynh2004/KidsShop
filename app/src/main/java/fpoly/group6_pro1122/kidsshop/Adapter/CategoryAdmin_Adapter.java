@@ -1,12 +1,15 @@
 package fpoly.group6_pro1122.kidsshop.Adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,16 +18,19 @@ import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
+import fpoly.group6_pro1122.kidsshop.Dao.CategoryDao;
 import fpoly.group6_pro1122.kidsshop.Model.Category;
 import fpoly.group6_pro1122.kidsshop.R;
 
 public class CategoryAdmin_Adapter extends RecyclerView.Adapter<CategoryAdmin_Adapter.CategoryAdmin> {
     ArrayList<Category> list = new ArrayList<>();
     Context context;
+    CategoryDao categoryDao;
 
     public CategoryAdmin_Adapter(ArrayList<Category> list, Context context) {
         this.list = list;
         this.context = context;
+        categoryDao = new CategoryDao(context);
     }
 
     @NonNull
@@ -37,16 +43,34 @@ public class CategoryAdmin_Adapter extends RecyclerView.Adapter<CategoryAdmin_Ad
     @Override
     public void onBindViewHolder(@NonNull CategoryAdmin holder, int position) {
         Category category = list.get(position);
-        holder.tv_id.setText(category.getCategory_id()+"");
+        holder.tv_id.setText("Mã thể loại: "+category.getCategory_id()+"");
         holder.tv_name.setText(category.getName());
-        holder.tv_describe.setText(category.getDescribe());
+        holder.tv_describe.setText("Mô tả thể loại: "+category.getDescribe());
         Glide.with(context)
                 .load(category.getImage())
+                .placeholder(R.drawable.image)
                 .into(holder.imageView);
         holder.btn_del.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.create();
+                builder.setMessage("Bạn có chắc chắn muốn xóa không ?");
+                builder.setIcon(R.drawable.baseline_warning_24);
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        int id = list.get(holder.getAdapterPosition()).getCategory_id();
+                        boolean check = categoryDao.deleteTL(id);
+                        if (check){
+                            list.remove(position);
+                            Toast.makeText(context, R.string.delete_success, Toast.LENGTH_SHORT).show();
+                            notifyDataSetChanged();
+                        }else {
+                            Toast.makeText(context, R.string.delete_not_success, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }).setNegativeButton("Cancel",null).show();
             }
         });
         holder.btn_update.setOnClickListener(new View.OnClickListener() {
@@ -58,6 +82,8 @@ public class CategoryAdmin_Adapter extends RecyclerView.Adapter<CategoryAdmin_Ad
 
     }
 
+
+
     @Override
     public int getItemCount() {
         return list.size();
@@ -66,7 +92,7 @@ public class CategoryAdmin_Adapter extends RecyclerView.Adapter<CategoryAdmin_Ad
     public class CategoryAdmin extends RecyclerView.ViewHolder {
         ImageView imageView;
         TextView tv_name, tv_id,tv_describe;
-        Button btn_del,btn_update;
+        ImageView btn_del,btn_update;
         public CategoryAdmin(@NonNull View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.img_item_category_admin);

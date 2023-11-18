@@ -24,14 +24,17 @@ public class CategoryDao {
         Cursor cursor = null;
         try {
             cursor = database.rawQuery("SELECT * FROM Category",null);
-           if (cursor.getCount()>0 && cursor != null){
+           if (cursor != null &&cursor.getCount()>0 ){
                cursor.moveToFirst();
                while (!cursor.isAfterLast()){
                    list.add(new Category(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3) ));
                    cursor.moveToNext();
                }
            }else {
-               Toast.makeText(context, "Danh sách trống", Toast.LENGTH_SHORT).show();
+               if (context!= null){
+                   Toast.makeText(context, "Danh sách trống", Toast.LENGTH_SHORT).show();
+
+               }
            }
         }finally {
             if (cursor != null){

@@ -60,10 +60,12 @@ public class Category_Admin_Fragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        categoryDao = new CategoryDao(getContext());
+        list = categoryDao.getAll();
         toolbar = view.findViewById(R.id.toolbar_category_admin);
         recyclerView = view.findViewById(R.id.recyclerView_Category_admin);
         CategoryAdmin_Adapter adapter = new CategoryAdmin_Adapter(list,getContext());
-        recyclerView.setLayoutManager(new GridLayoutManager(getContext(),2));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
         btn_add = view.findViewById(R.id.btn_add);
         btn_add.setOnClickListener(view1 -> {
@@ -97,7 +99,7 @@ public class Category_Admin_Fragment extends Fragment {
                 String name = edt_name.getText().toString().trim();
                 String moTa = edt_describe.getText().toString().trim();
                 String imgUri = imageUri.toString();
-                Category category = new Category(getId(),name,imgUri,moTa);
+                Category category = new Category(getId(),name,moTa,imgUri);
                 boolean check = categoryDao.insertTL(category);
                 if (check){
                     list.add(category);

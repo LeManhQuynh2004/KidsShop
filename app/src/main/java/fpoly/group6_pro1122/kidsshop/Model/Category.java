@@ -9,7 +9,7 @@ public class Category {
     public Category() {
     }
 
-    public Category(int category_id, String name, String image, String describe) {
+    public Category(int category_id, String name, String describe, String image) {
         this.category_id = category_id;
         this.name = name;
         this.image = image;

@@ -21,7 +21,6 @@ import fpoly.group6_pro1122.kidsshop.Dao.UserDao;
 import fpoly.group6_pro1122.kidsshop.Model.User;
 
 public class Login_Activity extends AppCompatActivity {
-    TextView tv_signUp;
     EditText ed_email,ed_pass;
     CheckBox chk_remember_account;
     Spinner spinner_role;
@@ -36,7 +35,6 @@ public class Login_Activity extends AppCompatActivity {
         spinner_role = findViewById(R.id.spn_role_login);
         ed_email = findViewById(R.id.ed_email_login);
         ed_pass = findViewById(R.id.ed_password_login);
-        tv_signUp = findViewById(R.id.tv_signUp);
         userDao = new UserDao(this);
         chk_remember_account = findViewById(R.id.remember_account_login);
         ArrayList<String> list = new ArrayList<>();
@@ -74,10 +72,6 @@ public class Login_Activity extends AppCompatActivity {
                     startActivity(intent);
                 }
            }
-        });
-        findViewById(R.id.tv_signUp).setOnClickListener(view ->{
-            Intent intent = new Intent(Login_Activity.this,SignUpActivity.class);
-            startActivity(intent);
         });
     }
 
