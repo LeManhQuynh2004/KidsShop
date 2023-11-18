@@ -11,85 +11,88 @@ import fpoly.group6_pro1122.kidsshop.Database.Db_Helper;
 import fpoly.group6_pro1122.kidsshop.Model.User;
 
 public class UserDao {
+    Db_Helper dbHelper;
+    private static final String TABLE_NAME = "User";
+    private static final String COLUMN_PASSWORD = "password";
+    private static final String COLUMN_FULLNAME = "fullName";
+    private static final String COLUMN_EMAIL = "email";
+    private static final String COLUMN_PHONE = "phoneNumber";
+    private static final String COLUMN_ROLE = "role";
+    private static final String COLUMN_IMAGE = "image";
+
     public UserDao(Context context) {
         dbHelper = new Db_Helper(context);
     }
 
-    Db_Helper dbHelper;
-    private static final String TABLE = "User";
-    private static final String COLUM_EMAIL = "email";
-    private static final String COLUM_PASS = "password";
-    private static final String COLUM_IMGAE = "image";
-    private static final String COLUM_FULLNAME = "fullName";
-    private static final String COLUM_ROLE = "role";
-    private static final String COLUM_PHONE = "phoneNumber";
+    public boolean insertData(User user) {
+        SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COLUMN_PASSWORD, user.getPassword());
+        contentValues.put(COLUMN_FULLNAME, user.getFullname());
+        contentValues.put(COLUMN_EMAIL, user.getEmail());
+        contentValues.put(COLUMN_PHONE, user.getPhone());
+        contentValues.put(COLUMN_IMAGE, user.getImage());
+        contentValues.put(COLUMN_ROLE, user.getRole());
+        long check = sqLiteDatabase.insert(TABLE_NAME, null, contentValues);
+        return check != -1;
+    }
 
-    public ArrayList<User> getAll(String sql, String... selectionArgs){
-        SQLiteDatabase sqLiteDatabase = dbHelper.getReadableDatabase();
+    public boolean deleteData(User user) {
+        SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
+        String dk[] = {user.getEmail()};
+        long check = sqLiteDatabase.delete(TABLE_NAME, COLUMN_EMAIL + "=?", dk);
+        return check != -1;
+    }
+
+    public boolean updateData(User user) {
+        SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
+        String dk[] = {user.getEmail()};
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COLUMN_PASSWORD, user.getPassword());
+        contentValues.put(COLUMN_FULLNAME, user.getFullname());
+        contentValues.put(COLUMN_EMAIL, user.getEmail());
+        contentValues.put(COLUMN_PHONE, user.getPhone());
+        contentValues.put(COLUMN_IMAGE, user.getImage());
+        contentValues.put(COLUMN_ROLE, user.getRole());
+        long check = sqLiteDatabase.update(TABLE_NAME, contentValues, COLUMN_EMAIL + "=?", dk);
+        return check != -1;
+    }
+
+    public ArrayList<User> getAll(String sql, String... selectionArgs) {
+        SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
         ArrayList<User> list = new ArrayList<>();
-        Cursor cursor = sqLiteDatabase.rawQuery(sql,selectionArgs);
-        if (cursor.getCount() >0){
-            while (cursor.moveToNext()){
-                list.add(new User(cursor.getString(0),
-                        cursor.getString(1),
-                        cursor.getString(2),
-                        cursor.getString(3),
-                        cursor.getString(4),
-                        cursor.getInt(5)));
+        Cursor cursor = sqLiteDatabase.rawQuery(sql, selectionArgs);
+        if (cursor.getCount() > 0) {
+            while (cursor.moveToNext()) {
+                String phone = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PHONE));
+                String password = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PASSWORD));
+                String fullname = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_FULLNAME));
+                String email = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_EMAIL));
+                String image = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_IMAGE));
+                int role = Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_ROLE)));
+                list.add(new User(password, fullname, email, image, phone, role));
             }
         }
         return list;
     }
 
-    public boolean inserDatabase(User user){
-        SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(COLUM_EMAIL, user.getEmail());
-        values.put(COLUM_PASS, user.getPassword());
-        values.put(COLUM_FULLNAME, user.getFullname());
-        values.put(COLUM_IMGAE, user.getImage());
-        values.put(COLUM_PHONE, user.getPhone());
-        values.put(COLUM_ROLE, user.getRole());
-        long check = sqLiteDatabase.insert(TABLE , null,values);
-        return check !=-1;
+    public ArrayList<User> SelectAll() {
+        String query = "SELECT * FROM " + TABLE_NAME;
+        return getAll(query);
     }
 
-    public boolean deleteDatabase(User user){
-        SQLiteDatabase database = dbHelper.getWritableDatabase();
-        String dk[] ={user.getEmail()};
-        long check = database.delete(TABLE , COLUM_EMAIL + "=?" , dk);
-        return check != -1;
-    }
-    public boolean checkLogin(String email, String pass, String role){
-        SQLiteDatabase database = dbHelper.getReadableDatabase();
-        String sql = "Select * from User where" +COLUM_EMAIL+"=? and" +COLUM_PASS +"=? and" +COLUM_ROLE +"=?";
-        String[] selectionArgs = new String[]{email, pass ,role};
-        Cursor cursor = database.rawQuery(sql,selectionArgs);
-        boolean result  =cursor.getCount() > 0;
-        return result;
-    }
-    public User getId(String id){
-        String good = "select * from User where email =?";
-        ArrayList<User> list = getAll(good,id);
+    public User SelectID(String id) {
+        String query = "SELECT * FROM User WHERE email = ?";
+        ArrayList<User> list = getAll(query, id);
         return list.get(0);
     }
-    public ArrayList<User> selecgetAll(){
-        String goon ="select * from " +TABLE;
-        return getAll(goon);
-    }
 
-    public boolean updateDatabase(User user){
-        SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
-        String dk[] = {user.getEmail()};
-        ContentValues values = new ContentValues();
-        values.put(COLUM_EMAIL, user.getEmail());
-        values.put(COLUM_PASS, user.getPassword());
-        values.put(COLUM_FULLNAME, user.getFullname());
-        values.put(COLUM_IMGAE, user.getImage());
-        values.put(COLUM_PHONE, user.getPhone());
-        values.put(COLUM_ROLE, user.getRole());
-        long check = sqLiteDatabase.update(TABLE, values, COLUM_EMAIL + "=?", dk);
-        return check != -1;
+    public boolean checkLogin(String email, String password, String role) {
+        SQLiteDatabase sqLiteDatabase = dbHelper.getReadableDatabase();
+        String sql = "SELECT * FROM User WHERE " + COLUMN_EMAIL + "=? AND " + COLUMN_PASSWORD + "=? AND " + COLUMN_ROLE + " = ?";
+        String[] selectionArgs = new String[]{email, password, role};
+        Cursor cursor = sqLiteDatabase.rawQuery(sql, selectionArgs);
+        boolean result = cursor.getCount() > 0;
+        return result;
     }
-
 }

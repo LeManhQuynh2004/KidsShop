@@ -1,29 +1,41 @@
 package fpoly.group6_pro1122.kidsshop.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
+import fpoly.group6_pro1122.kidsshop.Dao.ProductDao;
 import fpoly.group6_pro1122.kidsshop.Model.Product;
 import fpoly.group6_pro1122.kidsshop.R;
 
 public class Product_Admin_Adapter extends RecyclerView.Adapter<Product_Admin_Adapter.Product_Admin_ViewHolder>{
     Context context;
     ArrayList<Product>list;
+    ProductDao productDao;
 
     public Product_Admin_Adapter(Context context, ArrayList<Product> list) {
         this.context = context;
         this.list = list;
+        productDao = new ProductDao(context);
     }
 
     @NonNull
@@ -52,6 +64,8 @@ public class Product_Admin_Adapter extends RecyclerView.Adapter<Product_Admin_Ad
 
         });
     }
+
+
 
     @Override
     public int getItemCount() {
