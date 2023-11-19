@@ -1,6 +1,8 @@
 package fpoly.group6_pro1122.kidsshop.Model;
 
-public class Product {
+import java.io.Serializable;
+
+public class Product implements Serializable {
     private int product_id;
     private String product_name;
     private int product_price;

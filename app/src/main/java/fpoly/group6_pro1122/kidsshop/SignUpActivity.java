@@ -52,7 +52,10 @@ public class SignUpActivity extends AppCompatActivity {
                 return;
             }
 
-            User newUser = new User(password, "", email, "", "", 1);
+            User newUser = new User();
+            newUser.setRole(1);
+            newUser.setEmail(email);
+            newUser.setPassword(password);
 
             if (userDao.insertData(newUser)) {
                 Toast.makeText(this, "Đăng ký thành công", Toast.LENGTH_SHORT).show();

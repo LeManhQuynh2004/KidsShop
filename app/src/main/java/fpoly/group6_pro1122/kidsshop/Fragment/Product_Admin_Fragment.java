@@ -35,6 +35,7 @@ import fpoly.group6_pro1122.kidsshop.Adapter.Product_Admin_Adapter;
 import fpoly.group6_pro1122.kidsshop.Dao.CategoryDao;
 import fpoly.group6_pro1122.kidsshop.Dao.ProductDao;
 import fpoly.group6_pro1122.kidsshop.Model.Category;
+import fpoly.group6_pro1122.kidsshop.Model.ItemClickListener;
 import fpoly.group6_pro1122.kidsshop.Model.Product;
 import fpoly.group6_pro1122.kidsshop.R;
 
@@ -67,6 +68,13 @@ public class Product_Admin_Fragment extends Fragment {
         recyclerView.setAdapter(product_admin_adapter);
         view.findViewById(R.id.fab_product_admin).setOnClickListener(v -> {
             showDialog(0,null);
+        });
+        product_admin_adapter.setItemClickListener(new ItemClickListener() {
+            @Override
+            public void UpdateItem(int position) {
+                Product product = list_product.get(position);
+                showDialog(1,product);
+            }
         });
         return view;
     }

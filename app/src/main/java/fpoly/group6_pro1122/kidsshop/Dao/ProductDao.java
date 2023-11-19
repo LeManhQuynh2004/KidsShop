@@ -12,12 +12,12 @@ import fpoly.group6_pro1122.kidsshop.Model.Product;
 public class ProductDao {
     Db_Helper dbHelper;
     private final static String TABLE_NAME = "Product";
-    private final static String COLUMN_ID = "product_id";
+    private final static String COLUMN_ID = "id";
     private final static String COLUMN_NAME = "product_name";
     private final static String COLUMN_PRICE = "product_price";
     private final static String COLUMN_CATEGORY_ID = "category_id";
     private final static String COLUMN_QUANTITY = "quantity";
-    private final static String COLUMN_DESCRIBE = "describe";
+    private final static String COLUMN_DESCRIBE = "description";
     private final static String COLUMN_IMAGE = "image";
 
     public ProductDao(Context context) {

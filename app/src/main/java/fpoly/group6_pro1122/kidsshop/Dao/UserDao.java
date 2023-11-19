@@ -13,9 +13,11 @@ import fpoly.group6_pro1122.kidsshop.Model.User;
 public class UserDao {
     Db_Helper dbHelper;
     private static final String TABLE_NAME = "User";
+    private static final String COLUMN_ID = "id";
     private static final String COLUMN_PASSWORD = "password";
     private static final String COLUMN_FULLNAME = "fullName";
     private static final String COLUMN_EMAIL = "email";
+    private static final String COLUMN_ADDRESS = "address";
     private static final String COLUMN_PHONE = "phoneNumber";
     private static final String COLUMN_ROLE = "role";
     private static final String COLUMN_IMAGE = "image";
@@ -27,13 +29,16 @@ public class UserDao {
     public boolean insertData(User user) {
         SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
+        contentValues.put(COLUMN_ID,user.getId());
         contentValues.put(COLUMN_PASSWORD, user.getPassword());
         contentValues.put(COLUMN_FULLNAME, user.getFullname());
         contentValues.put(COLUMN_EMAIL, user.getEmail());
         contentValues.put(COLUMN_PHONE, user.getPhone());
         contentValues.put(COLUMN_IMAGE, user.getImage());
+        contentValues.put(COLUMN_ADDRESS,user.getAddress());
         contentValues.put(COLUMN_ROLE, user.getRole());
         long check = sqLiteDatabase.insert(TABLE_NAME, null, contentValues);
+        user.setId((int) check);
         return check != -1;
     }
 
@@ -48,11 +53,13 @@ public class UserDao {
         SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
         String dk[] = {user.getEmail()};
         ContentValues contentValues = new ContentValues();
+        contentValues.put(COLUMN_ID,user.getId());
         contentValues.put(COLUMN_PASSWORD, user.getPassword());
         contentValues.put(COLUMN_FULLNAME, user.getFullname());
         contentValues.put(COLUMN_EMAIL, user.getEmail());
         contentValues.put(COLUMN_PHONE, user.getPhone());
         contentValues.put(COLUMN_IMAGE, user.getImage());
+        contentValues.put(COLUMN_ADDRESS,user.getAddress());
         contentValues.put(COLUMN_ROLE, user.getRole());
         long check = sqLiteDatabase.update(TABLE_NAME, contentValues, COLUMN_EMAIL + "=?", dk);
         return check != -1;
@@ -64,13 +71,15 @@ public class UserDao {
         Cursor cursor = sqLiteDatabase.rawQuery(sql, selectionArgs);
         if (cursor.getCount() > 0) {
             while (cursor.moveToNext()) {
+                int id = Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_ID)));
                 String phone = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PHONE));
                 String password = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PASSWORD));
                 String fullname = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_FULLNAME));
                 String email = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_EMAIL));
+                String address = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_ADDRESS));
                 String image = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_IMAGE));
                 int role = Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_ROLE)));
-                list.add(new User(password, fullname, email, image, phone, role));
+                list.add(new User(id,password, fullname, email, image, phone,address, role));
             }
         }
         return list;

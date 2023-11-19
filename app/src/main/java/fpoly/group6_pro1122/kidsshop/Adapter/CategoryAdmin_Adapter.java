@@ -23,7 +23,7 @@ import fpoly.group6_pro1122.kidsshop.Model.Category;
 import fpoly.group6_pro1122.kidsshop.R;
 
 public class CategoryAdmin_Adapter extends RecyclerView.Adapter<CategoryAdmin_Adapter.CategoryAdmin> {
-    ArrayList<Category> list = new ArrayList<>();
+    ArrayList<Category> list;
     Context context;
     CategoryDao categoryDao;
 

@@ -1,29 +1,31 @@
 package fpoly.group6_pro1122.kidsshop.Model;
 
 public class User {
+
+    private int id;
     private String password;
     private String fullname;
     private String email;
-    private String  image;
+    private String image;
     private String phone;
+
+    private String address;
     private int role;
 
     public User() {
     }
 
-    public User(String password, String fullname, String email, String image,String
-                phone, int role) {
-
+    public User(int id, String password, String fullname, String email, String image, String
+            phone, String address, int role) {
+        this.id = id;
         this.password = password;
         this.fullname = fullname;
         this.email = email;
         this.image = image;
         this.phone = phone;
         this.role = role;
+        this.address = address;
     }
-
-
-
 
 
     public String getPassword() {
@@ -65,11 +67,28 @@ public class User {
     public void setRole(int role) {
         this.role = role;
     }
+
     public String getPhone() {
         return phone;
     }
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

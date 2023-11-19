@@ -1,10 +1,12 @@
 package fpoly.group6_pro1122.kidsshop.Adapter;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +26,7 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 
 import fpoly.group6_pro1122.kidsshop.Dao.ProductDao;
+import fpoly.group6_pro1122.kidsshop.Model.ItemClickListener;
 import fpoly.group6_pro1122.kidsshop.Model.Product;
 import fpoly.group6_pro1122.kidsshop.R;
 
@@ -32,6 +35,11 @@ public class Product_Admin_Adapter extends RecyclerView.Adapter<Product_Admin_Ad
     ArrayList<Product>list;
     ProductDao productDao;
 
+    public static final String TAG = "Product_Admin_Adapter";
+    private ItemClickListener itemClickListener;
+    public void setItemClickListener(ItemClickListener listener) {
+        this.itemClickListener = listener;
+    }
     public Product_Admin_Adapter(Context context, ArrayList<Product> list) {
         this.context = context;
         this.list = list;
@@ -58,13 +66,39 @@ public class Product_Admin_Adapter extends RecyclerView.Adapter<Product_Admin_Ad
             holder.category_id.setText("Mã danh mục :"+product.getCategory_id());
         }
         holder.img_update.setOnClickListener(view -> {
-
+            try {
+                if (itemClickListener != null) {
+                    itemClickListener.UpdateItem(position);
+                }
+            } catch (Exception e) {
+                Log.e(TAG, "onBindViewHolder: " + e);
+            }
         });
         holder.img_delete.setOnClickListener(view -> {
-
+            DeleteItem(position);
         });
     }
 
+    private void DeleteItem(int position) {
+        Product product = list.get(position);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Thông báo");
+        builder.setMessage("Bạn có chắc chắn muốn xóa không ?");
+        builder.setPositiveButton("Xóa", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if(productDao.deleteData(product)){
+                    Toast.makeText(context, R.string.delete_success, Toast.LENGTH_SHORT).show();
+                    list.remove(position);
+                    notifyDataSetChanged();
+                }else{
+                    Toast.makeText(context,R.string.delete_not_success,Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        builder.setNegativeButton("Hủy",null);
+        builder.show();
+    }
 
 
     @Override
