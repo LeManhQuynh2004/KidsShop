@@ -8,7 +8,7 @@ import androidx.annotation.Nullable;
 
 public class Db_Helper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "kidsShop.db";
-    public static final int DATABASE_VERSION = 5;
+    public static final int DATABASE_VERSION = 2;
 
     public Db_Helper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -59,7 +59,6 @@ public class Db_Helper extends SQLiteOpenHelper {
                 "product_id INTEGER NOT NULL," +
                 "user_id INTEGER NOT NULL," +
                 "quantity INTEGER NOT NULL," +
-                "total_price INTEGER NOT NULL," +
                 "FOREIGN KEY(product_id) REFERENCES Product(id)," +
                 "FOREIGN KEY(user_id) REFERENCES User(id))";
         sqLiteDatabase.execSQL(CreateTableCartItem);
@@ -116,7 +115,6 @@ public class Db_Helper extends SQLiteOpenHelper {
 
         String CreateTableWishList = "CREATE TABLE IF NOT EXISTS Wishlist(" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "quantity INTEGER NOT NULL," +
                 "user_id INTEGER NOT NULL," +
                 "product_id INTEGER NOT NULL," +
                 "FOREIGN KEY(product_id) REFERENCES Product(id)," +

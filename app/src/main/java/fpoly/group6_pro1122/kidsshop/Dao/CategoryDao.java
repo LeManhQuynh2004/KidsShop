@@ -38,6 +38,7 @@ public class CategoryDao {
         }
         return list;
     }
+
     public Category getID(int id){
         SQLiteDatabase database = dbHelper.getReadableDatabase();
         Category category = null;

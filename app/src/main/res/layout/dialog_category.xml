@@ -17,7 +17,7 @@
             android:background="@drawable/header_dialog"
             android:gravity="center_horizontal"
             android:padding="10dp"
-            android:text="Category"
+            android:text="Thể Loại"
             android:textColor="@color/white"
             android:textSize="25sp"
             android:textStyle="bold" />
