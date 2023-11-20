@@ -84,7 +84,7 @@ public class ProductDao {
     }
 
     public Product SelectID(String id) {
-        String query = "SELECT * FROM Product WHERE product_id = ?";
+        String query = "SELECT * FROM Product WHERE id = ?";
         ArrayList<Product> list = getAll(query, id);
         return list.get(0);
     }

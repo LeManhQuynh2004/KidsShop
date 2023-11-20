@@ -1,6 +1,7 @@
 package fpoly.group6_pro1122.kidsshop.Adapter;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,10 +19,13 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 
 import fpoly.group6_pro1122.kidsshop.Dao.CartItemDao;
+import fpoly.group6_pro1122.kidsshop.Dao.UserDao;
 import fpoly.group6_pro1122.kidsshop.Fragment.Details_Fragment;
 import fpoly.group6_pro1122.kidsshop.MainActivity;
+import fpoly.group6_pro1122.kidsshop.Model.Cart;
 import fpoly.group6_pro1122.kidsshop.Model.CartItem;
 import fpoly.group6_pro1122.kidsshop.Model.Product;
+import fpoly.group6_pro1122.kidsshop.Model.User;
 import fpoly.group6_pro1122.kidsshop.R;
 
 public class Product_Customer_Adapter extends RecyclerView.Adapter<Product_Customer_Adapter.Product_Customer_ViewHolder> {
@@ -29,12 +33,14 @@ public class Product_Customer_Adapter extends RecyclerView.Adapter<Product_Custo
     ArrayList<Product> list;
     CartItemDao cartItemDao;
     ArrayList<CartItem> list_cartItem;
+    UserDao userDao;
 
     public Product_Customer_Adapter(Context context, ArrayList<Product> list,ArrayList<CartItem> list_cartItem) {
         this.context = context;
         this.list = list;
         cartItemDao = new CartItemDao(context);
         this.list_cartItem = list_cartItem;
+        userDao = new UserDao(context);
     }
 
     @NonNull
@@ -52,15 +58,35 @@ public class Product_Customer_Adapter extends RecyclerView.Adapter<Product_Custo
             holder.price.setText("$"+product.getProduct_price());
         }
         holder.fab.setOnClickListener(view -> {
-            CartItem cartItem = new CartItem();
-            cartItem.setProduct_id(product.getProduct_id());
-            cartItem.setQuantity(1);
-            if(cartItemDao.insertData(cartItem)){
-                Toast.makeText(context,R.string.add_success, Toast.LENGTH_SHORT).show();
-                list_cartItem.add(cartItem);
-                notifyDataSetChanged();
+            SharedPreferences sharedPreferences = context.getSharedPreferences("LIST_USER", context.MODE_PRIVATE);
+            String email = sharedPreferences.getString("EMAIL", "");
+            User user = userDao.SelectID(email);
+            if(user != null){
+                CartItem cartItem = new CartItem();
+                cartItem.setUser_id(user.getId());
+                cartItem.setProduct_id(product.getProduct_id());
+                cartItem.setQuantity(1);
+                cartItem.setTotal_price(1 *product.getProduct_price());
+                CartItemDao cartItemDao = new CartItemDao(context);
+                CartItem findCartItem = cartItemDao.getCartItemByProductId(cartItem.getProduct_id());
+                if (findCartItem != null) {
+                    findCartItem.setQuantity(findCartItem.getQuantity() + 1);
+                    findCartItem.setTotal_price(findCartItem.getTotal_price()+(1 * product.getProduct_price()));
+                    if (cartItemDao.updateData(findCartItem)) {
+                        Toast.makeText(context, R.string.add_success, Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(context, R.string.add_not_success, Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    if (cartItemDao.insertData(cartItem)) {
+                        Toast.makeText(context, R.string.add_success, Toast.LENGTH_SHORT).show();
+                        list_cartItem.add(cartItem);
+                    } else {
+                        Toast.makeText(context, R.string.add_not_success, Toast.LENGTH_SHORT).show();
+                    }
+                }
             }else{
-                Toast.makeText(context,R.string.add_not_success, Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Null", Toast.LENGTH_SHORT).show();
             }
         });
         holder.itemView.setOnClickListener(view -> {

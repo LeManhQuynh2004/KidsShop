@@ -1,26 +1,27 @@
 package fpoly.group6_pro1122.kidsshop.Fragment;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
+import fpoly.group6_pro1122.kidsshop.Adapter.CartItem_Adapter;
 import fpoly.group6_pro1122.kidsshop.Dao.CartItemDao;
-import fpoly.group6_pro1122.kidsshop.Dao.ProductDao;
 import fpoly.group6_pro1122.kidsshop.Dao.UserDao;
+import fpoly.group6_pro1122.kidsshop.Model.Cart;
 import fpoly.group6_pro1122.kidsshop.Model.CartItem;
 import fpoly.group6_pro1122.kidsshop.Model.Product;
 import fpoly.group6_pro1122.kidsshop.Model.User;
@@ -31,31 +32,43 @@ public class Details_Fragment extends Fragment {
 
     View view;
     Product product;
-    TextView tv_name,tv_price,tv_quantity,tv_signal,tv_quantity_details,tv_sum;
+    TextView tv_name, tv_price, tv_quantity, tv_signal, tv_quantity_details, tv_sum;
     UserDao userDao;
     CartItemDao cartItemDao;
     int quantity = 0;
     ImageView img_product;
+    CartItem_Adapter cartItemAdapter;
     ArrayList<CartItem> list = new ArrayList<>();
+    ImageView img_wishlist;
+    public static final String TAG = "Details_Fragment";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_details_, container, false);
-
+        cartItemDao = new CartItemDao(getContext());
+        list = cartItemDao.SelectAll();
+        cartItemAdapter = new CartItem_Adapter(getContext(), list);
+        tv_quantity = view.findViewById(R.id.tv_Quantity_CartItem);
+        tv_quantity.setText(list.size() + "");
         tv_name = view.findViewById(R.id.tv_name_details_product);
         tv_price = view.findViewById(R.id.tv_price_details_product);
-        tv_quantity = view.findViewById(R.id.tv_Quantity_CartItem);
         tv_signal = view.findViewById(R.id.bt_signal_details);
         tv_quantity_details = view.findViewById(R.id.tv_quantity_details);
         tv_sum = view.findViewById(R.id.bt_sum_quantity_details);
+        view.findViewById(R.id.bt_back_home).setOnClickListener(view1 -> {
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Home_Fragment()).commit();
+        });
+        view.findViewById(R.id.img_send_bag).setOnClickListener(view1 -> {
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new CartFragment()).commit();
+        });
         tv_sum.setOnClickListener(view1 -> {
             quantity++;
             tv_quantity_details.setText(quantity + "");
         });
         tv_signal.setOnClickListener(view1 -> {
-            if (quantity > 0) {
+            if (quantity > 1) {
                 quantity--;
                 tv_quantity_details.setText(quantity + "");
             } else {
@@ -76,7 +89,9 @@ public class Details_Fragment extends Fragment {
                 Glide.with(requireContext()).load(product.getImage()).placeholder(R.drawable.productimg).into(img_product);
             }
         }
+        view.findViewById(R.id.img_wishlist).setOnClickListener(view1 -> {
 
+        });
         view.findViewById(R.id.bt_addCartItem).setOnClickListener(view1 -> {
             SharedPreferences sharedPreferences = getContext().getSharedPreferences("LIST_USER", getContext().MODE_PRIVATE);
             String email = sharedPreferences.getString("EMAIL", "");
@@ -84,16 +99,16 @@ public class Details_Fragment extends Fragment {
             CartItem cartItem = new CartItem();
             cartItem.setUser_id(user.getId());
             cartItem.setProduct_id(product.getProduct_id());
-
-            CartItemDao cartItemDao = new CartItemDao(getContext());
-
-            CartItem existingCartItem = cartItemDao.getCartItemByProductId(cartItem.getProduct_id());
-            if (existingCartItem != null) {
-                existingCartItem.setQuantity(existingCartItem.getQuantity() + 1);
-                if (cartItemDao.updateData(existingCartItem)) {
-                    Toast.makeText(getContext(), R.string.update_success, Toast.LENGTH_SHORT).show();
+            cartItem.setQuantity(Integer.parseInt(tv_quantity_details.getText().toString()));
+            cartItem.setTotal_price(Integer.parseInt(tv_quantity_details.getText().toString()) * product.getProduct_price());
+            CartItem findCartItem = cartItemDao.getCartItemByProductId(product.getProduct_id());
+            if (findCartItem != null) {
+                findCartItem.setQuantity(findCartItem.getQuantity() + Integer.parseInt(tv_quantity_details.getText().toString()));
+                findCartItem.setTotal_price(findCartItem.getQuantity() * product.getProduct_price());
+                if (cartItemDao.updateData(findCartItem)) {
+                    Toast.makeText(getContext(), R.string.add_success, Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(getContext(), R.string.update_not_success, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), R.string.add_not_success, Toast.LENGTH_SHORT).show();
                 }
             } else {
                 if (cartItemDao.insertData(cartItem)) {

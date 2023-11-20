@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,13 +15,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import fpoly.group6_pro1122.kidsshop.Adapter.Product_Customer_Adapter;
 import fpoly.group6_pro1122.kidsshop.Dao.CartItemDao;
 import fpoly.group6_pro1122.kidsshop.Dao.ProductDao;
+import fpoly.group6_pro1122.kidsshop.Dao.UserDao;
+import fpoly.group6_pro1122.kidsshop.Model.Cart;
 import fpoly.group6_pro1122.kidsshop.Model.CartItem;
 import fpoly.group6_pro1122.kidsshop.Model.Product;
+import fpoly.group6_pro1122.kidsshop.Model.User;
 import fpoly.group6_pro1122.kidsshop.R;
 
 public class Home_Fragment extends Fragment {
@@ -38,6 +39,9 @@ public class Home_Fragment extends Fragment {
     CartItemDao cartItemDao;
     ArrayList<CartItem> list_CartItem = new ArrayList<>();
     TextView txt_quantity;
+    UserDao userDao;
+    ArrayList<Cart> list_cart = new ArrayList<>();
+    User user;
     Product_Customer_Adapter productCustomerAdapter;
     int[] imageResIds = {R.drawable.banner1, R.drawable.banner2, R.drawable.banner3,R.drawable.banner4};
     @Override
@@ -48,6 +52,9 @@ public class Home_Fragment extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerView_Product_customer);
         productDao = new ProductDao(getContext());
         ShowQuantityCartItem();
+        view.findViewById(R.id.img_bag_home).setOnClickListener(view1 -> {
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new CartFragment()).commit();
+        });
         list_product = productDao.SelectAll();
         productCustomerAdapter = new Product_Customer_Adapter(getContext(),list_product,list_CartItem);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(),Columns);
@@ -81,7 +88,6 @@ public class Home_Fragment extends Fragment {
         if(index >= imageResIds.length){
             index = 0;
         }
-        Log.d(TAG, "play: "+index);
         imageShow.setImageResource(imageResIds[index]);
     }
 }

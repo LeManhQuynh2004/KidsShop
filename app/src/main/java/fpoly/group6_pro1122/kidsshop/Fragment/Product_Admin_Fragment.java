@@ -35,7 +35,7 @@ import fpoly.group6_pro1122.kidsshop.Adapter.Product_Admin_Adapter;
 import fpoly.group6_pro1122.kidsshop.Dao.CategoryDao;
 import fpoly.group6_pro1122.kidsshop.Dao.ProductDao;
 import fpoly.group6_pro1122.kidsshop.Model.Category;
-import fpoly.group6_pro1122.kidsshop.Model.ItemClickListener;
+import fpoly.group6_pro1122.kidsshop.Intefaces.ItemClickListener;
 import fpoly.group6_pro1122.kidsshop.Model.Product;
 import fpoly.group6_pro1122.kidsshop.R;
 

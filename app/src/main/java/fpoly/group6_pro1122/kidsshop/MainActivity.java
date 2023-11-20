@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import fpoly.group6_pro1122.kidsshop.Dao.UserDao;
+import fpoly.group6_pro1122.kidsshop.Fragment.CartFragment;
 import fpoly.group6_pro1122.kidsshop.Fragment.Category_Admin_Fragment;
 import fpoly.group6_pro1122.kidsshop.Fragment.Category_User_Fragment;
 import fpoly.group6_pro1122.kidsshop.Fragment.Home_Fragment;
@@ -31,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         userDao = new UserDao(this);
+        bottomNavigationView = findViewById(R.id.BottomNavigationView);
         Intent intent = getIntent();
         if (intent != null) {
             email = intent.getStringExtra("email");
@@ -38,11 +40,11 @@ public class MainActivity extends AppCompatActivity {
         user = userDao.SelectID(email);
 
         if (user.getRole() == 0) {
+//            bottomNavigationView.getMenu().clear();
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Product_Admin_Fragment()).commit();
         } else {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Home_Fragment()).commit();
         }
-        bottomNavigationView = findViewById(R.id.BottomNavigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -50,19 +52,21 @@ public class MainActivity extends AppCompatActivity {
                 Fragment fragment = null;
 
                 if (user.getRole() == 0) {
-                    if(position == R.id.menu_home){
+                    if (position == R.id.menu_home) {
                         fragment = new Product_Admin_Fragment();
-                    }else if(position == R.id.menu_category){
+                    } else if (position == R.id.menu_category) {
                         fragment = new Category_Admin_Fragment();
-                    }else{
+                    } else {
                         Toast.makeText(MainActivity.this, "Chưa làm", Toast.LENGTH_SHORT).show();
                     }
-                }else{
-                    if(position == R.id.menu_home){
+                } else {
+                    if (position == R.id.menu_home) {
                         fragment = new Home_Fragment();
-                    }else if(position == R.id.menu_category){
+                    } else if (position == R.id.menu_category) {
                         fragment = new Category_User_Fragment();
-                    }else{
+                    } else if (position == R.id.menu_bag) {
+                        fragment = new CartFragment();
+                    } else {
                         Toast.makeText(MainActivity.this, "Chưa làm", Toast.LENGTH_SHORT).show();
                     }
                 }

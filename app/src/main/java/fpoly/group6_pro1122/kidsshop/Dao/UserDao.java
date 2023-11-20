@@ -29,13 +29,13 @@ public class UserDao {
     public boolean insertData(User user) {
         SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(COLUMN_ID,user.getId());
+        contentValues.put(COLUMN_ID, user.getId());
         contentValues.put(COLUMN_PASSWORD, user.getPassword());
         contentValues.put(COLUMN_FULLNAME, user.getFullname());
         contentValues.put(COLUMN_EMAIL, user.getEmail());
         contentValues.put(COLUMN_PHONE, user.getPhone());
         contentValues.put(COLUMN_IMAGE, user.getImage());
-        contentValues.put(COLUMN_ADDRESS,user.getAddress());
+        contentValues.put(COLUMN_ADDRESS, user.getAddress());
         contentValues.put(COLUMN_ROLE, user.getRole());
         long check = sqLiteDatabase.insert(TABLE_NAME, null, contentValues);
         user.setId((int) check);
@@ -53,13 +53,13 @@ public class UserDao {
         SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
         String dk[] = {user.getEmail()};
         ContentValues contentValues = new ContentValues();
-        contentValues.put(COLUMN_ID,user.getId());
+        contentValues.put(COLUMN_ID, user.getId());
         contentValues.put(COLUMN_PASSWORD, user.getPassword());
         contentValues.put(COLUMN_FULLNAME, user.getFullname());
         contentValues.put(COLUMN_EMAIL, user.getEmail());
         contentValues.put(COLUMN_PHONE, user.getPhone());
         contentValues.put(COLUMN_IMAGE, user.getImage());
-        contentValues.put(COLUMN_ADDRESS,user.getAddress());
+        contentValues.put(COLUMN_ADDRESS, user.getAddress());
         contentValues.put(COLUMN_ROLE, user.getRole());
         long check = sqLiteDatabase.update(TABLE_NAME, contentValues, COLUMN_EMAIL + "=?", dk);
         return check != -1;
@@ -79,7 +79,7 @@ public class UserDao {
                 String address = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_ADDRESS));
                 String image = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_IMAGE));
                 int role = Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_ROLE)));
-                list.add(new User(id,password, fullname, email, image, phone,address, role));
+                list.add(new User(id, password, fullname, email, image, phone, address, role));
             }
         }
         return list;
@@ -104,6 +104,29 @@ public class UserDao {
         boolean result = cursor.getCount() > 0;
         return result;
     }
+
+    public User checkUser(String emailUser) {
+        SQLiteDatabase sqLiteDatabase = dbHelper.getReadableDatabase();
+        String query = "SELECT * FROM User WHERE " + COLUMN_EMAIL + "=?";
+        String dk[] = {emailUser};
+        Cursor cursor = sqLiteDatabase.rawQuery(query, dk);
+        if (cursor != null && cursor.getCount() == 1) {
+            cursor.moveToFirst();
+            int id = Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_ID)));
+            String phone = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PHONE));
+            String password = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PASSWORD));
+            String fullname = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_FULLNAME));
+            String email = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_EMAIL));
+            String address = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_ADDRESS));
+            String image = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_IMAGE));
+            int role = Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_ROLE)));
+            User user = new User(id, password, fullname, email, image, phone, address, role);
+            return user;
+        } else {
+            return null;
+        }
+    }
+
     public boolean isEmailExists(String email) {
         SQLiteDatabase sqLiteDatabase = dbHelper.getReadableDatabase();
         String sql = "SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_EMAIL + "=?";

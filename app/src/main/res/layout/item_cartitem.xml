@@ -8,13 +8,21 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:padding="10dp"
+        android:padding="5dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-        <ImageView
-            android:src="@color/blue"
-            android:layout_width="100dp"
-            android:layout_height="100dp"/>
+      <androidx.cardview.widget.CardView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          app:cardCornerRadius="10dp">
+          <ImageView
+              android:id="@+id/img_item_cart"
+              android:adjustViewBounds="true"
+              android:scaleType="centerCrop"
+              android:src="@drawable/productimg"
+              android:layout_width="100dp"
+              android:layout_height="100dp"/>
+      </androidx.cardview.widget.CardView>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -24,41 +32,41 @@
               android:layout_width="match_parent"
               android:layout_height="wrap_content">
               <TextView
+                  android:id="@+id/tv_name_item_cart"
                   android:textStyle="bold"
                   android:textSize="20sp"
                   android:text="Donatello"
                   android:layout_width="0dp"
                   android:layout_weight="1"
                   android:layout_height="wrap_content"/>
-              <TextView
-                  android:gravity="right"
-
-                  android:textSize="18sp"
-                  android:textColor="@color/red"
-                  android:text="$ 398.90"
-                  android:layout_width="0dp"
-                  android:layout_weight="1"
-                  android:layout_height="wrap_content"/>
+              <ImageView
+                  android:id="@+id/img_delete_cartItem"
+                  android:src="@drawable/close"
+                  android:layout_width="20dp"
+                  android:layout_height="20dp"/>
           </LinearLayout>
           <LinearLayout
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
+              android:gravity="center_vertical"
               android:layout_marginTop="20dp">
               <LinearLayout
                   android:layout_width="0dp"
                   android:layout_weight="1"
                   android:layout_height="wrap_content"
-
                   android:gravity="center_vertical">
                   <TextView
+                      android:id="@+id/bt_signal_item_cart"
                       android:background="@drawable/background_quantity_cartitem"
                       android:text="-"
+                      android:textColor="@color/boder_gray"
                       android:textSize="25sp"
                       android:textStyle="bold"
                       android:gravity="center"
                       android:layout_width="35dp"
                       android:layout_height="35dp"/>
                   <TextView
+                      android:id="@+id/tv_quantity_item_cart"
                       android:background="@drawable/background_quantity_cartitem"
                       android:text="1"
                       android:layout_marginRight="10dp"
@@ -69,9 +77,10 @@
                       android:layout_width="35dp"
                       android:layout_height="35dp"/>
                   <TextView
+                      android:id="@+id/bt_sum_item_cart"
                       android:background="@drawable/background_quantity_cartitem"
                       android:text="+"
-                      android:textColor="@color/blue"
+                      android:textColor="@color/green"
                       android:textSize="25sp"
                       android:textStyle="bold"
                       android:gravity="center"
@@ -81,10 +90,16 @@
               <LinearLayout
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content">
-                  <ImageView
-                      android:src="@drawable/remove"
-                      android:layout_width="30dp"
-                      android:layout_height="30dp"/>
+                  <TextView
+                      android:id="@+id/tv_price_item_cart"
+                      android:gravity="right"
+                      android:textSize="18sp"
+                      android:textStyle="bold"
+                      android:textColor="@color/black"
+                      android:text="$ 398.90"
+                      android:layout_width="0dp"
+                      android:layout_weight="1"
+                      android:layout_height="wrap_content"/>
               </LinearLayout>
           </LinearLayout>
         </LinearLayout>

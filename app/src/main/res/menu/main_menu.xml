@@ -4,25 +4,25 @@
         android:id="@+id/menu_home"
         android:enabled="true"
         android:icon="@drawable/baseline_home_24"
-        android:title="Home"/>
+        android:title="Trang chủ"/>
     <item
         android:id="@+id/menu_category"
         android:enabled="true"
         android:icon="@drawable/baseline_home_24"
-        android:title="Category"/>
+        android:title="Thay thế"/>
     <item
         android:id="@+id/menu_bag"
         android:enabled="true"
         android:icon="@drawable/baseline_home_24"
-        android:title="Bag"/>
+        android:title="Rỏ hàng"/>
     <item
         android:id="@+id/menu_wishlist"
         android:enabled="true"
-        android:icon="@drawable/baseline_home_24"
-        android:title="WishList"/>
+        android:icon="@drawable/heart"
+        android:title="Yêu thích"/>
     <item
         android:id="@+id/menu_account"
         android:enabled="true"
         android:icon="@drawable/baseline_home_24"
-        android:title="Account"/>
+        android:title="Cá nhân"/>
 </menu>

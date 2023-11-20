@@ -24,6 +24,7 @@ public class CartItemDao {
         values.put("product_id", cartItem.getProduct_id());
         values.put("user_id",cartItem.getUser_id());
         values.put("quantity",cartItem.getQuantity());
+        values.put("total_price",cartItem.getTotal_price());
         long check = sqLiteDatabase.insert("CartItem", null, values);
         cartItem.setId((int) check);
         return check != -1;
@@ -41,6 +42,7 @@ public class CartItemDao {
         values.put("user_id",cartItem.getUser_id());
         values.put("product_id", cartItem.getProduct_id());
         values.put("quantity",cartItem.getQuantity());
+        values.put("total_price",cartItem.getTotal_price());
         long check = sqLiteDatabase.update("CartItem",values,"id = ?",dk);
         return check != -1;
     }
@@ -54,7 +56,8 @@ public class CartItemDao {
                 int user_id = Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow("user_id")));
                 int product_id = Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow("product_id")));
                 int quantity = Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow("quantity")));
-                list.add(new CartItem(id,product_id,user_id,quantity));
+                int price = Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow("total_price")));
+                list.add(new CartItem(id,product_id,user_id,quantity,price));
             }
         }
         return list;
@@ -72,7 +75,8 @@ public class CartItemDao {
             int user_id = Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow("user_id")));
             int product_id = Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow("product_id")));
             int quantity = Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow("quantity")));
-            cartItem = new CartItem(id,product_id,user_id,quantity);
+            int price = Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow("total_price")));
+            cartItem = new CartItem(id,product_id,user_id,quantity,price);
         }
         db.close();
         return cartItem;
@@ -81,9 +85,10 @@ public class CartItemDao {
         String query = "SELECT * FROM CartItem";
         return getAll(query);
     }
-    public ArrayList<CartItem> SelectID(String id){
+    public CartItem SelectID(String id){
         String dk[] = {String.valueOf(id)};
         String query = "SELECT * FROM CartItem WHERE id = ?";
-        return getAll(query);
+        ArrayList<CartItem> list = getAll(query,dk);
+        return list.get(0);
     }
 }
