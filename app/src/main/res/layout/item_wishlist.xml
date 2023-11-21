@@ -9,19 +9,14 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:padding="5dp"
-        android:gravity="center"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-        <CheckBox
-            android:id="@+id/chk_status"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
       <androidx.cardview.widget.CardView
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           app:cardCornerRadius="10dp">
           <ImageView
-              android:id="@+id/img_item_cart"
+              android:id="@+id/img_item_wishlist"
               android:adjustViewBounds="true"
               android:scaleType="centerCrop"
               android:src="@drawable/productimg"
@@ -37,7 +32,7 @@
               android:layout_width="match_parent"
               android:layout_height="wrap_content">
               <TextView
-                  android:id="@+id/tv_name_item_cart"
+                  android:id="@+id/tv_name_item_wishlist"
                   android:textStyle="bold"
                   android:textSize="20sp"
                   android:text="Donatello"
@@ -45,7 +40,7 @@
                   android:layout_weight="1"
                   android:layout_height="wrap_content"/>
               <ImageView
-                  android:id="@+id/img_delete_cartItem"
+                  android:id="@+id/img_delete_wishlist"
                   android:src="@drawable/close"
                   android:layout_width="20dp"
                   android:layout_height="20dp"/>
@@ -56,47 +51,10 @@
               android:gravity="center_vertical"
               android:layout_marginTop="20dp">
               <LinearLayout
-                  android:layout_width="0dp"
-                  android:layout_weight="1"
-                  android:layout_height="wrap_content"
-                  android:gravity="center_vertical">
-                  <TextView
-                      android:id="@+id/bt_signal_item_cart"
-                      android:background="@drawable/background_quantity_cartitem"
-                      android:text="-"
-                      android:textColor="@color/boder_gray"
-                      android:textSize="25sp"
-                      android:textStyle="bold"
-                      android:gravity="center"
-                      android:layout_width="35dp"
-                      android:layout_height="35dp"/>
-                  <TextView
-                      android:id="@+id/tv_quantity_item_cart"
-                      android:background="@drawable/background_quantity_cartitem"
-                      android:text="1"
-                      android:layout_marginRight="10dp"
-                      android:layout_marginLeft="10dp"
-                      android:textSize="20sp"
-                      android:textStyle="bold"
-                      android:gravity="center"
-                      android:layout_width="35dp"
-                      android:layout_height="35dp"/>
-                  <TextView
-                      android:id="@+id/bt_sum_item_cart"
-                      android:background="@drawable/background_quantity_cartitem"
-                      android:text="+"
-                      android:textColor="@color/green"
-                      android:textSize="25sp"
-                      android:textStyle="bold"
-                      android:gravity="center"
-                      android:layout_width="35dp"
-                      android:layout_height="35dp"/>
-              </LinearLayout>
-              <LinearLayout
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content">
                   <TextView
-                      android:id="@+id/tv_price_item_cart"
+                      android:id="@+id/tv_price_item_wishlist"
                       android:gravity="right"
                       android:textSize="18sp"
                       android:textStyle="bold"

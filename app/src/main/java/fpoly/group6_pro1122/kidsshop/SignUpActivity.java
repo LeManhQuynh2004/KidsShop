@@ -31,11 +31,11 @@ public class SignUpActivity extends AppCompatActivity {
         btnGetStarted = findViewById(R.id.bt_getStart);
         userDao = new UserDao(this);
 
-        findViewById(R.id.sendLogin).setOnClickListener(view -> {
-            Intent intent = new Intent(SignUpActivity.this, Login_Activity.class);
-            startActivity(intent);
-            finish();
-        });
+//        findViewById(R.id.sendLogin).setOnClickListener(view -> {
+//            Intent intent = new Intent(SignUpActivity.this, Login_Activity.class);
+//            startActivity(intent);
+//            finish();
+//        });
         btnGetStarted.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -56,14 +56,14 @@ public class SignUpActivity extends AppCompatActivity {
             newUser.setEmail(email);
             newUser.setPassword(password);
 
-            if (userDao.insertData(newUser)) {
-                Toast.makeText(this, "Đăng ký thành công", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(SignUpActivity.this, Login_Activity.class);
-                startActivity(intent);
-                finish();
-            } else {
-                Toast.makeText(this, "Đăng ký thất bại", Toast.LENGTH_SHORT).show();
-            }
+//            if (userDao.insertData(newUser)) {
+//                Toast.makeText(this, "Đăng ký thành công", Toast.LENGTH_SHORT).show();
+//                Intent intent = new Intent(SignUpActivity.this, Login_Activity.class);
+//                startActivity(intent);
+//                finish();
+//            } else {
+//                Toast.makeText(this, "Đăng ký thất bại", Toast.LENGTH_SHORT).show();
+//            }
         }
     }
 

@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.sql.Array;
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ import fpoly.group6_pro1122.kidsshop.Model.Product;
 
 public class CartItemDao {
     Db_Helper dbHelper;
+    public static final String TAG = "CartItemDao";
     public CartItemDao(Context context) {
         dbHelper = new Db_Helper(context);
     }
@@ -25,6 +27,7 @@ public class CartItemDao {
         values.put("user_id",cartItem.getUser_id());
         values.put("quantity",cartItem.getQuantity());
         values.put("total_price",cartItem.getTotal_price());
+        values.put("status",cartItem.getStatus());
         long check = sqLiteDatabase.insert("CartItem", null, values);
         cartItem.setId((int) check);
         return check != -1;
@@ -43,6 +46,7 @@ public class CartItemDao {
         values.put("product_id", cartItem.getProduct_id());
         values.put("quantity",cartItem.getQuantity());
         values.put("total_price",cartItem.getTotal_price());
+        values.put("status",cartItem.getStatus());
         long check = sqLiteDatabase.update("CartItem",values,"id = ?",dk);
         return check != -1;
     }
@@ -57,7 +61,9 @@ public class CartItemDao {
                 int product_id = Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow("product_id")));
                 int quantity = Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow("quantity")));
                 int price = Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow("total_price")));
-                list.add(new CartItem(id,product_id,user_id,quantity,price));
+                int status = Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow("status")));
+                Log.e(TAG, "Status: "+status);
+                list.add(new CartItem(id,product_id,user_id,quantity,price,status));
             }
         }
         return list;
@@ -76,7 +82,9 @@ public class CartItemDao {
             int product_id = Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow("product_id")));
             int quantity = Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow("quantity")));
             int price = Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow("total_price")));
-            cartItem = new CartItem(id,product_id,user_id,quantity,price);
+            int status = Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow("status")));
+            //int id, int product_id,int user_id, int quantity,int total_price,int status
+            cartItem = new CartItem(id,product_id,user_id,quantity,price,status);
         }
         db.close();
         return cartItem;

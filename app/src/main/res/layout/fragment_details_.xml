@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Fragment.Details_Fragment">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <FrameLayout
             android:id="@+id/layoutFrame"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <ImageView
                 android:id="@+id/img_details"
                 android:layout_width="match_parent"
@@ -22,11 +24,11 @@
 
             <ImageView
                 android:id="@+id/bt_back_home"
-                android:layout_marginTop="12dp"
-                android:layout_marginLeft="10dp"
-                android:src="@drawable/back"
                 android:layout_width="25dp"
-                android:layout_height="20dp"/>
+                android:layout_height="20dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="12dp"
+                android:src="@drawable/back" />
 
             <FrameLayout
                 android:layout_width="wrap_content"
@@ -79,104 +81,119 @@
                     android:text="Product name"
                     android:textSize="20sp"
                     android:textStyle="bold" />
-                  <ImageView
-                      android:id="@+id/img_wishlist"
-                      android:src="@drawable/heart"
-                      android:layout_width="30dp"
-                      android:layout_height="30dp"/>
+
+                <ImageView
+                    android:id="@+id/img_wishlist"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/heart" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:gravity="center_vertical">
+
                 <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:gravity="center_vertical">
+
                     <TextView
                         android:id="@+id/bt_signal_details"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:gravity="center"
                         android:text="-"
                         android:textSize="25sp"
-                        android:textStyle="bold"
-                        android:gravity="center"
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"/>
+                        android:textStyle="bold" />
+
                     <TextView
                         android:id="@+id/tv_quantity_details"
-                        android:background="@drawable/background_quantity_cartitem"
-                        android:text="1"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginLeft="10dp"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        android:gravity="center"
                         android:layout_width="35dp"
-                        android:layout_height="35dp"/>
+                        android:layout_height="35dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:background="@drawable/background_quantity_cartitem"
+                        android:gravity="center"
+                        android:text="1"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
                     <TextView
                         android:id="@+id/bt_sum_quantity_details"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:gravity="center"
                         android:text="+"
                         android:textColor="@color/blue"
                         android:textSize="25sp"
-                        android:textStyle="bold"
-                        android:gravity="center"
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"/>
+                        android:textStyle="bold" />
                 </LinearLayout>
+
                 <TextView
                     android:id="@+id/tv_price_details_product"
-                    android:text="$4.99"
-                    android:textStyle="bold"
-                    android:textSize="19sp"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:text="$4.99"
+                    android:textSize="19sp"
+                    android:textStyle="bold" />
             </LinearLayout>
+
             <TextView
-                android:layout_marginTop="10dp"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:text="Mô tả sản phẩm"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Mô tả sản phẩm"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
             <TextView
-                android:layout_marginTop="5dp"
-                android:textSize="17sp"
-                android:text="Apples are nutritious. Apples may be good for weight loss. apples may be good for your heart. As part of a healtful and varied diet."
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:maxLength="160"
+                android:text="Bình sữa Hegen là một sản phẩm mang tính cách mạng độc đáo trên thế giới với thiết kế ấn để đóng – xoay nhẹ để mở, không thiết kế nắp xoay/vặn như các loại bình sữa khác. Hegen luôn muốn dành những điều tốt đẹp nhất cho mẹ và bé, nên tất cả sản phẩm đều được nghiên cứu và chọn lựa một cách kỹ lưỡng."
+                android:textSize="17sp" />
+
             <Button
-                app:backgroundTint="@null"
-                android:textStyle="bold"
-                android:textSize="17sp"
-                android:background="@drawable/background_button_green"
                 android:id="@+id/bt_addCartItem"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="Thêm vào rỏ hàng" />
+                android:background="@drawable/background_button_green"
+                android:text="Thêm vào rỏ hàng"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                app:backgroundTint="@null" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal">
+
                 <TextView
-                    android:textSize="20sp"
-                    android:textStyle="bold"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:text="Đánh giá"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"/>
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
                 <TextView
-                    android:gravity="right"
-                    android:textSize="16sp"
-                    android:layout_weight="1"
                     android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="right"
                     android:text="Xem tất cả >"
-                    android:layout_height="wrap_content"/>
+                    android:textSize="16sp" />
             </LinearLayout>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent" />
         </LinearLayout>
     </RelativeLayout>
 </ScrollView>

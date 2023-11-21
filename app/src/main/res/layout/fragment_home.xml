@@ -77,7 +77,7 @@
                    android:layout_width="0dp"
                    android:layout_weight="1"
                    android:layout_height="wrap_content"
-                   android:text="Gợi ý cho bạn"
+                   android:text="Ưu đãi khủng"
                    android:textColor="@color/orange"
                    android:textSize="25sp"
                    android:textStyle="bold" />
@@ -92,7 +92,59 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:padding="5dp"
-                android:id="@+id/recyclerView_Product_customer"
+                android:id="@+id/recyclerView_Product_discount"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="Gợi ý cho bạn"
+                    android:textColor="@color/orange"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+                <TextView
+                    android:gravity="right"
+                    android:textSize="16sp"
+                    android:textColor="@color/green"
+                    android:text="Xem tất cả"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:padding="5dp"
+                android:id="@+id/recyclerView_Product_suggest"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="Sản phẩm mới"
+                    android:textColor="@color/orange"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+                <TextView
+                    android:gravity="right"
+                    android:textSize="16sp"
+                    android:textColor="@color/green"
+                    android:text="Xem tất cả"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:padding="5dp"
+                android:id="@+id/recyclerView_Product_new"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
         </LinearLayout>

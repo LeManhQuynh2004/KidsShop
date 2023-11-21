@@ -32,27 +32,33 @@ import java.util.ArrayList;
 
 import fpoly.group6_pro1122.kidsshop.Adapter.Category_Spinner;
 import fpoly.group6_pro1122.kidsshop.Adapter.Product_Admin_Adapter;
+import fpoly.group6_pro1122.kidsshop.Adapter.Tag_Spinner;
 import fpoly.group6_pro1122.kidsshop.Dao.CategoryDao;
 import fpoly.group6_pro1122.kidsshop.Dao.ProductDao;
+import fpoly.group6_pro1122.kidsshop.Dao.TagDao;
 import fpoly.group6_pro1122.kidsshop.Model.Category;
 import fpoly.group6_pro1122.kidsshop.Intefaces.ItemClickListener;
 import fpoly.group6_pro1122.kidsshop.Model.Product;
+import fpoly.group6_pro1122.kidsshop.Model.Tag;
 import fpoly.group6_pro1122.kidsshop.R;
 
 public class Product_Admin_Fragment extends Fragment {
     View view;
     RecyclerView recyclerView;
     Toolbar toolbar;
-    Spinner spinner_category;
+    Spinner spinner_category,spinner_tag;
     Category_Spinner categorySpinner;
     Uri imageUri;
+    TagDao tagDao;
+    ArrayList<Tag> list_tag = new ArrayList<>();
+    Tag_Spinner tagSpinner;
     CategoryDao categoryDao;
     ArrayList<Category> list_category = new ArrayList();
     EditText ed_name,ed_price,ed_quantity,ed_describe;
     ImageView imgUpLoad;
     ProductDao productDao;
     ArrayList<Product> list_product = new ArrayList<>();
-    int category_id,selectedPosition;
+    int category_id,selectedPosition,selectedPosition_tag,tag_id;
     Product_Admin_Adapter product_admin_adapter;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -89,6 +95,7 @@ public class Product_Admin_Fragment extends Fragment {
         ed_describe = dialogView.findViewById(R.id.ed_describe_dialog_product);
         imgUpLoad = dialogView.findViewById(R.id.img_dialog_product);
         spinner_category = dialogView.findViewById(R.id.spinner_category_id_dialog);
+        spinner_tag = dialogView.findViewById(R.id.spinner_tag_dialog);
 
         if (type != 0) {
             ed_name.setText(product.getProduct_name());
@@ -101,6 +108,12 @@ public class Product_Admin_Fragment extends Fragment {
                 }
             }
             spinner_category.setSelection(selectedPosition);
+            for (int i = 0; i < list_tag.size(); i++) {
+                if (product.getTag_id() == list_tag.get(i).getId()) {
+                    selectedPosition_tag = i;
+                }
+            }
+            spinner_tag.setSelection(selectedPosition_tag);
             Glide.with(getContext())
                     .load(product.getImage())
                     .placeholder(R.drawable.image)
@@ -114,6 +127,18 @@ public class Product_Admin_Fragment extends Fragment {
         });
 
         create_spinner_category();
+        create_spinner_tag();
+        spinner_tag.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                tag_id = list_tag.get(i).getId();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
         spinner_category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -140,6 +165,7 @@ public class Product_Admin_Fragment extends Fragment {
                     productNew.setProduct_price(Integer.parseInt(price));
                     productNew.setDescribe(describe);
                     productNew.setImage(imagePath);
+                    productNew.setTag_id(tag_id);
                     productNew.setCategory_id(category_id);
                     if (productDao.insertData(productNew)) {
                         Toast.makeText(getContext(), R.string.add_success, Toast.LENGTH_SHORT).show();
@@ -155,6 +181,7 @@ public class Product_Admin_Fragment extends Fragment {
                     product.setProduct_price(Integer.parseInt(price));
                     product.setQuantity(Integer.parseInt(quantity));
                     product.setDescribe(describe);
+                    product.setTag_id(tag_id);
                     product.setCategory_id(category_id);
                     if (imageUri != null) {
                         product.setImage(imageUri.toString());
@@ -179,6 +206,14 @@ public class Product_Admin_Fragment extends Fragment {
         alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         alertDialog.show();
     }
+
+    private void create_spinner_tag() {
+        tagDao = new TagDao(getContext());
+        list_tag = tagDao.SelectAll();
+        tagSpinner = new Tag_Spinner(getContext(),list_tag);
+        spinner_tag.setAdapter(tagSpinner);
+    }
+
     private void create_spinner_category(){
         categoryDao = new CategoryDao(getContext());
         list_category = categoryDao.getAll();

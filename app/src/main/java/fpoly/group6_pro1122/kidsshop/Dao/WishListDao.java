@@ -60,6 +60,24 @@ public class WishListDao{
         }
         return list;
     }
+    public WishList getWishListByProductId(int productId) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        WishList wishList = null;
+
+        String query = "SELECT * FROM WishList WHERE product_id = ?";
+
+        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(productId)});
+
+        if (cursor != null && cursor.moveToFirst()) {
+            int id = Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow("id")));
+            int user_id = Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow("user_id")));
+            int product_id = Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow("product_id")));
+            int quantity = Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow("quantity")));
+            wishList = new WishList(id,quantity,user_id,product_id);
+        }
+        db.close();
+        return wishList;
+    }
     public ArrayList<WishList> SelectAll(){
         String query = "SELECT * FROM WishList";
         return getAll(query);

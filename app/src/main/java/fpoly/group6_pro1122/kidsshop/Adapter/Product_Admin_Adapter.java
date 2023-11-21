@@ -27,7 +27,6 @@ public class Product_Admin_Adapter extends RecyclerView.Adapter<Product_Admin_Ad
     Context context;
     ArrayList<Product>list;
     ProductDao productDao;
-
     public static final String TAG = "Product_Admin_Adapter";
     private ItemClickListener itemClickListener;
     public void setItemClickListener(ItemClickListener listener) {
@@ -55,7 +54,7 @@ public class Product_Admin_Adapter extends RecyclerView.Adapter<Product_Admin_Ad
             holder.name.setText(product.getProduct_name());
             holder.id.setText("Mã sản phẩm :"+product.getProduct_id());
             holder.price.setText("Giá bán :"+product.getProduct_price() + "");
-            holder.quantity.setText("Số lượng :"+product.getQuantity() + "");
+            holder.quantity.setText("Số lượng tồn:"+product.getQuantity() + "");
             holder.category_id.setText("Mã danh mục :"+product.getCategory_id());
         }
         holder.img_update.setOnClickListener(view -> {

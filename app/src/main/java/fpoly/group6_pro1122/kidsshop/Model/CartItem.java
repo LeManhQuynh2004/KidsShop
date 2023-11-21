@@ -6,16 +6,18 @@ public class CartItem {
     private int user_id;
     private int quantity;
     private int total_price;
+    private int status;
 
     public CartItem() {
     }
 
-    public CartItem(int id, int product_id,int user_id, int quantity,int total_price) {
+    public CartItem(int id, int product_id,int user_id, int quantity,int total_price,int status) {
         this.id = id;
         this.product_id = product_id;
         this.quantity = quantity;
         this.user_id = user_id;
         this.total_price = total_price;
+        this.status = status;
     }
 
     public int getId() {
@@ -56,5 +58,13 @@ public class CartItem {
 
     public void setTotal_price(int total_price) {
         this.total_price = total_price;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 }

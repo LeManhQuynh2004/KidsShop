@@ -8,12 +8,10 @@ import androidx.annotation.Nullable;
 
 public class Db_Helper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "kidsShop.db";
-    public static final int DATABASE_VERSION = 5;
-
+    public static final int DATABASE_VERSION = 6;
     public Db_Helper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
-
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         String CreateTableCategory =
@@ -23,18 +21,63 @@ public class Db_Helper extends SQLiteOpenHelper {
                         "description TEXT NOT NULL," +
                         "image TEXT NOT NULL)";
         sqLiteDatabase.execSQL(CreateTableCategory);
+        String insertDefaultCategory = "INSERT OR IGNORE INTO Category(" +
+                "category_id,name,description,image) " +
+                "VALUES (1,'category 1','ngon bo re','https://www.google.com/url?sa=i&url=https%3A%2F%2Fbansidotreem.com%2Fbo-18-mon-quan-ao-so-sinh-phong-cach-cho-tre-0-3-thang-mua-he-cho-tre-so-sinh-226.html&psig=AOvVaw2zth2mbRG8P7J8wWHsQBaa&ust=1700646894678000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCJCdgMTp1IIDFQAAAAAdAAAAABAD')";
+        sqLiteDatabase.execSQL(insertDefaultCategory);
 
         String CreateTableProduct =
                 "CREATE TABLE IF NOT EXISTS Product(" +
                         "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                        "category_id INTEGER NOT NULL," +
                         "product_name TEXT NOT NULL," +
                         "product_price INTEGER NOT NULL," +
                         "quantity INTEGER NOT NULL," +
                         "description TEXT NOT NULL," +
                         "image TEXT NOT NULL," +
-                        "FOREIGN KEY(category_id) REFERENCES Category(category_id))";
+                        "category_id INTEGER NOT NULL," +
+                        "tag_id INTEGER," +
+                        "FOREIGN KEY(category_id) REFERENCES Category(category_id)," +
+                        "FOREIGN KEY(tag_id) REFERENCES Tag(id))";
         sqLiteDatabase.execSQL(CreateTableProduct);
+        String insertDefaultProduct = "INSERT OR IGNORE INTO Product(" +
+                "id,product_name,product_price,quantity,description,image,category_id,tag_id) " +
+                "VALUES (1,'product 1',2000,2000,'ngon bo re','https://www.google.com/url?sa=i&url=https%3A%2F%2Fbansidotreem.com%2Fbo-18-mon-quan-ao-so-sinh-phong-cach-cho-tre-0-3-thang-mua-he-cho-tre-so-sinh-226.html&psig=AOvVaw2zth2mbRG8P7J8wWHsQBaa&ust=1700646894678000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCJCdgMTp1IIDFQAAAAAdAAAAABAD'," +
+                "1,1)";
+        String insertDefaultProduct2 = "INSERT OR IGNORE INTO Product(" +
+                "id,product_name,product_price,quantity,description,image,category_id,tag_id) " +
+                "VALUES (2,'product 2',3000,2000,'ngon bo re','https://www.google.com/url?sa=i&url=https%3A%2F%2Fbansidotreem.com%2Fbo-18-mon-quan-ao-so-sinh-phong-cach-cho-tre-0-3-thang-mua-he-cho-tre-so-sinh-226.html&psig=AOvVaw2zth2mbRG8P7J8wWHsQBaa&ust=1700646894678000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCJCdgMTp1IIDFQAAAAAdAAAAABAD'," +
+                "1,2)";
+        String insertDefaultProduct3 = "INSERT OR IGNORE INTO Product(" +
+                "id,product_name,product_price,quantity,description,image,category_id,tag_id) " +
+                "VALUES (3,'product 3',4000,2000,'ngon bo re','https://www.google.com/url?sa=i&url=https%3A%2F%2Fbansidotreem.com%2Fbo-18-mon-quan-ao-so-sinh-phong-cach-cho-tre-0-3-thang-mua-he-cho-tre-so-sinh-226.html&psig=AOvVaw2zth2mbRG8P7J8wWHsQBaa&ust=1700646894678000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCJCdgMTp1IIDFQAAAAAdAAAAABAD'," +
+                "1,2)";
+        String insertDefaultProduct4 = "INSERT OR IGNORE INTO Product(" +
+                "id,product_name,product_price,quantity,description,image,category_id,tag_id) " +
+                "VALUES (4,'product 4',5000,2000,'ngon bo re','https://www.google.com/url?sa=i&url=https%3A%2F%2Fbansidotreem.com%2Fbo-18-mon-quan-ao-so-sinh-phong-cach-cho-tre-0-3-thang-mua-he-cho-tre-so-sinh-226.html&psig=AOvVaw2zth2mbRG8P7J8wWHsQBaa&ust=1700646894678000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCJCdgMTp1IIDFQAAAAAdAAAAABAD'," +
+                "1,2)";
+        String insertDefaultProduct5 = "INSERT OR IGNORE INTO Product(" +
+                "id,product_name,product_price,quantity,description,image,category_id,tag_id) " +
+                "VALUES (5,'product 5',6000,2000,'ngon bo re','https://www.google.com/url?sa=i&url=https%3A%2F%2Fbansidotreem.com%2Fbo-18-mon-quan-ao-so-sinh-phong-cach-cho-tre-0-3-thang-mua-he-cho-tre-so-sinh-226.html&psig=AOvVaw2zth2mbRG8P7J8wWHsQBaa&ust=1700646894678000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCJCdgMTp1IIDFQAAAAAdAAAAABAD'," +
+                "1,1)";
+        sqLiteDatabase.execSQL(insertDefaultProduct);
+        sqLiteDatabase.execSQL(insertDefaultProduct2);
+        sqLiteDatabase.execSQL(insertDefaultProduct3);
+        sqLiteDatabase.execSQL(insertDefaultProduct4);
+        sqLiteDatabase.execSQL(insertDefaultProduct5);
+        String CreateTableTag =
+                "CREATE TABLE IF NOT EXISTS Tag(" +
+                        "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                        "tag_name TEXT NOT NULL)";
+        sqLiteDatabase.execSQL(CreateTableTag);
+
+        String insertDefaultTag = "INSERT OR IGNORE INTO Tag (id,tag_name) VALUES (2,'Ưu đãi khủng')";
+        String insertDefaultTag2 = "INSERT OR IGNORE INTO Tag (id,tag_name) VALUES (1,'Sản phẩm mới')";
+        String insertDefaultTag3 = "INSERT OR IGNORE INTO Tag (id,tag_name) VALUES (3,'Đại giảm giá')";
+        String insertDefaultTag4 = "INSERT OR IGNORE INTO Tag (id,tag_name) VALUES (4,'Sản phẩm tốt')";
+        sqLiteDatabase.execSQL(insertDefaultTag);
+        sqLiteDatabase.execSQL(insertDefaultTag2);
+        sqLiteDatabase.execSQL(insertDefaultTag3);
+        sqLiteDatabase.execSQL(insertDefaultTag4);
 
         String CreateTableUser =
                 "CREATE TABLE IF NOT EXISTS User(" +
@@ -60,6 +103,7 @@ public class Db_Helper extends SQLiteOpenHelper {
                 "user_id INTEGER NOT NULL," +
                 "quantity INTEGER NOT NULL," +
                 "total_price INTEGER NOT NULL," +
+                "status INTEGER NOT NULL," +
                 "FOREIGN KEY(product_id) REFERENCES Product(id)," +
                 "FOREIGN KEY(user_id) REFERENCES User(id))";
         sqLiteDatabase.execSQL(CreateTableCartItem);
@@ -131,9 +175,8 @@ public class Db_Helper extends SQLiteOpenHelper {
                 "expiration_date TEXT NOT NULL," +
                 "user_id INTEGER," +
                 "order_id INTEGER," +
-                "FOREIGN KEY(order_id) REFERENCES Orders(id),"+
+                "FOREIGN KEY(order_id) REFERENCES Orders(id)," +
                 "FOREIGN KEY(user_id) REFERENCES User(id))";
-
         sqLiteDatabase.execSQL(CreateTableVoucher);
     }
 
@@ -154,6 +197,7 @@ public class Db_Helper extends SQLiteOpenHelper {
             onCreate(sqLiteDatabase);
         }
     }
+
     @Override
     public void onOpen(SQLiteDatabase db) {
         super.onOpen(db);

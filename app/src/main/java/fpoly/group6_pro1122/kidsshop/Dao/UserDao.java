@@ -93,7 +93,11 @@ public class UserDao {
     public User SelectID(String id) {
         String query = "SELECT * FROM User WHERE email = ?";
         ArrayList<User> list = getAll(query, id);
-        return list.get(0);
+        if(list != null){
+            return list.get(0);
+        }else{
+            return null;
+        }
     }
 
     public boolean checkLogin(String email, String password, String role) {
