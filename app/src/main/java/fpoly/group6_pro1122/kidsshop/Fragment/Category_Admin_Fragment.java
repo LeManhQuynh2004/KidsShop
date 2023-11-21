@@ -99,10 +99,7 @@ public class Category_Admin_Fragment extends Fragment {
                 String name = edt_name.getText().toString().trim();
                 String moTa = edt_describe.getText().toString().trim();
                 String imgUri = imageUri.toString();
-                Category category = new Category();
-                category.setImage(imgUri);
-                category.setDescribe(moTa);
-                category.setName(name);
+                Category category = new Category(getId(),name,moTa,imgUri);
                 boolean check = categoryDao.insertTL(category);
                 if (check){
                     list.add(category);
