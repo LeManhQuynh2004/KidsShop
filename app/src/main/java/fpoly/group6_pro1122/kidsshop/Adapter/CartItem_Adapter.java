@@ -31,6 +31,7 @@ public class CartItem_Adapter extends BaseAdapter {
     ProductDao productDao;
     int quantity = 1;
     CartItemDao cartItemDao;
+
     public static final String TAG = "CartItem_Adapter";
     private OnChange_Price onChange;
 
@@ -65,7 +66,6 @@ public class CartItem_Adapter extends BaseAdapter {
         ImageView img_item_cart, img_delete;
         CheckBox chkStatus;
     }
-
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         CartViewHolder cartViewHolder;
@@ -91,6 +91,8 @@ public class CartItem_Adapter extends BaseAdapter {
         Glide.with(context).load(product.getImage()).placeholder(R.drawable.productimg).into(cartViewHolder.img_item_cart);
         cartViewHolder.tv_quantity.setText(cartItem.getQuantity() + "");
         cartViewHolder.tv_price.setText("$" + cartItem.getTotal_price());
+        Log.e(TAG, "getView: "+cartItem.getStatus());
+        Log.e(TAG, "getView: "+cartItem.getTotal_price());
         if (cartItem.getStatus() == 0) {
             cartViewHolder.chkStatus.setChecked(false);
         } else {
@@ -103,7 +105,6 @@ public class CartItem_Adapter extends BaseAdapter {
                     total_price += list.get(j).getTotal_price();
                 }
             }
-
             Log.d(TAG, "getView: " + total_price);
 
             if (cartViewHolder.chkStatus.isChecked()) {

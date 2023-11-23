@@ -6,14 +6,17 @@ public class WishList {
     private int user_id;
     private int product_id;
 
+    private int status;
+
     public WishList() {
     }
 
-    public WishList(int id, int quantity, int user_id, int product_id) {
+    public WishList(int id, int quantity, int user_id, int product_id,int status) {
         this.id = id;
         this.quantity = quantity;
         this.user_id = user_id;
         this.product_id = product_id;
+        this.status = status;
     }
 
     public int getId() {
@@ -46,5 +49,13 @@ public class WishList {
 
     public void setProduct_id(int product_id) {
         this.product_id = product_id;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 }

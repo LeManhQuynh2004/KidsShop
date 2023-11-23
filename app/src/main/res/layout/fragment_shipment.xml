@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray"
+    tools:context=".Fragment.Shipment_Fragment">
+
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_shipment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="@color/white" />
+
+    <TextView
+        android:id="@+id/tv_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar_shipment"
+        android:padding="10dp"
+        android:text="Địa chỉ"
+        android:textSize="16sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_textview"
+        android:background="@color/white"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ListView
+            android:id="@+id/listViewShipment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_textview" />
+
+        <Button
+            android:id="@+id/bt_add_shipment"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:drawableLeft="@drawable/baseline_add_circle_outline_24"
+            android:text="Thêm địa chỉ mới"
+            android:textColor="@color/black"
+            app:backgroundTint="@null" />
+    </LinearLayout>
+</RelativeLayout>

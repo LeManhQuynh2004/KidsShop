@@ -17,7 +17,6 @@
         android:layout_below="@id/Toolbar_CartItem"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
-
     <LinearLayout
         android:id="@+id/layout_bottom"
         android:layout_width="match_parent"
@@ -52,9 +51,10 @@
                 android:layout_height="match_parent"/>
         </LinearLayout>
         <TextView
+            android:id="@+id/bt_payment"
             android:padding="20dp"
             android:background="@color/green"
-            android:text="Đặt hàng"
+            android:text="Mua hàng"
             android:textStyle="bold"
             android:textColor="@color/white"
             android:layout_width="wrap_content"

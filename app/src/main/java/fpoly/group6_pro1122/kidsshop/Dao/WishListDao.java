@@ -25,6 +25,7 @@ public class WishListDao{
         values.put("product_id", wishList.getProduct_id());
         values.put("user_id",wishList.getUser_id());
         values.put("quantity",wishList.getQuantity());
+        values.put("status",wishList.getStatus());
         long check = sqLiteDatabase.insert("WishList", null, values);
         wishList.setId((int) check);
         return check != -1;
@@ -42,6 +43,7 @@ public class WishListDao{
         values.put("product_id", wishList.getProduct_id());
         values.put("user_id",wishList.getUser_id());
         values.put("quantity",wishList.getQuantity());
+        values.put("status",wishList.getStatus());
         long check = sqLiteDatabase.update("WishList",values,"id=?",dk);
         return check != -1;
     }
@@ -55,7 +57,8 @@ public class WishListDao{
                 int user_id = Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow("user_id")));
                 int product_id = Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow("product_id")));
                 int quantity = Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow("quantity")));
-                list.add(new WishList(id,quantity,user_id,product_id));
+                int status = Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow("status")));
+                list.add(new WishList(id,quantity,user_id,product_id,status));
             }
         }
         return list;
@@ -73,7 +76,8 @@ public class WishListDao{
             int user_id = Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow("user_id")));
             int product_id = Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow("product_id")));
             int quantity = Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow("quantity")));
-            wishList = new WishList(id,quantity,user_id,product_id);
+            int status = Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow("status")));
+            wishList = new WishList(id,quantity,user_id,product_id,status);
         }
         db.close();
         return wishList;

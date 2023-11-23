@@ -151,14 +151,22 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/tv_describe_item_details"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:maxLength="160"
                 android:text="Bình sữa Hegen là một sản phẩm mang tính cách mạng độc đáo trên thế giới với thiết kế ấn để đóng – xoay nhẹ để mở, không thiết kế nắp xoay/vặn như các loại bình sữa khác. Hegen luôn muốn dành những điều tốt đẹp nhất cho mẹ và bé, nên tất cả sản phẩm đều được nghiên cứu và chọn lựa một cách kỹ lưỡng."
                 android:textSize="17sp" />
-
+            <TextView
+                android:id="@+id/showAllDescribe"
+                android:gravity="center"
+                android:textSize="16sp"
+                android:text="Xem thêm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
             <Button
+                android:drawableLeft="@drawable/baseline_shopping_cart_24"
                 android:id="@+id/bt_addCartItem"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

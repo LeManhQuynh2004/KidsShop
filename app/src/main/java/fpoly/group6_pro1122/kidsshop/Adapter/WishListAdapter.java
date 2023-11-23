@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -49,6 +50,7 @@ public class WishListAdapter extends BaseAdapter {
     class WishListHolder {
         TextView tv_name,tv_price;
         ImageView img_item_cart,img_delete;
+        CheckBox chk_status;
     }
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
@@ -60,6 +62,7 @@ public class WishListAdapter extends BaseAdapter {
             wishListHolder.tv_price = view.findViewById(R.id.tv_price_item_wishlist);
             wishListHolder.img_item_cart = view.findViewById(R.id.img_item_wishlist);
             wishListHolder.img_delete = view.findViewById(R.id.img_delete_wishlist);
+            wishListHolder.chk_status = view.findViewById(R.id.chk_status_wishList);
             view.setTag(wishListHolder);
         } else {
             wishListHolder = (WishListHolder) view.getTag();
@@ -70,7 +73,23 @@ public class WishListAdapter extends BaseAdapter {
             wishListHolder.tv_name.setText(product.getProduct_name());
             wishListHolder.tv_price.setText("$"+product.getProduct_price()+"");
             Glide.with(context).load(product.getImage()).placeholder(R.drawable.productimg).into(wishListHolder.img_item_cart);
+            if(wishList.getStatus() == 0){
+                wishListHolder.chk_status.setChecked(false);
+            }else{
+                wishListHolder.chk_status.setChecked(true);
+            }
         }
+        wishListHolder.chk_status.setOnClickListener(view1 -> {
+            if(wishListHolder.chk_status.isChecked()){
+                wishList.setStatus(1);
+                wishListDao.updateData(wishList);
+                notifyDataSetChanged();
+            }else{
+                wishList.setStatus(0);
+                wishListDao.updateData(wishList);
+                notifyDataSetChanged();
+            }
+        });
         wishListHolder.img_delete.setOnClickListener(view1 -> {
             DeleteItem(wishList);
         });

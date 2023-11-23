@@ -2,10 +2,12 @@ package fpoly.group6_pro1122.kidsshop.Fragment;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,7 +35,7 @@ public class Details_Fragment extends Fragment {
 
     View view;
     Product product;
-    TextView tv_name, tv_price, tv_quantity, tv_signal, tv_quantity_details, tv_sum;
+    TextView tv_name, tv_price, tv_quantity, tv_signal, tv_quantity_details, tv_sum, tv_describe;
     UserDao userDao;
     WishListDao wishListDao;
     CartItemDao cartItemDao;
@@ -44,6 +46,10 @@ public class Details_Fragment extends Fragment {
     ImageView img_wishlist;
     WishList findwishList;
     public static final String TAG = "Details_Fragment";
+    TextView tv_showAll;
+    boolean isCheck;
+    SharedPreferences sharedPreferences;
+    String email;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -51,16 +57,35 @@ public class Details_Fragment extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_details_, container, false);
         cartItemDao = new CartItemDao(getContext());
+        userDao = new UserDao(getContext());
+//        sharedPreferences = getContext().getSharedPreferences("LIST_USER", getContext().MODE_PRIVATE);
+//        email = sharedPreferences.getString("EMAIL", "");
+//        User user = userDao.SelectID(email);
         list = cartItemDao.SelectAll();
-        wishListDao = new WishListDao(getContext());
-        cartItemAdapter = new CartItem_Adapter(getContext(), list);
         tv_quantity = view.findViewById(R.id.tv_Quantity_CartItem);
         tv_quantity.setText(list.size() + "");
+        wishListDao = new WishListDao(getContext());
+        cartItemAdapter = new CartItem_Adapter(getContext(), list);
+
+        tv_describe = view.findViewById(R.id.tv_describe_item_details);
         tv_name = view.findViewById(R.id.tv_name_details_product);
         tv_price = view.findViewById(R.id.tv_price_details_product);
         tv_signal = view.findViewById(R.id.bt_signal_details);
         tv_quantity_details = view.findViewById(R.id.tv_quantity_details);
         tv_sum = view.findViewById(R.id.bt_sum_quantity_details);
+        tv_showAll = view.findViewById(R.id.showAllDescribe);
+        isCheck = false;
+        tv_showAll.setOnClickListener(view1 -> {
+            if (isCheck) {
+                tv_showAll.setText("Xem thêm");
+                tv_describe.setHeight(160);
+            } else {
+                tv_showAll.setText("Thu gọn");
+                tv_describe.setHeight(300);
+            }
+            isCheck = !isCheck;
+            Log.e(TAG, "onCreateView: " + "Click" + isCheck);
+        });
 
         view.findViewById(R.id.bt_back_home).setOnClickListener(view1 -> {
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Home_Fragment()).commit();
@@ -80,7 +105,7 @@ public class Details_Fragment extends Fragment {
                 Toast.makeText(getContext(), "Không thực hiện được", Toast.LENGTH_SHORT).show();
             }
         });
-        userDao = new UserDao(getContext());
+
         cartItemDao = new CartItemDao(getContext());
         list = cartItemDao.SelectAll();
         img_product = view.findViewById(R.id.img_details);
@@ -102,16 +127,17 @@ public class Details_Fragment extends Fragment {
             img_wishlist.setImageResource(R.drawable.heart);
         }
         img_wishlist.setOnClickListener(view1 -> {
-            SharedPreferences sharedPreferences = getContext().getSharedPreferences("LIST_USER", getContext().MODE_PRIVATE);
-            String email = sharedPreferences.getString("EMAIL", "");
+            sharedPreferences = getContext().getSharedPreferences("LIST_USER", getContext().MODE_PRIVATE);
+            email = sharedPreferences.getString("EMAIL", "");
             if (email.equals("")) {
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new Login_Fragment()).commit();
-            }else {
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Login_Fragment()).commit();
+            } else {
                 User user = userDao.SelectID(email);
                 WishList wishList = new WishList();
                 wishList.setProduct_id(product.getProduct_id());
                 wishList.setUser_id(user.getId());
                 wishList.setQuantity(1);
+                wishList.setStatus(0);
                 WishList findwishList2 = wishListDao.getWishListByProductId(product.getProduct_id());
                 if (findwishList2 == null) {
                     if (wishListDao.insertData(wishList)) {
@@ -131,11 +157,11 @@ public class Details_Fragment extends Fragment {
             }
         });
         view.findViewById(R.id.bt_addCartItem).setOnClickListener(view1 -> {
-            SharedPreferences sharedPreferences = getContext().getSharedPreferences("LIST_USER", getContext().MODE_PRIVATE);
-            String email = sharedPreferences.getString("EMAIL", "");
+            sharedPreferences = getContext().getSharedPreferences("LIST_USER", getContext().MODE_PRIVATE);
+            email = sharedPreferences.getString("EMAIL", "");
             if (email.equals("")) {
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new Login_Fragment()).commit();
-            }else {
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Login_Fragment()).commit();
+            } else {
                 User user = userDao.SelectID(email);
                 CartItem cartItem = new CartItem();
                 cartItem.setUser_id(user.getId());
@@ -143,15 +169,9 @@ public class Details_Fragment extends Fragment {
                 cartItem.setStatus(0);
                 cartItem.setQuantity(Integer.parseInt(tv_quantity_details.getText().toString()));
                 cartItem.setTotal_price(Integer.parseInt(tv_quantity_details.getText().toString()) * product.getProduct_price());
-                CartItem findCartItem = cartItemDao.getCartItemByProductId(product.getProduct_id());
+                CartItem findCartItem = cartItemDao.getCartItemByProductId(user.getId(), product.getProduct_id());
                 if (findCartItem != null) {
-                    findCartItem.setQuantity(findCartItem.getQuantity() + Integer.parseInt(tv_quantity_details.getText().toString()));
-                    findCartItem.setTotal_price(findCartItem.getQuantity() * product.getProduct_price());
-                    if (cartItemDao.updateData(findCartItem)) {
-                        Toast.makeText(getContext(), R.string.add_success, Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(getContext(), R.string.add_not_success, Toast.LENGTH_SHORT).show();
-                    }
+                    Toast.makeText(getContext(), "Sản phẩm đã có trong rỏ hàng", Toast.LENGTH_SHORT).show();
                 } else {
                     if (cartItemDao.insertData(cartItem)) {
                         Toast.makeText(getContext(), R.string.add_success, Toast.LENGTH_SHORT).show();

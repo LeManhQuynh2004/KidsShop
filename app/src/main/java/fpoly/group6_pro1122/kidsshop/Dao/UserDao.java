@@ -29,7 +29,6 @@ public class UserDao {
     public boolean insertData(User user) {
         SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(COLUMN_ID, user.getId());
         contentValues.put(COLUMN_PASSWORD, user.getPassword());
         contentValues.put(COLUMN_FULLNAME, user.getFullname());
         contentValues.put(COLUMN_EMAIL, user.getEmail());

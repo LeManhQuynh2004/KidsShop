@@ -8,7 +8,7 @@ import androidx.annotation.Nullable;
 
 public class Db_Helper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "kidsShop.db";
-    public static final int DATABASE_VERSION = 6;
+    public static final int DATABASE_VERSION = 1;
     public Db_Helper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -120,8 +120,13 @@ public class Db_Helper extends SQLiteOpenHelper {
 
         String CreateTableShipment = "CREATE TABLE IF NOT EXISTS Shipment(" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "name TEXT NOT NULL," +
+                "phone TEXT NOT NULL," +
                 "date TEXT NOT NULL," +
+                "city TEXT NOT NULL," +
+                "district TEXT NOT NULL," +
                 "address TEXT NOT NULL," +
+                "address_type INTEGER NOT NULL," +
                 "status INTEGER NOT NULL," +
                 "user_id INTEGER NOT NULL," +
                 "FOREIGN KEY(user_id) REFERENCES User(id))";
@@ -163,6 +168,7 @@ public class Db_Helper extends SQLiteOpenHelper {
                 "quantity INTEGER NOT NULL," +
                 "user_id INTEGER NOT NULL," +
                 "product_id INTEGER NOT NULL," +
+                "status INTEGER NOT NULL," +
                 "FOREIGN KEY(product_id) REFERENCES Product(id)," +
                 "FOREIGN KEY(user_id) REFERENCES User(id))";
         sqLiteDatabase.execSQL(CreateTableWishList);

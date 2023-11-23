@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -27,19 +29,24 @@ public class Login_Fragment extends Fragment {
     CheckBox chk_remember_account;
     UserDao userDao;
     String role_value;
+    Toolbar toolbar;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_login, container, false);
+        toolbar = view.findViewById(R.id.toolbar_login);
+        ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity) requireActivity()).getSupportActionBar().setTitle("Đăng nhập");
+        ((AppCompatActivity) requireActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         ed_email = view.findViewById(R.id.ed_email_login);
         ed_pass = view.findViewById(R.id.ed_password_login);
         tv_signUp = view.findViewById(R.id.tv_signUp);
         userDao = new UserDao(getContext());
         chk_remember_account = view.findViewById(R.id.remember_account_login);
         view.findViewById(R.id.sendSigUp).setOnClickListener(view -> {
-            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new Product_Admin_Fragment()).commit();
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new SigUp_Fragment()).commit();
         });
         ReadFile();
         view.findViewById(R.id.bt_login).setOnClickListener(view -> {
@@ -66,7 +73,7 @@ public class Login_Fragment extends Fragment {
             }
         });
         view.findViewById(R.id.tv_signUp).setOnClickListener(view -> {
-            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new Product_Admin_Fragment()).commit();
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new SigUp_Fragment()).commit();
         });
         return view;
     }
@@ -89,13 +96,13 @@ public class Login_Fragment extends Fragment {
     private void rememberUser(String email, String password, boolean checked) {
         SharedPreferences sharedPreferences = getContext().getSharedPreferences("LIST_USER", getContext().MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        if (!checked) {
-            editor.clear();
-        } else {
+//        if (!checked) {
+//            editor.clear();
+//        } else {
             editor.putString("EMAIL", email);
             editor.putString("PASSWORD", password);
             editor.putBoolean("REMEMBER", checked);
-        }
+//        }
         editor.commit();
     }
 
