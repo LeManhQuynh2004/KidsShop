@@ -92,9 +92,9 @@ public class UserDao {
     public User SelectID(String id) {
         String query = "SELECT * FROM User WHERE email = ?";
         ArrayList<User> list = getAll(query, id);
-        if(list != null){
+        if (list != null && !list.isEmpty()) {
             return list.get(0);
-        }else{
+        } else {
             return null;
         }
     }
@@ -138,5 +138,21 @@ public class UserDao {
         boolean result = cursor.getCount() > 0;
         cursor.close();
         return result;
+    }
+
+    public boolean checkPassword(String pass) {
+        SQLiteDatabase database = dbHelper.getReadableDatabase();
+        String sql = "SELECT * FROM User WHERE password = ?";
+        Cursor cursor = database.rawQuery(sql, new String[]{ pass});
+        boolean kq = cursor.getCount() > 0;
+        cursor.close();
+        return kq;
+    }
+    public boolean updatePass(String mail,String pass){
+        SQLiteDatabase database = dbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_PASSWORD,pass);
+        long kq = database.update(TABLE_NAME,values,"email = ?",new String[]{mail});
+        return kq != -1;
     }
 }

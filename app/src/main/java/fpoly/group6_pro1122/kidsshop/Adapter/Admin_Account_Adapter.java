@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import java.util.ArrayList;
 
 import fpoly.group6_pro1122.kidsshop.Fragment.Category_Admin_Fragment;
+import fpoly.group6_pro1122.kidsshop.Fragment.EditInfor_Fragment;
 import fpoly.group6_pro1122.kidsshop.Fragment.Product_Admin_Fragment;
 import fpoly.group6_pro1122.kidsshop.MainActivity;
 import fpoly.group6_pro1122.kidsshop.Model.AccountItem;
@@ -41,6 +42,8 @@ public class Admin_Account_Adapter extends BaseAccount_Adapter{
                 ((MainActivity)context).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new Category_Admin_Fragment()).commit();
             } else if (accountItem.getTenChucNang().equalsIgnoreCase("Quản Lý Thể Loại")) {
                 ((MainActivity)context).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new Product_Admin_Fragment()).commit();
+            } else if (accountItem.getTenChucNang().equalsIgnoreCase("Thiết Lập Tài Khoản")) {
+                ((MainActivity)context).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new EditInfor_Fragment()).commit();
             }
         });
     }

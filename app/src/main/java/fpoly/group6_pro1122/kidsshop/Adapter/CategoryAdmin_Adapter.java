@@ -81,6 +81,7 @@ public class CategoryAdmin_Adapter extends RecyclerView.Adapter<CategoryAdmin_Ad
         holder.btn_update.setOnClickListener(view -> {
             if (itemClickListener != null) {
                 itemClickListener.UpdateItem(position);
+                notifyDataSetChanged();
             }
         });
     }

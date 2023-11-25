@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -21,6 +22,7 @@ import fpoly.group6_pro1122.kidsshop.Fragment.Category_Admin_Fragment;
 import fpoly.group6_pro1122.kidsshop.Fragment.Category_User_Fragment;
 import fpoly.group6_pro1122.kidsshop.Fragment.Home_Fragment;
 import fpoly.group6_pro1122.kidsshop.Fragment.Login_Fragment;
+import fpoly.group6_pro1122.kidsshop.Fragment.PersonalInf_Fragment;
 import fpoly.group6_pro1122.kidsshop.Fragment.Product_Admin_Fragment;
 import fpoly.group6_pro1122.kidsshop.Fragment.Product_Customer_Fragment;
 import fpoly.group6_pro1122.kidsshop.Fragment.User_Fragment;
@@ -69,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
                     } else if (position == R.id.menu_wishlist) {
                         fragment = new Login_Fragment();
                     } else {
-                        fragment = new User_Fragment();
+                        fragment = new PersonalInf_Fragment();
                     }
                 } else {
                     if (user.getRole() == 0) {
@@ -78,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
                         } else if (position == R.id.menu_category) {
                             fragment = new Category_Admin_Fragment();
                         } else {
-                            fragment = new User_Fragment();
+                            fragment = new PersonalInf_Fragment();
                         }
                     } else {
                         if (position == R.id.menu_home) {
@@ -90,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
                         } else if (position == R.id.menu_wishlist) {
                             fragment = new WishList_Fragment();
                         } else {
-                            fragment = new User_Fragment();
+                            fragment = new PersonalInf_Fragment();
                         }
                     }
                 }
@@ -100,5 +102,10 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
+
+    }
+    public void disableBottomNavigationView() {//xóa bottom khi fragment không cần dùng đến
+        BottomNavigationView bottomNavigationView = findViewById(R.id.BottomNavigationView);
+        bottomNavigationView.setVisibility(View.GONE);
     }
 }
