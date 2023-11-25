@@ -21,6 +21,13 @@ public class SigUp_Fragment extends Fragment {
     CheckBox chkAgreeTerms;
     Button btnGetStarted;
     UserDao userDao;
+
+    private boolean isEmail(String str) {
+        return str.matches(
+                "[a-zA-Z0-9_.]+@[a-zA-Z]+\\.+[a-z]+"
+        );
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -39,6 +46,7 @@ public class SigUp_Fragment extends Fragment {
         });
         return view;
     }
+
     private void signUp() {
         String email = edEmail.getText().toString().trim();
         String password = edPassword.getText().toString().trim();
@@ -53,7 +61,7 @@ public class SigUp_Fragment extends Fragment {
 
             if (userDao.insertData(newUser)) {
                 Toast.makeText(getContext(), "Đăng ký thành công", Toast.LENGTH_SHORT).show();
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new Login_Fragment()).commit();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Login_Fragment()).commit();
             } else {
                 Toast.makeText(getContext(), "Đăng ký thất bại", Toast.LENGTH_SHORT).show();
             }
@@ -62,8 +70,12 @@ public class SigUp_Fragment extends Fragment {
 
     private boolean validateSignUpForm(String email, String password, String confirmPassword, boolean agreeTerms) {
         boolean isCheck = true;
-        if(email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()){
+        if (email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
             Toast.makeText(getContext(), "Vui lòng không bỏ trống dữ liệu", Toast.LENGTH_SHORT).show();
+            isCheck = false;
+        }
+        if(!isEmail(email)){
+            Toast.makeText(getContext(), "Nhập sai định dạng email", Toast.LENGTH_SHORT).show();
             isCheck = false;
         }
         if (!password.equals(confirmPassword)) {

@@ -10,12 +10,16 @@ import androidx.fragment.app.Fragment;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 
@@ -38,33 +42,34 @@ public class CartFragment extends Fragment {
     UserDao userDao;
     Toolbar toolbar;
     String email;
+    SharedPreferences sharedPreferences;
     public static final String TAG = "CartFragment";
+
+    private void MinMap() {
+        toolbar = view.findViewById(R.id.Toolbar_CartItem);
+        userDao = new UserDao(getContext());
+        listView = view.findViewById(R.id.listViewCartItem);
+        tv_total_price = view.findViewById(R.id.tv_total_price_cart);
+        cartItemDao = new CartItemDao(getContext());
+        userDao = new UserDao(getContext());
+        checkBox = view.findViewById(R.id.chk_All);
+        sharedPreferences = getContext().getSharedPreferences("LIST_USER", getContext().MODE_PRIVATE);
+        email = sharedPreferences.getString("EMAIL", "");
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_cart, container, false);
-        toolbar = view.findViewById(R.id.Toolbar_CartItem);
-        userDao = new UserDao(getContext());
-        ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
-        ((AppCompatActivity) requireActivity()).getSupportActionBar().setTitle("Giỏ hàng của bạn");
-        ((AppCompatActivity) requireActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        SharedPreferences sharedPreferences = getContext().getSharedPreferences("LIST_USER", getContext().MODE_PRIVATE);
-        email = sharedPreferences.getString("EMAIL", "");
-        Log.e(TAG, "onCreateView: " + email);
+        MinMap();
+        CreateToolbar();
+
         if (email.equals("")) {
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Login_Fragment()).commit();
         } else {
             User user = userDao.SelectID(email);
-            Log.e(TAG, "onCreateView: "+email);
             if (user != null) {
-                listView = view.findViewById(R.id.listViewCartItem);
-                tv_total_price = view.findViewById(R.id.tv_total_price_cart);
-                Log.e(TAG, "TextView: " + tv_total_price.getText().toString());
-                cartItemDao = new CartItemDao(getContext());
-                userDao = new UserDao(getContext());
                 list = cartItemDao.SelectUser(String.valueOf(user.getId()));
-                Log.e(TAG, "Size: "+list.size());
                 cartItemAdapter = new CartItem_Adapter(getContext(), list);
                 listView.setAdapter(cartItemAdapter);
                 for (int i = 0; i < list.size(); i++) {
@@ -84,29 +89,39 @@ public class CartFragment extends Fragment {
                         }
                     }
                 });
-                checkBox = view.findViewById(R.id.chk_All);
+
                 checkBox.setOnClickListener(view1 -> {
                     if (checkBox.isChecked()) {
-                        for (int i = 0; i < list.size(); i++) {
-                            CartItem cartItem = list.get(i);
-                            cartItem.setStatus(1);
-                            cartItemDao.updateData(cartItem);
-                            cartItemAdapter.notifyDataSetChanged();
-                        }
+                        UpdateCartItem(1);
                     } else {
-                        for (int i = 0; i < list.size(); i++) {
-                            Log.e(TAG, "onCreateView: " + checkBox.isChecked());
-                            CartItem cartItem = list.get(i);
-                            cartItem.setStatus(0);
-                            cartItemDao.updateData(cartItem);
-                            cartItemAdapter.notifyDataSetChanged();
-                        }
+                       UpdateCartItem(0);
                     }
                 });
                 Total_Price();
             }
         }
         return view;
+    }
+
+    private void CreateToolbar() {
+        ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity) requireActivity()).getSupportActionBar().setTitle("Giỏ hàng của bạn");
+        ((AppCompatActivity) requireActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationOnClickListener(v -> {
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new Home_Fragment()).commit();
+            BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.BottomNavigationView);
+            Menu menu = bottomNavigationView.getMenu();
+            MenuItem menuItem = menu.findItem(R.id.menu_home);
+            menuItem.setChecked(true);
+        });
+    }
+
+    private void UpdateCartItem(int i) {
+        for (CartItem cartItem:list) {
+            cartItem.setStatus(i);
+            cartItemDao.updateData(cartItem);
+            cartItemAdapter.notifyDataSetChanged();
+        }
     }
 
     private void Total_Price() {

@@ -47,5 +47,4 @@ public class Admin_Account_Adapter extends BaseAccount_Adapter{
             }
         });
     }
-
 }

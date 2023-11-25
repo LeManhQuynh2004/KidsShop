@@ -114,6 +114,10 @@ public class CartItemDao {
         String query = "SELECT * FROM CartItem";
         return getAll(query);
     }
+    public ArrayList<CartItem> SelectPay(int dk){
+        String query = "SELECT * FROM CartItem WHERE status = ?";
+        return getAll(query, String.valueOf(dk));
+    }
     public ArrayList<CartItem> SelectUser(String id){
         String query = "SELECT * FROM CartItem WHERE user_id = ?";
         return getAll(query,id);

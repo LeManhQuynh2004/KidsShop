@@ -12,11 +12,15 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 
@@ -60,16 +64,16 @@ public class Home_Fragment extends Fragment {
         ShowQuantityCartItem();
         view.findViewById(R.id.img_bag_home).setOnClickListener(view1 -> {
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new CartFragment()).commit();
+            BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.BottomNavigationView);
+            Menu menu = bottomNavigationView.getMenu();
+            MenuItem menuItem = menu.findItem(R.id.menu_bag);
+            menuItem.setChecked(true);
         });
         list_product = productDao.SelectAll();
         list_product_new = productDao.SelectAllNew(1);
         Log.e(TAG, "onCreateView: " + list_product_new.size());
         list_product_discount = productDao.SelectAllNew(2);
-
-        productCustomerAdapter = new Product_Customer_Adapter(getContext(), list_product, list_CartItem);
-        productCustomerAdapter_new = new Product_Customer_Adapter(getContext(), list_product_new, list_CartItem);
-        productCustomerAdapter_discount = new Product_Customer_Adapter(getContext(), list_product_discount, list_CartItem);
-
+        CreateAdapter();
         layout_HORIZONTAL(recyclerView_suggest, productCustomerAdapter_new);
         layout_HORIZONTAL(recyclerView_discount, productCustomerAdapter_discount);
 
@@ -82,6 +86,11 @@ public class Home_Fragment extends Fragment {
         handler = new Handler(Looper.getMainLooper());
         startRead();
         return view;
+    }
+    private void CreateAdapter(){
+        productCustomerAdapter = new Product_Customer_Adapter(getContext(), list_product, list_CartItem);
+        productCustomerAdapter_new = new Product_Customer_Adapter(getContext(), list_product_new, list_CartItem);
+        productCustomerAdapter_discount = new Product_Customer_Adapter(getContext(), list_product_discount, list_CartItem);
     }
 
     private void layout_HORIZONTAL(RecyclerView recyclerView, Product_Customer_Adapter productCustomerAdapter) {

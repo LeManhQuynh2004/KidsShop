@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Fragment.Finish_Order_Fragment">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <FrameLayout
+            android:background="@color/green"
+            android:layout_width="match_parent"
+            android:padding="10dp"
+            android:layout_height="250dp">
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="20dp"
+                android:src="@drawable/back" />
+            <ImageView
+                android:layout_gravity="right"
+                android:src="@drawable/baseline_shopping_cart_24"
+                android:layout_width="30dp"
+                android:layout_height="30dp"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:layout_gravity="center">
+                <TextView
+                    android:textColor="@color/white"
+                    android:textSize="25sp"
+                    android:textStyle="bold"
+                    android:text="Đặt hàng thành công"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:textSize="16sp"
+                    android:textColor="@color/white"
+                    android:gravity="center"
+                    android:text="Cảm ơn bạn đã tin tưởng vào chúng tôi.Sự hài lòng của bạn là mối quan tâm số một của chúng tôi và chúng tôi hứa sẽ luôn đáng tin cậy."
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_gravity="bottom"
+                android:layout_width="match_parent"
+                android:gravity="center"
+                android:layout_height="wrap_content">
+                <Button
+                    android:id="@+id/bt_send_home"
+                    android:text="Trang chủ"
+                    android:layout_marginRight="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <Button
+                    android:id="@+id/bt_send_order"
+                    android:text="Đơn hàng"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+        </FrameLayout>
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="vertical"
+          android:padding="10dp"
+          android:gravity="center">
+          <TextView
+              android:textStyle="bold"
+              android:textSize="20sp"
+              android:text="Tặng bạn mã giảm giá"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"/>
+          <androidx.recyclerview.widget.RecyclerView
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"/>
+          <TextView
+              android:textStyle="bold"
+              android:textSize="20sp"
+              android:text="Gợi ý cho bạn"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"/>
+          <androidx.recyclerview.widget.RecyclerView
+              android:id="@+id/RecyclerView_Product_order"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"/>
+      </LinearLayout>
+    </LinearLayout>
+
+</ScrollView>

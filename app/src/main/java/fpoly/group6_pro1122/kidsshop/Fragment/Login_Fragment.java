@@ -30,6 +30,18 @@ public class Login_Fragment extends Fragment {
     UserDao userDao;
     String role_value;
     Toolbar toolbar;
+//    public boolean isChuoi(String str) {
+//        return str.matches("[a-z A-Z 0-9]+");
+//    }
+    private boolean isEmail(String str){
+        return str.matches(
+                "[a-zA-Z0-9_.]+@[a-zA-Z]+\\.+[a-z]+"
+        );
+    }
+    private boolean isLength(String str){
+        return str.matches(
+                "[a-z0-9_]{3,12}$");
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -48,7 +60,7 @@ public class Login_Fragment extends Fragment {
         view.findViewById(R.id.sendSigUp).setOnClickListener(view -> {
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new SigUp_Fragment()).commit();
         });
-        ReadFile();
+//        ReadFile();
         view.findViewById(R.id.bt_login).setOnClickListener(view -> {
             String email = ed_email.getText().toString().trim();
             String password = ed_pass.getText().toString().trim();
@@ -78,20 +90,20 @@ public class Login_Fragment extends Fragment {
         return view;
     }
 
-    private void ReadFile() {
-        SharedPreferences sharedPreferences = getContext().getSharedPreferences("LIST_USER", getContext().MODE_PRIVATE);
-        String email = sharedPreferences.getString("EMAIL", "");
-        String pass = sharedPreferences.getString("PASSWORD", "");
-        boolean check = sharedPreferences.getBoolean("REMEMBER", false);
-        if (email.equals("userNormal")) {
-
-        } else {
-            ed_email.setText(email);
-            ed_pass.setText(pass);
-            chk_remember_account.setChecked(check);
-        }
-
-    }
+//    private void ReadFile() {
+//        SharedPreferences sharedPreferences = getContext().getSharedPreferences("LIST_USER", getContext().MODE_PRIVATE);
+//        String email = sharedPreferences.getString("EMAIL", "");
+//        String pass = sharedPreferences.getString("PASSWORD", "");
+//        boolean check = sharedPreferences.getBoolean("REMEMBER", false);
+//        if (email.equals("userNormal")) {
+//
+//        } else {
+//            ed_email.setText(email);
+//            ed_pass.setText(pass);
+//            chk_remember_account.setChecked(check);
+//        }
+//
+//    }
 
     private void rememberUser(String email, String password, boolean checked) {
         SharedPreferences sharedPreferences = getContext().getSharedPreferences("LIST_USER", getContext().MODE_PRIVATE);
@@ -110,6 +122,14 @@ public class Login_Fragment extends Fragment {
         boolean isCheck = true;
         if (strEmail.isEmpty() || strPassword.isEmpty()) {
             Toast.makeText(getContext(), "Vui lòng không bỏ trống", Toast.LENGTH_SHORT).show();
+            isCheck = false;
+        }
+        if(!isEmail(strEmail)){
+            Toast.makeText(getContext(), "Nhập sai định dạng email", Toast.LENGTH_SHORT).show();
+            isCheck = false;
+        }
+        if(!isLength(strPassword)){
+            Toast.makeText(getContext(), "Nhập sai định dạng mật khẩu", Toast.LENGTH_SHORT).show();
             isCheck = false;
         }
         return isCheck;

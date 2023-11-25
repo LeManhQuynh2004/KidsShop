@@ -7,8 +7,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 import androidx.annotation.Nullable;
 
 public class Db_Helper extends SQLiteOpenHelper {
-    public static final String DATABASE_NAME = "kidsShop.db";
-    public static final int DATABASE_VERSION = 1;
+    public static final String DATABASE_NAME = "kidsShop.1db";
+    public static final int DATABASE_VERSION = 7;
     public Db_Helper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -134,17 +134,21 @@ public class Db_Helper extends SQLiteOpenHelper {
 
         String CreateTablePayment = "CREATE TABLE IF NOT EXISTS Payment(" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "date TEXT NOT NULL," +
                 "type INTEGER NOT NULL," +
-                "quantity INTEGER NOT NULL," +
-                "user_id INTEGER NOT NULL," +
+                "user_id INTEGER," +
                 "FOREIGN KEY(user_id) REFERENCES User(id))";
         sqLiteDatabase.execSQL(CreateTablePayment);
+        String insertDefaultPayment = "INSERT OR IGNORE INTO Payment (id, type, user_id) VALUES (1, 'Thanh toán khi nhận hàng', 0)";
+        sqLiteDatabase.execSQL(insertDefaultPayment);
+
+        String insertDefaultPayment2 = "INSERT OR IGNORE INTO Payment (id, type, user_id) VALUES (2, 'Thanh toán thẻ tín dụng', 0)";
+        sqLiteDatabase.execSQL(insertDefaultPayment2);
 
         String CreateTableOrders = "CREATE TABLE IF NOT EXISTS Orders(" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "date TEXT NOT NULL," +
                 "total_price INTEGER NOT NULL," +
+                "status INTEGER NOT NULL," +
                 "user_id INTEGER NOT NULL," +
                 "payment_id INTEGER NOT NULL," +
                 "shipment_id INTEGER NOT NULL," +

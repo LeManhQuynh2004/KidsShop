@@ -14,10 +14,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 
@@ -126,12 +130,15 @@ public class PersonalInf_Fragment extends Fragment {
         btn_logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //chuyen sang dung fragment roi ko dung cai nay nua
-                getActivity().finish();
                 SharedPreferences sharedPreferences = getContext().getSharedPreferences("LIST_USER", getContext().MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.clear();
                 editor.commit();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new Home_Fragment()).commit();
+                BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.BottomNavigationView);
+                Menu menu = bottomNavigationView.getMenu();
+                MenuItem menuItem = menu.findItem(R.id.menu_home);
+                menuItem.setChecked(true);
             }
         });
     }

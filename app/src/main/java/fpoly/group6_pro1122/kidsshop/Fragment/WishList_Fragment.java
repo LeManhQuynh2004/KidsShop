@@ -42,86 +42,90 @@ public class WishList_Fragment extends Fragment {
     CheckBox chk_status;
     ProductDao productDao;
     String email;
+    SharedPreferences sharedPreferences;
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_wish_list, container, false);
+    private void MinMap() {
         toolbar = view.findViewById(R.id.Toolbar_WishList);
         chk_status = view.findViewById(R.id.chk_All_Wishlist);
         userDao = new UserDao(getContext());
         cartItemDao = new CartItemDao(getContext());
         productDao = new ProductDao(getContext());
+        sharedPreferences = getContext().getSharedPreferences("LIST_USER", getContext().MODE_PRIVATE);
+        email = sharedPreferences.getString("EMAIL", "");
+        listView = view.findViewById(R.id.listViewWishlist);
+        wishListDao = new WishListDao(getContext());
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        view = inflater.inflate(R.layout.fragment_wish_list, container, false);
+        MinMap();
         ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity) requireActivity()).getSupportActionBar().setTitle("Danh sách yêu thích");
         ((AppCompatActivity) requireActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        SharedPreferences sharedPreferences = getContext().getSharedPreferences("LIST_USER", getContext().MODE_PRIVATE);
-        email = sharedPreferences.getString("EMAIL", "");
-        Log.e(TAG, "onCreateView: " + email);
         if (email.equals("")) {
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Login_Fragment()).commit();
         } else {
-            listView = view.findViewById(R.id.listViewWishlist);
-            wishListDao = new WishListDao(getContext());
-            list = wishListDao.SelectAll();
-            Log.d(TAG, "onCreateView: " + list.size());
-            wishListAdapter = new WishListAdapter(getContext(), list);
-            listView.setAdapter(wishListAdapter);
+            CreateListViewWishList();
             chk_status.setOnClickListener(view1 -> {
                 if (chk_status.isChecked()) {
-                    for (int i = 0; i < list.size(); i++) {
-                        WishList wishList = list.get(i);
-                        wishList.setStatus(1);
-                        wishListDao.updateData(wishList);
-                        wishListAdapter.notifyDataSetChanged();
-                    }
+                    UpdateWishList(1);
                 } else {
-                    for (int i = 0; i < list.size(); i++) {
-                        WishList wishList = list.get(i);
-                        wishList.setStatus(0);
-                        wishListDao.updateData(wishList);
-                        wishListAdapter.notifyDataSetChanged();
-                    }
+                    UpdateWishList(0);
                 }
             });
             view.findViewById(R.id.bt_addAllCart).setOnClickListener(view1 -> {
                 int count = 0;
-                for (int i = 0; i < list.size(); i++) {
-                    if (list.get(i).getStatus() == 1) {
+                for (WishList item : list) {
+                    if (item.getStatus() == 1) {
                         count++;
                     }
                 }
-                for (int i = 0; i < list.size(); i++) {
-                    if (count > 0) {
-                        if (list.get(i).getStatus() == 1) {
-                            User user = userDao.SelectID(email);
-                            if (user != null) {
-                                Product product = productDao.SelectID(String.valueOf(list.get(i).getProduct_id()));
-                                CartItem findcartItem = cartItemDao.getCartItemByProductId(user.getId(), product.getProduct_id());
-                                if (findcartItem == null) {
+                if (count > 0) {
+                    User user = userDao.SelectID(email);
+
+                    if (user != null) {
+                        for (WishList item : list) {
+                            if (item.getStatus() == 1) {
+                                Product product = productDao.SelectID(String.valueOf(item.getProduct_id()));
+                                CartItem findCartItem = cartItemDao.getCartItemByProductId(user.getId(), product.getProduct_id());
+                                if (findCartItem == null) {
                                     CartItem cartItem = new CartItem();
-                                    cartItem.setUser_id(list.get(i).getUser_id());
-                                    cartItem.setProduct_id(list.get(i).getProduct_id());
+                                    cartItem.setUser_id(item.getUser_id());
+                                    cartItem.setProduct_id(item.getProduct_id());
                                     cartItem.setQuantity(1);
                                     cartItem.setTotal_price(1 * product.getProduct_price());
                                     cartItemDao.insertData(cartItem);
-                                    Toast.makeText(getContext(), R.string.add_success, Toast.LENGTH_SHORT).show();
-                                    wishListDao.deleteData(list.get(i));
-                                    wishListAdapter.notifyDataSetChanged();
-                                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new WishList_Fragment()).commit();
+                                    wishListDao.deleteData(item);
                                 } else {
                                     Toast.makeText(getContext(), "Sản phẩm đã có trong giỏ hàng", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         }
+                        Toast.makeText(getContext(), R.string.add_success, Toast.LENGTH_SHORT).show();
                         wishListAdapter.notifyDataSetChanged();
-                    } else {
-                        Toast.makeText(getContext(), "Vui lòng chọn sản phẩm cần thêm", Toast.LENGTH_SHORT).show();
+                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new WishList_Fragment()).commit();
                     }
+                } else {
+                    Toast.makeText(getContext(), "Vui lòng chọn sản phẩm cần thêm", Toast.LENGTH_SHORT).show();
                 }
             });
         }
         return view;
+    }
+
+    private void CreateListViewWishList() {
+        list = wishListDao.SelectAll();
+        wishListAdapter = new WishListAdapter(getContext(), list);
+        listView.setAdapter(wishListAdapter);
+    }
+
+    private void UpdateWishList(int i) {
+        for (WishList wishList : list) {
+            wishList.setStatus(i);
+            wishListDao.updateData(wishList);
+            wishListAdapter.notifyDataSetChanged();
+        }
     }
 }

@@ -27,6 +27,7 @@ public class Shipment_Fragment extends Fragment {
     ShipmentDao shipmentDao;
     ArrayList<Shipment> list = new ArrayList<>();
     Shipment_Select_Adapter shipmentSelectAdapter;
+
     public static final String TAG = "Shipment_Fragment";
     @Override
 
@@ -44,6 +45,9 @@ public class Shipment_Fragment extends Fragment {
         ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity) requireActivity()).getSupportActionBar().setTitle("Chọn địa chỉ nhận hàng");
         ((AppCompatActivity) requireActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationOnClickListener(v -> {
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new Payment_Fragment()).commit();
+        });
         view.findViewById(R.id.bt_add_shipment).setOnClickListener(view1 -> {
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Add_Shipment_Fragment()).commit();
         });
