@@ -21,11 +21,13 @@ import fpoly.group6_pro1122.kidsshop.Fragment.CartFragment;
 import fpoly.group6_pro1122.kidsshop.Fragment.Category_Admin_Fragment;
 import fpoly.group6_pro1122.kidsshop.Fragment.Category_User_Fragment;
 import fpoly.group6_pro1122.kidsshop.Fragment.Home_Fragment;
+import fpoly.group6_pro1122.kidsshop.Fragment.InformationOrder_Fragment;
 import fpoly.group6_pro1122.kidsshop.Fragment.Login_Fragment;
 import fpoly.group6_pro1122.kidsshop.Fragment.PersonalInf_Fragment;
 import fpoly.group6_pro1122.kidsshop.Fragment.Product_Admin_Fragment;
 import fpoly.group6_pro1122.kidsshop.Fragment.Product_Customer_Fragment;
 import fpoly.group6_pro1122.kidsshop.Fragment.User_Fragment;
+import fpoly.group6_pro1122.kidsshop.Fragment.Voucher_Admin_Fragment;
 import fpoly.group6_pro1122.kidsshop.Fragment.WishList_Fragment;
 import fpoly.group6_pro1122.kidsshop.Model.User;
 
@@ -36,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String TAG = "ManActivity";
     ArrayList<User> list = new ArrayList<>();
     User user;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,13 +49,14 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView = findViewById(R.id.BottomNavigationView);
         SharedPreferences sharedPreferences = getSharedPreferences("LIST_USER", MODE_PRIVATE);
         email = sharedPreferences.getString("EMAIL", "");
+        Log.e(TAG, "onCreate: " + email);
         if (email.equals("")) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Home_Fragment()).commit();
-        }else{
+        } else {
             user = userDao.SelectID(email);
-            if(user.getRole() == 0){
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new Product_Admin_Fragment()).commit();
-            }else{
+            if (user.getRole() == 0) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Product_Admin_Fragment()).commit();
+            } else {
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Home_Fragment()).commit();
             }
         }
@@ -67,9 +71,9 @@ public class MainActivity extends AppCompatActivity {
                     } else if (position == R.id.menu_category) {
                         fragment = new Category_User_Fragment();
                     } else if (position == R.id.menu_bag) {
-                       fragment = new Login_Fragment();
+                        fragment = new PersonalInf_Fragment();
                     } else if (position == R.id.menu_wishlist) {
-                        fragment = new Login_Fragment();
+                        fragment = new PersonalInf_Fragment();
                     } else {
                         fragment = new PersonalInf_Fragment();
                     }
@@ -79,6 +83,8 @@ public class MainActivity extends AppCompatActivity {
                             fragment = new Product_Admin_Fragment();
                         } else if (position == R.id.menu_category) {
                             fragment = new Category_Admin_Fragment();
+                        } else if (position == R.id.menu_bag) {
+                            fragment = new Voucher_Admin_Fragment();
                         } else {
                             fragment = new PersonalInf_Fragment();
                         }
@@ -104,6 +110,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+
     public void disableBottomNavigationView() {//xóa bottom khi fragment không cần dùng đến
         BottomNavigationView bottomNavigationView = findViewById(R.id.BottomNavigationView);
         bottomNavigationView.setVisibility(View.GONE);

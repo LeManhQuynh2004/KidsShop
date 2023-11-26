@@ -34,6 +34,7 @@ import fpoly.group6_pro1122.kidsshop.Dao.PaymentDao;
 import fpoly.group6_pro1122.kidsshop.Dao.ProductDao;
 import fpoly.group6_pro1122.kidsshop.Dao.ShipmentDao;
 import fpoly.group6_pro1122.kidsshop.Dao.UserDao;
+import fpoly.group6_pro1122.kidsshop.Dao.VoucherDao;
 import fpoly.group6_pro1122.kidsshop.Model.CartItem;
 import fpoly.group6_pro1122.kidsshop.Model.Order;
 import fpoly.group6_pro1122.kidsshop.Model.OrderItem;
@@ -41,18 +42,20 @@ import fpoly.group6_pro1122.kidsshop.Model.Payment;
 import fpoly.group6_pro1122.kidsshop.Model.Product;
 import fpoly.group6_pro1122.kidsshop.Model.Shipment;
 import fpoly.group6_pro1122.kidsshop.Model.User;
+import fpoly.group6_pro1122.kidsshop.Model.Voucher;
 import fpoly.group6_pro1122.kidsshop.R;
 
 public class Payment_Fragment extends Fragment {
     View view;
     Toolbar toolbar;
-    int shipment_id = 0;
+    int shipment_id = 0,voucher_id = 0;
+    float voucher_discount = 0;
     Shipment shipment;
     Shipment_Payment_Adapter shipmentSelectAdapter;
     ArrayList<Shipment> list = new ArrayList<>();
     ShipmentDao shipmentDao;
     ListView listView, listViewProduct;
-    TextView tv_status_address, tv_quantity_cartItem_payment, tv_quantity_cartItem_payment2, tv_total_price;
+    TextView tv_status_address, tv_quantity_cartItem_payment, tv_quantity_cartItem_payment2, tv_total_price, tv_voucher;
     CartItemDao cartItemDao;
     ArrayList<CartItem> list_cartItem = new ArrayList<>();
     CartItem_Payment_Adapter cartItemPaymentAdapter;
@@ -65,9 +68,13 @@ public class Payment_Fragment extends Fragment {
     SharedPreferences sharedPreferences;
     int total_price = 0, discount = 0;
     OrderItemDao orderItemDao;
+    int hour,minute;
+    Voucher voucher;
+    VoucherDao voucherDao;
     int count = 0;
 
     public static final String TAG = "Payment_Fragment";
+
     private void MinMap() {
         sharedPreferences = getContext().getSharedPreferences("LIST_USER", getContext().MODE_PRIVATE);
         email = sharedPreferences.getString("EMAIL", "");
@@ -80,6 +87,7 @@ public class Payment_Fragment extends Fragment {
         tv_total_price_order_payment_bottom = view.findViewById(R.id.tv_total_price_order_payment_bottom);
         tv_quantity_cartItem_payment2 = view.findViewById(R.id.tv_quantity_cartItem2);
         tv_total_price = view.findViewById(R.id.tv_total_price_cartItem_payment);
+        tv_voucher = view.findViewById(R.id.tv_voucher);
         listViewProduct = view.findViewById(R.id.listViewProduct);
         cartItemDao = new CartItemDao(getContext());
         tv_status_address = view.findViewById(R.id.tv_status_address);
@@ -89,6 +97,7 @@ public class Payment_Fragment extends Fragment {
         orderDao = new OrderDao(getContext());
         productDao = new ProductDao(getContext());
         orderItemDao = new OrderItemDao(getContext());
+        voucherDao = new VoucherDao(getContext());
     }
 
     @Override
@@ -96,16 +105,31 @@ public class Payment_Fragment extends Fragment {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_payment, container, false);
         MinMap();
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            voucher = (Voucher) bundle.getSerializable("voucher");
+            if (voucher != null) {
+                voucher_id = voucher.getId();
+                voucher_discount = (float) (voucher.getDiscount_amount() * 0.01);
+                Log.e(TAG, "onCreateView: "+voucher_discount);
+                tv_voucher.setText("Giảm giá :"+voucher.getDiscount_amount()+" %");
+            }
+        }
         CreateToolbar();
         CreateListViewCartItem();
         CreateListViewShipment();
         UpdatePayment();
         ChooseAddress();
+
         if (list.size() == 0) {
             tv_status_address.setText("Chưa có địa chỉ");
         } else {
             tv_status_address.setText("Mặc định");
         }
+
+        tv_voucher.setOnClickListener(view1 -> {
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Voucher_Customer_Fragment()).commit();
+        });
         tv_payment.setOnClickListener(view1 -> {
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Type_Payment_Fragment()).commit();
         });
@@ -128,6 +152,10 @@ public class Payment_Fragment extends Fragment {
                 order.setStatus(0);
                 order.setTotal_price(total_price - discount);
                 order.setShipment_id(shipment_id);
+                Calendar calendar = Calendar.getInstance();
+                hour = calendar.get(Calendar.HOUR_OF_DAY);
+                minute = calendar.get(Calendar.MINUTE);
+                order.setTime(hour+":"+minute);
                 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
                 String date = sdf.format(new Date());
                 Log.e(TAG, "onCreateView: " + date);
@@ -137,7 +165,10 @@ public class Payment_Fragment extends Fragment {
 
                 if (orderDao.insertData(order)) {
                     Toast.makeText(getContext(), "Đặt hàng thành công", Toast.LENGTH_SHORT).show();
-
+                    if(voucher_id != 0){
+                        Voucher voucherFinish = voucherDao.SelectID(String.valueOf(voucher_id));
+                        voucherDao.deleteData(voucherFinish);
+                    }
                     for (int i = 0; i < list_cartItem.size(); i++) {
                         CartItem cartItem = list_cartItem.get(i);
                         Log.e(TAG, "List_Size: " + list_cartItem.size());
@@ -147,7 +178,11 @@ public class Payment_Fragment extends Fragment {
                             OrderItem orderItem = new OrderItem();
                             orderItem.setProduct_id(product.getProduct_id());
                             orderItem.setQuantity(cartItem.getQuantity());
-                            orderItem.setPrice(product.getProduct_price() * cartItem.getQuantity());
+                            discount = discount / list_cartItem.size();
+                            if(voucher_discount != 0){
+                                discount = (int) (product.getProduct_price() * voucher_discount);
+                            }
+                            orderItem.setPrice(product.getProduct_price() * cartItem.getQuantity() - discount);
                             orderItem.setOrder_id(order.getId());
                             orderItemDao.insertData(orderItem);
                             product.setQuantity(product.getQuantity() - orderItem.getQuantity());
@@ -189,7 +224,7 @@ public class Payment_Fragment extends Fragment {
         ((AppCompatActivity) requireActivity()).getSupportActionBar().setTitle("Thanh toán");
         ((AppCompatActivity) requireActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationOnClickListener(v -> {
-            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new CartFragment()).commit();
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new CartFragment()).commit();
         });
     }
 
@@ -202,11 +237,14 @@ public class Payment_Fragment extends Fragment {
             tv_payment.setText(payment.getType());
         }
     }
-
     private void CreateListViewCartItem() {
         list_cartItem = cartItemDao.SelectPay(1);
         for (int i = 0; i < list_cartItem.size(); i++) {
             total_price += list_cartItem.get(i).getTotal_price();
+            Product product = productDao.SelectID(String.valueOf(list_cartItem.get(i).getProduct_id()));
+            if(voucher_discount != 0){
+                discount += (int) (product.getProduct_price() * voucher_discount);
+            }
         }
         tv_total_price.setText("$" + total_price);
         tv_quantity_cartItem_payment2.setText("Tổng số tiền (" + list_cartItem.size() + " sản phẩm):");
@@ -217,6 +255,7 @@ public class Payment_Fragment extends Fragment {
         tv_total_price_order_payment_bottom.setText("$" + (total_price - discount));
         listViewProduct.setAdapter(cartItemPaymentAdapter);
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {

@@ -102,7 +102,6 @@ public class Login_Fragment extends Fragment {
 //            ed_pass.setText(pass);
 //            chk_remember_account.setChecked(check);
 //        }
-//
 //    }
 
     private void rememberUser(String email, String password, boolean checked) {

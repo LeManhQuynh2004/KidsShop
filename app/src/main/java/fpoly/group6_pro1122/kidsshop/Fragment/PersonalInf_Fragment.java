@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -118,15 +119,11 @@ public class PersonalInf_Fragment extends Fragment {
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SigUp_Fragment()).commit();
             });
         }
-
-
         //Thêm gạch
         DividerItemDecoration itemDecoration = new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL);
         Drawable dividerDrawable = ContextCompat.getDrawable(getContext(), R.drawable.divider);
         itemDecoration.setDrawable(dividerDrawable);
         recyclerView.addItemDecoration(itemDecoration);
-
-
         btn_logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -134,6 +131,8 @@ public class PersonalInf_Fragment extends Fragment {
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.clear();
                 editor.commit();
+                getActivity().finish();
+                Log.e("TAG", "onClick: "+"LogOut");
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new Home_Fragment()).commit();
                 BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.BottomNavigationView);
                 Menu menu = bottomNavigationView.getMenu();

@@ -47,6 +47,7 @@
 
                 <TextView
                     android:textColor="@color/orange"
+                    android:textStyle="bold"
                     android:id="@+id/tv_status_item_order"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"

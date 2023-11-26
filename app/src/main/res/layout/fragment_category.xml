@@ -18,36 +18,34 @@
             android:orientation="vertical">
 
             <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar_category_user"
+                android:background="@color/green"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="5dp">
-
-                    <EditText
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/background_text_view_cart"
-                        android:drawableLeft="@drawable/baseline_search_24"
-                        android:hint="Tìm kiếm những thứ bạn cần"
-                        android:padding="5dp" />
+<!--                    <EditText-->
+<!--                        android:layout_width="0dp"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_weight="1"-->
+<!--                        android:background="@drawable/background_text_view_cart"-->
+<!--                        android:drawableLeft="@drawable/baseline_search_24"-->
+<!--                        android:hint="Tìm kiếm những thứ bạn cần"-->
+<!--                        android:padding="5dp" />-->
 
                     <FrameLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="7dp"
+                        android:layout_gravity="right">
 
                         <TextView
+                            android:background="@color/orange"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="right"
-                            android:background="@drawable/hinhtron"
                             android:padding="2dp"
                             android:text="0"
-                            android:textColor="@android:color/white"
+                            android:textColor="@color/white"
                             android:textSize="16dp"
                             android:textStyle="bold" />
 
@@ -56,7 +54,6 @@
                             android:layout_height="35dp"
                             android:src="@drawable/shopping" />
                     </FrameLayout>
-                </LinearLayout>
             </androidx.appcompat.widget.Toolbar>
 
             <androidx.recyclerview.widget.RecyclerView
@@ -65,9 +62,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"/>
-
-
-
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

@@ -13,6 +13,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -52,7 +53,6 @@ public class Category_Admin_Fragment extends Fragment {
     ArrayList<Category> list = new ArrayList<>();
     CategoryAdmin_Adapter adapter;
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -66,6 +66,7 @@ public class Category_Admin_Fragment extends Fragment {
         categoryDao = new CategoryDao(getContext());
         list = categoryDao.getAll();
         toolbar = view.findViewById(R.id.toolbar_category_admin);
+        CreateToolbar();
         recyclerView = view.findViewById(R.id.recyclerView_Category_admin);
         adapter = new CategoryAdmin_Adapter(list, getContext());
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -177,5 +178,9 @@ public class Category_Admin_Fragment extends Fragment {
         list.clear();
         list.addAll(categoryDao.getAll());
         adapter.notifyDataSetChanged();
+    }
+    private void CreateToolbar() {
+        ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity) requireActivity()).getSupportActionBar().setTitle("Quản lý thể loại");
     }
 }

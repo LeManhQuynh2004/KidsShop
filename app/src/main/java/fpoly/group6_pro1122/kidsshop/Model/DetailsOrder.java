@@ -19,11 +19,12 @@ public class DetailsOrder implements Serializable {
     private int product_id;
     private int order_id;
     private int total_price;
+    private String time;
 
     public DetailsOrder() {
     }
 
-    public DetailsOrder(int id,String product_name, int product_price, String image, int orderItemPrice, String date, int status, int quantity, int paymentID, int shipmentID, int userID, int product_id, int order_id, int total_price) {
+    public DetailsOrder(int id,String product_name, int product_price, String image, int orderItemPrice, String date, int status, int quantity, int paymentID, int shipmentID, int userID, int product_id, int order_id, int total_price,String time) {
         this.id = id;
         this.product_name = product_name;
         this.product_price = product_price;
@@ -38,6 +39,7 @@ public class DetailsOrder implements Serializable {
         this.product_id = product_id;
         this.order_id = order_id;
         this.total_price = total_price;
+        this.time = time;
     }
 
     public int getId() {
@@ -150,5 +152,13 @@ public class DetailsOrder implements Serializable {
 
     public void setTotal_price(int total_price) {
         this.total_price = total_price;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 }

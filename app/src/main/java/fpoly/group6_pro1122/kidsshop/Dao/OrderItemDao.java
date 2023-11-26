@@ -77,7 +77,7 @@ public class OrderItemDao {
                 "Product.product_name, Product.product_price, Product.image, " +
                 "OrderItem.price AS order_item_price, Orders.date, Orders.status, OrderItem.quantity AS soLuong, " +
                 "Orders.payment_id, Orders.shipment_id, Orders.user_id, OrderItem.product_id, " +
-                "OrderItem.order_id, Orders.total_price ,OrderItem.id AS orderItem_id " +
+                "OrderItem.order_id, Orders.total_price ,OrderItem.id AS orderItem_id,Orders.time " +
                 "FROM OrderItem " +
                 "INNER JOIN Orders ON OrderItem.order_id = Orders.id " +
                 "INNER JOIN Product ON OrderItem.product_id = Product.id";
@@ -99,9 +99,9 @@ public class OrderItemDao {
                 int productId = cursor.getInt(cursor.getColumnIndexOrThrow("product_id"));
                 int orderId = cursor.getInt(cursor.getColumnIndexOrThrow("order_id"));
                 int totalPrice = cursor.getInt(cursor.getColumnIndexOrThrow("total_price"));
-
+                String time = cursor.getString(cursor.getColumnIndexOrThrow("time"));
                 list.add(new DetailsOrder(id,productName, productPrice, image, orderItemPrice, date, status, quantity,
-                        paymentId, shipmentId, userId, productId, orderId, totalPrice));
+                        paymentId, shipmentId, userId, productId, orderId, totalPrice,time));
             }
         }
         cursor.close();

@@ -11,6 +11,7 @@ import android.os.Bundle;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -66,6 +67,7 @@ public class Product_Admin_Fragment extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_product_admin, container, false);
         toolbar =  view.findViewById(R.id.toolbar_product_admin);
+        CreateToolbar();
         recyclerView = view.findViewById(R.id.recyclerView_Product_admin);
         productDao = new ProductDao(getContext());
         list_product = productDao.SelectAll();
@@ -243,5 +245,9 @@ public class Product_Admin_Fragment extends Fragment {
         list_product.clear();
         list_product.addAll(productDao.SelectAll());
         product_admin_adapter.notifyDataSetChanged();
+    }
+    private void CreateToolbar() {
+        ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity) requireActivity()).getSupportActionBar().setTitle("Quản lý sản phẩm");
     }
 }

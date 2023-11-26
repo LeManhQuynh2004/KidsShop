@@ -4,6 +4,8 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,7 +27,7 @@ public class Category_User_Fragment extends Fragment {
     CategoryDao categoryDao;
     RecyclerView recyclerView;
     ArrayList<Category> list;
-
+    Toolbar toolbar;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -38,9 +40,19 @@ public class Category_User_Fragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         categoryDao = new CategoryDao(getContext());
         list = categoryDao.getAll();
+        toolbar = view.findViewById(R.id.toolbar_category_user);
+        CreateToolbar();
         adapter = new CategoryUser_Adapter(list,getContext());
         recyclerView = view.findViewById(R.id.recyclerView_Category_user);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(),2));
+    }
+    private void CreateToolbar() {
+        ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity) requireActivity()).getSupportActionBar().setTitle("Thể loại sản phẩm");
+        ((AppCompatActivity) requireActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationOnClickListener(v -> {
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new Home_Fragment()).commit();
+        });
     }
 }

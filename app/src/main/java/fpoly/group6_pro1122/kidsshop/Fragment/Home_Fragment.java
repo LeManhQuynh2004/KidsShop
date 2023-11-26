@@ -115,7 +115,6 @@ public class Home_Fragment extends Fragment {
             }
         }
     }
-
     private void startRead() {
         handler.postDelayed(new Runnable() {
             @Override

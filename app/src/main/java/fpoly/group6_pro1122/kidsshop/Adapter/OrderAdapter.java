@@ -12,8 +12,13 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
+import fpoly.group6_pro1122.kidsshop.Dao.OrderDao;
 import fpoly.group6_pro1122.kidsshop.Dao.OrderItemDao;
 import fpoly.group6_pro1122.kidsshop.Dao.ProductDao;
 import fpoly.group6_pro1122.kidsshop.Fragment.Details_Fragment;
@@ -30,6 +35,7 @@ public class OrderAdapter extends BaseAdapter {
     ArrayList<DetailsOrder> list;
     ProductDao productDao;
     OrderItemDao orderItemDao;
+    OrderDao orderDao;
     public static final String TAG = "OrderAdapter";
 
     public OrderAdapter(Context context, ArrayList<DetailsOrder> list) {
@@ -37,6 +43,7 @@ public class OrderAdapter extends BaseAdapter {
         this.list = list;
         productDao = new ProductDao(context);
         orderItemDao = new OrderItemDao(context);
+        orderDao = new OrderDao(context);
     }
 
     @Override
@@ -86,10 +93,28 @@ public class OrderAdapter extends BaseAdapter {
         orderViewHolder.tv_total_price.setText("Tổng thanh toán :" + "$" + detailsOrder.getOrderItemPrice());
         orderViewHolder.tv_quantity.setText("x" + detailsOrder.getQuantity());
         orderViewHolder.tv_quantity2.setText(detailsOrder.getQuantity() + " sản phẩm");
+        String AfterOneDay = date(1);
+        String AfterTwoDay = date(2);
+        Log.e(TAG, "getView: "+AfterOneDay);
+        if (detailsOrder.getDate().equalsIgnoreCase(AfterOneDay)) {
+            Order order = orderDao.SelectID(String.valueOf(detailsOrder.getOrder_id()));
+            order.setStatus(1);
+            orderDao.updateData(order);
+            notifyDataSetChanged();
+        } else if (detailsOrder.getDate().equalsIgnoreCase(AfterTwoDay)) {
+            Order order = orderDao.SelectID(String.valueOf(detailsOrder.getOrder_id()));
+            order.setStatus(2);
+            orderDao.updateData(order);
+            notifyDataSetChanged();
+        }
         if (detailsOrder.getStatus() == 0) {
             orderViewHolder.tv_status.setText("Đang xác nhận");
-        } else {
+        } else if (detailsOrder.getStatus() == 1) {
+            orderViewHolder.tv_status.setText("Đã xác nhận");
+        } else if (detailsOrder.getStatus() == 2) {
             orderViewHolder.tv_status.setText("Thành công");
+        } else {
+            orderViewHolder.tv_status.setText("Đã hủy");
         }
         view.setOnClickListener(view1 -> {
             InformationOrder_Fragment informationOrderFragment = new InformationOrder_Fragment();
@@ -99,5 +124,16 @@ public class OrderAdapter extends BaseAdapter {
             ((MainActivity) context).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, informationOrderFragment).commit();
         });
         return view;
+    }
+
+    private String date(int day) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        Date currentDate = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(currentDate);
+        calendar.add(Calendar.DAY_OF_MONTH, day);
+        Date newDate = calendar.getTime();
+        String newDateString = sdf.format(newDate);
+        return newDateString;
     }
 }

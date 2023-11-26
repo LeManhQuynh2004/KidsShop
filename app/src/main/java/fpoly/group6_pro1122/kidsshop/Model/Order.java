@@ -18,14 +18,13 @@ public class Order {
     private int status;
     private int user_id;
     private int payment_id;
+    private String time;
     private int shipment_id;
 
     public Order() {
 
     }
-
-
-    public Order(int id, String date, int total_price, int status, int user_id, int payment_id, int shipment_id) {
+    public Order(int id, String date, int total_price, int status, int user_id, int payment_id, int shipment_id,String time) {
         this.id = id;
         this.date = date;
         this.total_price = total_price;
@@ -33,6 +32,7 @@ public class Order {
         this.user_id = user_id;
         this.payment_id = payment_id;
         this.shipment_id = shipment_id;
+        this.time = time;
     }
 
     public int getId() {
@@ -89,5 +89,13 @@ public class Order {
 
     public void setShipment_id(int shipment_id) {
         this.shipment_id = shipment_id;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 }

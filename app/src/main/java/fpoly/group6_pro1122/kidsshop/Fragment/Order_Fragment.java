@@ -12,7 +12,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 import fpoly.group6_pro1122.kidsshop.Adapter.OrderAdapter;
 import fpoly.group6_pro1122.kidsshop.Dao.OrderDao;
@@ -35,7 +38,6 @@ public class Order_Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
         view = inflater.inflate(R.layout.fragment_order, container, false);
         orderDao = new OrderDao(getContext());
         toolbar = view.findViewById(R.id.toolbar_order);

@@ -8,7 +8,7 @@ import androidx.annotation.Nullable;
 
 public class Db_Helper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "kidsShop.1db";
-    public static final int DATABASE_VERSION = 7;
+    public static final int DATABASE_VERSION = 2;
     public Db_Helper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -111,7 +111,7 @@ public class Db_Helper extends SQLiteOpenHelper {
         String CreateTableEvaluation = "CREATE TABLE IF NOT EXISTS Evaluation(" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "comment TEXT NOT NULL," +
-                "date TEXT NOT NULL," +
+                "date TEXT NOT NULL," + 
                 "product_id INTEGER NOT NULL," +
                 "user_id INTEGER NOT NULL," +
                 "FOREIGN KEY(product_id) REFERENCES Product(id)," +
@@ -152,6 +152,7 @@ public class Db_Helper extends SQLiteOpenHelper {
                 "user_id INTEGER NOT NULL," +
                 "payment_id INTEGER NOT NULL," +
                 "shipment_id INTEGER NOT NULL," +
+                "time TEXT NOT NULL," +
                 "FOREIGN KEY(user_id) REFERENCES User(id)," +
                 "FOREIGN KEY(payment_id) REFERENCES Payment(id)," +
                 "FOREIGN KEY(shipment_id) REFERENCES Shipment(id))";
@@ -180,12 +181,10 @@ public class Db_Helper extends SQLiteOpenHelper {
         String CreateTableVoucher = "CREATE TABLE IF NOT EXISTS Voucher(" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "code TEXT NOT NULL," +
-                "discount_amount FLOAT NOT NULL," +
+                "discount_amount INTEGER NOT NULL," +
                 "start_date TEXT NOT NULL," +
                 "expiration_date TEXT NOT NULL," +
                 "user_id INTEGER," +
-                "order_id INTEGER," +
-                "FOREIGN KEY(order_id) REFERENCES Orders(id)," +
                 "FOREIGN KEY(user_id) REFERENCES User(id))";
         sqLiteDatabase.execSQL(CreateTableVoucher);
     }

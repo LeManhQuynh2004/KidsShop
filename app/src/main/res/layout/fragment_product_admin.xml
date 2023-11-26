@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     tools:context=".Fragment.Product_Admin_Fragment">
     <androidx.appcompat.widget.Toolbar
-        android:background="@color/blue"
+        android:background="@color/green"
         android:id="@+id/toolbar_product_admin"
         android:layout_alignParentTop="true"
         android:layout_width="match_parent"

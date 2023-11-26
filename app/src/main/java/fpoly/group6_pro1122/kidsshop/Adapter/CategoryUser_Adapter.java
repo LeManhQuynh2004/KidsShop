@@ -27,7 +27,6 @@ public class CategoryUser_Adapter extends RecyclerView.Adapter<CategoryUser_Adap
     ArrayList<Category> list;
     Context context;
     public static final String TAG = "CategoryUser";
-
     public CategoryUser_Adapter(ArrayList<Category> list, Context context) {
         this.list = list;
         this.context = context;
@@ -46,7 +45,7 @@ public class CategoryUser_Adapter extends RecyclerView.Adapter<CategoryUser_Adap
         holder.tv_name.setText(category.getName());
         Glide.with(context)
                 .load(category.getImage())
-                .placeholder(R.drawable.banner3)
+                .placeholder(R.drawable.productimg)
                 .into(holder.imageView);
         holder.imageView.setOnClickListener(v->{
             CategoryDetailsFragment detailsFragment = new CategoryDetailsFragment();
@@ -67,7 +66,6 @@ public class CategoryUser_Adapter extends RecyclerView.Adapter<CategoryUser_Adap
     public class CategoryUser extends RecyclerView.ViewHolder {
         ImageView imageView;
         TextView tv_name;
-
         public CategoryUser(@NonNull View itemView) {
             super(itemView);
             tv_name = itemView.findViewById(R.id.tv_name_category_user);

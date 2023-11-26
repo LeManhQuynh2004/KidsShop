@@ -34,6 +34,7 @@ public class OrderDao {
         SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("date", order.getDate());
+        contentValues.put("time", order.getTime());
         contentValues.put("total_price", order.getTotal_price());
         contentValues.put("user_id", order.getUser_id());
         contentValues.put("status", order.getStatus());
@@ -54,6 +55,7 @@ public class OrderDao {
         String dk [] = {String.valueOf(order.getId())};
         ContentValues contentValues = new ContentValues();
         contentValues.put("date", order.getDate());
+        contentValues.put("time", order.getTime());
         contentValues.put("total_price", order.getTotal_price());
         contentValues.put("user_id", order.getUser_id());
         contentValues.put("status", order.getStatus());
@@ -75,8 +77,9 @@ public class OrderDao {
                 int shipment_id = Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow("shipment_id")));
                 int payment_id = Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow("payment_id")));
                 int status = Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow("status")));
+                String time = cursor.getString(cursor.getColumnIndexOrThrow("time"));
 //                 public Order(int id, String date, int total_price, int status, int user_id, int payment_id, int shipment_id) {
-                list.add(new Order(id, date, total_price, status, user_id, payment_id, shipment_id));
+                list.add(new Order(id, date, total_price, status, user_id, payment_id, shipment_id,time));
             }
         }
         return list;
