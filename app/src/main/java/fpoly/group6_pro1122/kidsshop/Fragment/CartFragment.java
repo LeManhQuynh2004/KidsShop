@@ -7,6 +7,8 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -34,7 +36,7 @@ import fpoly.group6_pro1122.kidsshop.R;
 public class CartFragment extends Fragment {
     View view;
     CartItemDao cartItemDao;
-    ListView listView;
+    RecyclerView recyclerView;
     ArrayList<CartItem> list = new ArrayList<>();
     CartItem_Adapter cartItemAdapter;
     TextView tv_total_price;
@@ -48,7 +50,7 @@ public class CartFragment extends Fragment {
     private void MinMap() {
         toolbar = view.findViewById(R.id.Toolbar_CartItem);
         userDao = new UserDao(getContext());
-        listView = view.findViewById(R.id.listViewCartItem);
+        recyclerView = view.findViewById(R.id.RecyclerView_CartItem);
         tv_total_price = view.findViewById(R.id.tv_total_price_cart);
         cartItemDao = new CartItemDao(getContext());
         userDao = new UserDao(getContext());
@@ -71,7 +73,8 @@ public class CartFragment extends Fragment {
             if (user != null) {
                 list = cartItemDao.SelectUser(String.valueOf(user.getId()));
                 cartItemAdapter = new CartItem_Adapter(getContext(), list);
-                listView.setAdapter(cartItemAdapter);
+                recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                recyclerView.setAdapter(cartItemAdapter);
                 for (int i = 0; i < list.size(); i++) {
                     list.get(i).setStatus(0);
                     cartItemDao.updateData(list.get(i));
@@ -94,7 +97,7 @@ public class CartFragment extends Fragment {
                     if (checkBox.isChecked()) {
                         UpdateCartItem(1);
                     } else {
-                       UpdateCartItem(0);
+                        UpdateCartItem(0);
                     }
                 });
                 Total_Price();
@@ -108,7 +111,7 @@ public class CartFragment extends Fragment {
         ((AppCompatActivity) requireActivity()).getSupportActionBar().setTitle("Giỏ hàng của bạn");
         ((AppCompatActivity) requireActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationOnClickListener(v -> {
-            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new Home_Fragment()).commit();
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Home_Fragment()).commit();
             BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.BottomNavigationView);
             Menu menu = bottomNavigationView.getMenu();
             MenuItem menuItem = menu.findItem(R.id.menu_home);
@@ -117,7 +120,7 @@ public class CartFragment extends Fragment {
     }
 
     private void UpdateCartItem(int i) {
-        for (CartItem cartItem:list) {
+        for (CartItem cartItem : list) {
             cartItem.setStatus(i);
             cartItemDao.updateData(cartItem);
             cartItemAdapter.notifyDataSetChanged();

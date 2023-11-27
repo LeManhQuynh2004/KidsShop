@@ -51,17 +51,16 @@ public class Finish_Order_Fragment extends Fragment {
         list_CartItem = cartItemDao.SelectAll();
         list_voucher = voucherDao.SelectAllLIMIT();
 
-
         giveVoucherAdapter = new Give_Voucher_Adapter(getContext(),list_voucher);
         GridLayoutManager gridLayoutManagerVoucher = new GridLayoutManager(getContext(), 2, GridLayoutManager.HORIZONTAL, false);
         recyclerView_Voucher_Finish.setLayoutManager(gridLayoutManagerVoucher);
         recyclerView_Voucher_Finish.setAdapter(giveVoucherAdapter);
 
-
         productCustomerAdapter = new Product_Customer_Adapter(getContext(),list,list_CartItem);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setAdapter(productCustomerAdapter);
+
         view.findViewById(R.id.bt_send_home).setOnClickListener(view1 -> {
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new Home_Fragment()).commit();
             BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.BottomNavigationView);

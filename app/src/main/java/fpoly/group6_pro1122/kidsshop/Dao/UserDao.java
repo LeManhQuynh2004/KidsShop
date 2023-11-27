@@ -98,6 +98,15 @@ public class UserDao {
             return null;
         }
     }
+    public User SelectIDTwo(int id) {
+        String query = "SELECT * FROM User WHERE id = ?";
+        ArrayList<User> list = getAll(query, String.valueOf(id));
+        if (list != null && !list.isEmpty()) {
+            return list.get(0);
+        } else {
+            return null;
+        }
+    }
 
     public boolean checkLogin(String email, String password, String role) {
         SQLiteDatabase sqLiteDatabase = dbHelper.getReadableDatabase();

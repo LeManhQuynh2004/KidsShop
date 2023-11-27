@@ -2,6 +2,8 @@ package fpoly.group6_pro1122.kidsshop.Fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -9,7 +11,11 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import fpoly.group6_pro1122.kidsshop.Dao.UserDao;
 import fpoly.group6_pro1122.kidsshop.Model.User;
@@ -17,6 +23,7 @@ import fpoly.group6_pro1122.kidsshop.R;
 
 public class SigUp_Fragment extends Fragment {
     View view;
+    Toolbar toolbar;
     EditText edEmail, edPassword, edConfirmPassword;
     CheckBox chkAgreeTerms;
     Button btnGetStarted;
@@ -37,6 +44,9 @@ public class SigUp_Fragment extends Fragment {
         edConfirmPassword = view.findViewById(R.id.confirm_pass);
         chkAgreeTerms = view.findViewById(R.id.chk_singUp);
         btnGetStarted = view.findViewById(R.id.bt_getStart);
+        toolbar = view.findViewById(R.id.toolbar_signup);
+        CreateToolbar();
+
         userDao = new UserDao(getContext());
         btnGetStarted.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,5 +97,17 @@ public class SigUp_Fragment extends Fragment {
             isCheck = false;
         }
         return isCheck;
+    }
+    private void CreateToolbar() {
+        ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity) requireActivity()).getSupportActionBar().setTitle("Đăng ký");
+        ((AppCompatActivity) requireActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationOnClickListener(v -> {
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new PersonalInf_Fragment()).commit();
+//            BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.BottomNavigationView);
+//            Menu menu = bottomNavigationView.getMenu();
+//            MenuItem menuItem = menu.findItem(R.id.menu_home);
+//            menuItem.setChecked(true);
+        });
     }
 }

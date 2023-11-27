@@ -39,7 +39,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/background_button_login"
             android:drawableLeft="@drawable/facebook"
-            android:text="Continue with Facebook"
+            android:text="Tiếp tục với Facebook"
             android:textSize="17sp"
             app:backgroundTint="@null"
             app:layout_constraintTop_toBottomOf="@+id/textView"
@@ -51,7 +51,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/background_button"
             android:drawableLeft="@drawable/google"
-            android:text="Continue with Google"
+            android:text="Tiếp tục với Google"
             android:textColor="@color/black"
             android:textSize="18sp"
             app:backgroundTint="@null"
@@ -64,7 +64,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:padding="20dp"
-            android:text="OR LOGIN WITH EMAIL"
+            android:text="Hoặc đăng nhập với EMAIL"
             android:textColor="#A4A5B4"
             android:textSize="15sp"
             app:layout_constraintTop_toBottomOf="@+id/button2"
@@ -98,13 +98,13 @@
                 android:layout_width="match_parent"
                 android:inputType="textPassword"
                 android:layout_height="wrap_content"
-                android:hint="Password" />
+                android:hint="Mật khẩu" />
         </com.google.android.material.textfield.TextInputLayout>
         <CheckBox
             android:id="@+id/remember_account_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Remember Account"
+            android:text="Ghi nhớ tài khoản"
             android:textColor="#6078F8"
             android:textColorHint="#6078F8"
             android:textSize="15dp"
@@ -117,7 +117,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/btn_login"
-            android:text="Login"
+            android:text="Đăng nhập"
             android:textSize="18dp"
             android:textStyle="bold"
             app:backgroundTint="@null"
@@ -129,7 +129,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:text="Forgot password?"
+            android:text="Quên mật khẩu?"
             android:textColor="#6078F8"
             android:textSize="16sp"
             app:layout_constraintTop_toBottomOf="@+id/bt_login"
@@ -146,7 +146,7 @@
             <TextView
                 android:id="@+id/sendSigUp"
                 android:textSize="16sp"
-                android:text="Don’t have an account?"
+                android:text="Bạn chưa có tài khoản ?"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"/>
@@ -154,7 +154,7 @@
                 android:id="@+id/tv_signUp"
                 android:textStyle="bold"
                 android:textSize="16sp"
-                android:text="SIGN UP"
+                android:text="Đăng ký"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
         </LinearLayout>

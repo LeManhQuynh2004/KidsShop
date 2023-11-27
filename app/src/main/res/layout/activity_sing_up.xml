@@ -9,7 +9,7 @@
     android:padding="10dp">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar_login"
+        android:id="@+id/toolbar_signup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -35,7 +35,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/background_button_login"
         android:drawableLeft="@drawable/facebook"
-        android:text="Continue with Facebook"
+        android:text="Tiếp tục với Facebook"
         android:textSize="17sp"
         app:backgroundTint="@null"
         app:layout_constraintTop_toBottomOf="@+id/textView"
@@ -48,7 +48,7 @@
         android:layout_marginTop="15dp"
         android:background="@drawable/background_button"
         android:drawableLeft="@drawable/google"
-        android:text="Continue with Google"
+        android:text="Tiếp tục với Google"
         android:textColor="@color/black"
         android:textSize="18sp"
         app:backgroundTint="@null"
@@ -93,7 +93,7 @@
             android:id="@+id/ed_password_signup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Password"
+            android:hint="Mật khẩu"
             android:inputType="textPassword" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -110,7 +110,7 @@
             android:id="@+id/confirm_pass"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Confrim PassWork"
+            android:hint="Nhắc lại mật khẩu"
             android:inputType="textPassword"/>
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -123,13 +123,14 @@
         android:layout_marginTop="10dp"
         android:gravity="center">
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="I have read the Privace Policy"
+            android:text="Tôi đồng ý với chính sách quyền riêng tư"
             android:textStyle="bold"
             android:textColor="#2196f3"
             android:textSize="15dp"
-            android:layout_marginRight="150dp"
+            android:layout_marginRight="10dp"
             />
 
         <CheckBox
@@ -143,7 +144,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/btn_login"
-        android:text="GET STARTED"
+        android:text="Bắt đầu"
         android:textSize="18dp"
         android:textStyle="bold"
         app:backgroundTint="@null"
@@ -162,7 +163,7 @@
         <TextView
             android:id="@+id/sendLogin"
             android:textSize="16sp"
-            android:text="Already have an account?"
+            android:text="Bạn đã có tài khoản ?"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"/>
@@ -170,7 +171,7 @@
             android:textColor="#6078F8"
             android:textStyle="bold"
             android:textSize="16sp"
-            android:text="SIGN IN"
+            android:text="Đăng nhập"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>

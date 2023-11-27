@@ -70,7 +70,6 @@ public class CategoryUser_Adapter extends RecyclerView.Adapter<CategoryUser_Adap
             super(itemView);
             tv_name = itemView.findViewById(R.id.tv_name_category_user);
             imageView = itemView.findViewById(R.id.imageView);
-
         }
     }
 }

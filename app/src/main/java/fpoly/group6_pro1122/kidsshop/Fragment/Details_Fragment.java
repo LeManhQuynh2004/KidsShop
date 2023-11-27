@@ -1,33 +1,44 @@
 package fpoly.group6_pro1122.kidsshop.Fragment;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import fpoly.group6_pro1122.kidsshop.Adapter.CartItem_Adapter;
+import fpoly.group6_pro1122.kidsshop.Adapter.Evaluation_Adapter;
+import fpoly.group6_pro1122.kidsshop.Adapter.Star_Adapter;
 import fpoly.group6_pro1122.kidsshop.Dao.CartItemDao;
+import fpoly.group6_pro1122.kidsshop.Dao.EvaluationDao;
 import fpoly.group6_pro1122.kidsshop.Dao.UserDao;
 import fpoly.group6_pro1122.kidsshop.Dao.WishListDao;
 import fpoly.group6_pro1122.kidsshop.Model.CartItem;
+import fpoly.group6_pro1122.kidsshop.Model.Evaluation;
 import fpoly.group6_pro1122.kidsshop.Model.Product;
 import fpoly.group6_pro1122.kidsshop.Model.User;
 import fpoly.group6_pro1122.kidsshop.Model.WishList;
@@ -46,13 +57,24 @@ public class Details_Fragment extends Fragment {
     ImageView img_product;
     CartItem_Adapter cartItemAdapter;
     ArrayList<CartItem> list = new ArrayList<>();
+    ArrayList<Evaluation> list_evaluation_All = new ArrayList<>();
+    ArrayList<Evaluation> list_evaluation = new ArrayList<>();
     ImageView img_wishlist;
     WishList findwishList;
+
     public static final String TAG = "Details_Fragment";
     TextView tv_showAll;
+    EditText ed_comment_Evaluation;
+    Spinner spinner_Evaluation;
+    RecyclerView RecyclerView_Evaluation;
+    Star_Adapter starAdapter;
     boolean isCheck;
     SharedPreferences sharedPreferences;
+    int hour,minute;
+    int start_id = 0;
+    EvaluationDao evaluationDao;
     String email;
+    Evaluation_Adapter evaluationAdapter;
 
     private void MinMap() {
         cartItemDao = new CartItemDao(getContext());
@@ -75,6 +97,10 @@ public class Details_Fragment extends Fragment {
         isCheck = false;
         sharedPreferences = getContext().getSharedPreferences("LIST_USER", getContext().MODE_PRIVATE);
         email = sharedPreferences.getString("EMAIL", "");
+        spinner_Evaluation = view.findViewById(R.id.sp_start_Evaluation);
+        ed_comment_Evaluation = view.findViewById(R.id.ed_content_Evaluation);
+        evaluationDao = new EvaluationDao(getContext());
+        RecyclerView_Evaluation = view.findViewById(R.id.RecyclerView_Evaluation);
     }
 
     @Override
@@ -83,6 +109,7 @@ public class Details_Fragment extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_details_, container, false);
         MinMap();
+        CreateComment();
         Bundle bundle = getArguments();
         if (bundle != null) {
             product = (Product) bundle.getSerializable("product");
@@ -92,6 +119,10 @@ public class Details_Fragment extends Fragment {
                 Glide.with(requireContext()).load(product.getImage()).placeholder(R.drawable.productimg).into(img_product);
             }
         }
+        list_evaluation = evaluationDao.SelectProduct(product.getProduct_id());
+        evaluationAdapter = new Evaluation_Adapter(getContext(),list_evaluation);
+        RecyclerView_Evaluation.setLayoutManager(new LinearLayoutManager(getContext()));
+        RecyclerView_Evaluation.setAdapter(evaluationAdapter);
         tv_showAll.setOnClickListener(view1 -> {
             if (isCheck) {
                 tv_showAll.setText("Xem thêm");
@@ -191,5 +222,62 @@ public class Details_Fragment extends Fragment {
             }
         });
         return view;
+    }
+    private void CreateComment(){
+        ArrayList<Integer> listStart = new ArrayList<>();
+        listStart.add(1);
+        listStart.add(2);
+        listStart.add(3);
+        listStart.add(4);
+        listStart.add(5);
+        starAdapter = new Star_Adapter(getContext(),listStart);
+        spinner_Evaluation.setAdapter(starAdapter);
+        spinner_Evaluation.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                start_id = listStart.get(i);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+        view.findViewById(R.id.bt_post_Evaluation).setOnClickListener(view1 -> {
+//              values.put("product_id", evaluation.getProduct_id());
+//        values.put("user_id", evaluation.getUser_id());
+//        values.put("comment", evaluation.getComment());
+//        values.put("date", evaluation.getDate());
+//        values.put("time", evaluation.getTime());
+//        values.put("start", evaluation.getStart());
+            if(email != null){
+                String comment = ed_comment_Evaluation.getText().toString();
+                Evaluation evaluation = new Evaluation();
+                evaluation.setProduct_id(product.getProduct_id());
+                User user = userDao.SelectID(email);
+                Log.e(TAG, "CreateComment: "+user.getId());
+                if(user != null){
+                    evaluation.setUser_id(user.getId());
+                }
+                Calendar calendar = Calendar.getInstance();
+                hour = calendar.get(Calendar.HOUR_OF_DAY);
+                minute = calendar.get(Calendar.MINUTE);
+                evaluation.setTime(hour+":"+minute);
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+                String date = sdf.format(new Date());
+                evaluation.setDate(date);
+                evaluation.setComment(comment);
+                evaluation.setStart(start_id);
+                if(evaluationDao.insertData(evaluation)){
+                    Toast.makeText(getContext(), "Đăng bình luận thành công", Toast.LENGTH_SHORT).show();
+                    list_evaluation.add(evaluation);
+                    ed_comment_Evaluation.setText("");
+                    spinner_Evaluation.setSelection(1);
+                    evaluationAdapter.notifyDataSetChanged();
+                }else{
+                    Toast.makeText(getContext(),"Đăng bình luận thất bại",Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 }

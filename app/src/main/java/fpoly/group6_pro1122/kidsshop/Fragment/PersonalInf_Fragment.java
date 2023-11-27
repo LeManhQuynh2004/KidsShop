@@ -124,6 +124,7 @@ public class PersonalInf_Fragment extends Fragment {
         Drawable dividerDrawable = ContextCompat.getDrawable(getContext(), R.drawable.divider);
         itemDecoration.setDrawable(dividerDrawable);
         recyclerView.addItemDecoration(itemDecoration);
+
         btn_logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

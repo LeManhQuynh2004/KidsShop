@@ -60,19 +60,8 @@ public class Add_Shipment_Fragment extends Fragment {
     private boolean isAddress(String str) {
         return str.matches("[a-z A-Z 0-9]+");
     }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_add_shipment, container, false);
+    private void MinMap(){
         toolbar = view.findViewById(R.id.toolbar_add_shipment);
-        ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
-        ((AppCompatActivity) requireActivity()).getSupportActionBar().setTitle("Địa chỉ mới");
-        ((AppCompatActivity) requireActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setNavigationOnClickListener(v -> {
-            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new Shipment_Fragment()).commit();
-        });
         ed_name = view.findViewById(R.id.ed_name_add_shipment);
         ed_Phone_number = view.findViewById(R.id.ed_phone_add_shipment);
         ed_city = view.findViewById(R.id.ed_city_add_shipment);
@@ -83,13 +72,24 @@ public class Add_Shipment_Fragment extends Fragment {
         group_address_type = view.findViewById(R.id.rg_address_type);
         rd_type_1 = view.findViewById(R.id.rd_address_type_1);
         rd_type_2 = view.findViewById(R.id.rd_address_type_2);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        view = inflater.inflate(R.layout.fragment_add_shipment, container, false);
+        MinMap();
+        CreateToolbar();
         group_address_type.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
                 if (i == R.id.rd_address_type_1) {
                     result = 0;
+                    Toast.makeText(getContext(), "1", Toast.LENGTH_SHORT).show();
                 } else if (i == R.id.rd_address_type_2) {
                     result = 1;
+                    Toast.makeText(getContext(), "2", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getContext(), "Vui lòng không bỏ trống", Toast.LENGTH_SHORT).show();
                 }
@@ -160,7 +160,7 @@ public class Add_Shipment_Fragment extends Fragment {
                 Toast.makeText(getContext(), "Nhập sai định dạng", Toast.LENGTH_SHORT).show();
                 isCheck = false;
             }
-            if (!isAddress(address)) {
+            if (!isAddress(address) || address.length() < 10) {
                 Toast.makeText(getContext(), "Nhập sai định dạng địa chỉ", Toast.LENGTH_SHORT).show();
                 isCheck = false;
             }
@@ -170,5 +170,14 @@ public class Add_Shipment_Fragment extends Fragment {
             }
         }
         return isCheck;
+    }
+
+    private void CreateToolbar() {
+        ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity) requireActivity()).getSupportActionBar().setTitle("Địa chỉ mới");
+        ((AppCompatActivity) requireActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationOnClickListener(v -> {
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Shipment_Fragment()).commit();
+        });
     }
 }

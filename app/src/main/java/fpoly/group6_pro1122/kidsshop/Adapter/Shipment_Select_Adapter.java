@@ -46,7 +46,7 @@ public class Shipment_Select_Adapter extends BaseAdapter{
 
     class ShipmentViewHolder{
         TextView tv_information,tv_address,tv_Update;
-        CheckBox chk_select;
+        RadioButton chk_select;
     }
 
     @Override

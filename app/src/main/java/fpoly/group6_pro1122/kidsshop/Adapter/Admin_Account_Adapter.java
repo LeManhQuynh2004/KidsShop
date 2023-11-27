@@ -37,7 +37,6 @@ public class Admin_Account_Adapter extends BaseAccount_Adapter{
 
         AccountItem accountItem = list.get(position);
         holder.itemView.setOnClickListener(v->{
-            Toast.makeText(context, "Chức năng: "+accountItem.getTenChucNang(), Toast.LENGTH_SHORT).show();
             if (accountItem.getTenChucNang().equalsIgnoreCase("Quản Lý Sản Phẩm")){
                 ((MainActivity)context).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new Category_Admin_Fragment()).commit();
             } else if (accountItem.getTenChucNang().equalsIgnoreCase("Quản Lý Thể Loại")) {

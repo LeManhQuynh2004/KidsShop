@@ -9,12 +9,16 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import fpoly.group6_pro1122.kidsshop.Dao.UserDao;
 import fpoly.group6_pro1122.kidsshop.MainActivity;
@@ -49,13 +53,11 @@ public class Login_Fragment extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_login, container, false);
         toolbar = view.findViewById(R.id.toolbar_login);
-        ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
-        ((AppCompatActivity) requireActivity()).getSupportActionBar().setTitle("Đăng nhập");
-        ((AppCompatActivity) requireActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         ed_email = view.findViewById(R.id.ed_email_login);
         ed_pass = view.findViewById(R.id.ed_password_login);
         tv_signUp = view.findViewById(R.id.tv_signUp);
         userDao = new UserDao(getContext());
+        CreateToolbar();
         chk_remember_account = view.findViewById(R.id.remember_account_login);
         view.findViewById(R.id.sendSigUp).setOnClickListener(view -> {
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new SigUp_Fragment()).commit();
@@ -132,5 +134,17 @@ public class Login_Fragment extends Fragment {
             isCheck = false;
         }
         return isCheck;
+    }
+    private void CreateToolbar() {
+        ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity) requireActivity()).getSupportActionBar().setTitle("Đăng nhập");
+        ((AppCompatActivity) requireActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationOnClickListener(v -> {
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new PersonalInf_Fragment()).commit();
+//            BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.BottomNavigationView);
+//            Menu menu = bottomNavigationView.getMenu();
+//            MenuItem menuItem = menu.findItem(R.id.menu_home);
+//            menuItem.setChecked(true);
+        });
     }
 }

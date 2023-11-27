@@ -27,6 +27,7 @@ public class Product_Admin_Adapter extends RecyclerView.Adapter<Product_Admin_Ad
     Context context;
     ArrayList<Product>list;
     ProductDao productDao;
+
     public static final String TAG = "Product_Admin_Adapter";
     private ItemClickListener itemClickListener;
     public void setItemClickListener(ItemClickListener listener) {
