@@ -1,13 +1,18 @@
 package fpoly.group6_pro1122.kidsshop.Adapter;
 
 import android.content.Context;
+import android.graphics.Paint;
+import android.text.TextPaint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
 
 import fpoly.group6_pro1122.kidsshop.Model.Voucher;
 import fpoly.group6_pro1122.kidsshop.R;
@@ -53,13 +58,20 @@ public class Voucher_Admin_Adapter extends BaseAdapter {
         }else{
             voucherHolder = (Voucher_Holder) view.getTag();
         }
+        Calendar calendar = Calendar.getInstance();
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        String currentDate = dateFormat.format(calendar.getTime());
+
         Voucher voucher = list.get(i);
         if(voucher != null){
             voucherHolder.tv_code.setText("Giảm tối đa: "+voucher.getDiscount_amount()+"%");
             voucherHolder.tv_discount.setText("Có hiệu lực từ : "+voucher.getStart_date());
             voucherHolder.tv_end.setText("Có hiệu lực đến : "+voucher.getExpiration_date());
+            if (currentDate.equalsIgnoreCase(voucher.getExpiration_date())){
+                voucherHolder.tv_code.setText("Giảm tối đa: "+voucher.getDiscount_amount()+"%"+"(Hết hạn)");
+            }
         }
-
         return view;
     }
 }

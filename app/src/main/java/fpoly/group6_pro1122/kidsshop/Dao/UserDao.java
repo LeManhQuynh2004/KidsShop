@@ -98,7 +98,7 @@ public class UserDao {
             return null;
         }
     }
-    public User SelectIDTwo(int id) {
+    public User SelectIDTwo(String id) {
         String query = "SELECT * FROM User WHERE id = ?";
         ArrayList<User> list = getAll(query, String.valueOf(id));
         if (list != null && !list.isEmpty()) {

@@ -70,7 +70,7 @@ public class Details_Fragment extends Fragment {
     Star_Adapter starAdapter;
     boolean isCheck;
     SharedPreferences sharedPreferences;
-    int hour,minute;
+    int hour, minute;
     int start_id = 0;
     EvaluationDao evaluationDao;
     String email;
@@ -109,7 +109,6 @@ public class Details_Fragment extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_details_, container, false);
         MinMap();
-        CreateComment();
         Bundle bundle = getArguments();
         if (bundle != null) {
             product = (Product) bundle.getSerializable("product");
@@ -119,8 +118,9 @@ public class Details_Fragment extends Fragment {
                 Glide.with(requireContext()).load(product.getImage()).placeholder(R.drawable.productimg).into(img_product);
             }
         }
+        CreateComment();
         list_evaluation = evaluationDao.SelectProduct(product.getProduct_id());
-        evaluationAdapter = new Evaluation_Adapter(getContext(),list_evaluation);
+        evaluationAdapter = new Evaluation_Adapter(getContext(), list_evaluation);
         RecyclerView_Evaluation.setLayoutManager(new LinearLayoutManager(getContext()));
         RecyclerView_Evaluation.setAdapter(evaluationAdapter);
         tv_showAll.setOnClickListener(view1 -> {
@@ -146,10 +146,10 @@ public class Details_Fragment extends Fragment {
             menuItem.setChecked(true);
         });
         tv_sum.setOnClickListener(view1 -> {
-            if(quantity < product.getQuantity()){
+            if (quantity < product.getQuantity()) {
                 quantity++;
                 tv_quantity_details.setText(quantity + "");
-            }else{
+            } else {
                 Toast.makeText(getContext(), "Số lượng vượt quá số lượng có trong kho", Toast.LENGTH_SHORT).show();
             }
         });
@@ -181,17 +181,17 @@ public class Details_Fragment extends Fragment {
                 WishList findwishList2 = wishListDao.getWishListByProductId(product.getProduct_id());
                 if (findwishList2 == null) {
                     if (wishListDao.insertData(wishList)) {
-                        Toast.makeText(getContext(),R.string.add_success, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), R.string.add_success, Toast.LENGTH_SHORT).show();
                         img_wishlist.setImageResource(R.drawable.heartred);
                     } else {
-                        Toast.makeText(getContext(),R.string.add_not_success, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), R.string.add_not_success, Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     if (wishListDao.deleteData(findwishList2)) {
-                        Toast.makeText(getContext(),R.string.delete_success, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), R.string.delete_success, Toast.LENGTH_SHORT).show();
                         img_wishlist.setImageResource(R.drawable.heart);
                     } else {
-                        Toast.makeText(getContext(),R.string.delete_not_success, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), R.string.delete_not_success, Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -212,25 +212,26 @@ public class Details_Fragment extends Fragment {
                     Toast.makeText(getContext(), "Sản phẩm đã có trong rỏ hàng", Toast.LENGTH_SHORT).show();
                 } else {
                     if (cartItemDao.insertData(cartItem)) {
-                        Toast.makeText(getContext(),R.string.add_success, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), R.string.add_success, Toast.LENGTH_SHORT).show();
                         list.add(cartItem);
                         tv_quantity.setText(String.valueOf(list.size()));
                     } else {
-                        Toast.makeText(getContext(),R.string.add_not_success, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), R.string.add_not_success, Toast.LENGTH_SHORT).show();
                     }
                 }
             }
         });
         return view;
     }
-    private void CreateComment(){
+
+    private void CreateComment() {
         ArrayList<Integer> listStart = new ArrayList<>();
         listStart.add(1);
         listStart.add(2);
         listStart.add(3);
         listStart.add(4);
         listStart.add(5);
-        starAdapter = new Star_Adapter(getContext(),listStart);
+        starAdapter = new Star_Adapter(getContext(), listStart);
         spinner_Evaluation.setAdapter(starAdapter);
         spinner_Evaluation.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -244,38 +245,44 @@ public class Details_Fragment extends Fragment {
             }
         });
         view.findViewById(R.id.bt_post_Evaluation).setOnClickListener(view1 -> {
-//              values.put("product_id", evaluation.getProduct_id());
-//        values.put("user_id", evaluation.getUser_id());
-//        values.put("comment", evaluation.getComment());
-//        values.put("date", evaluation.getDate());
-//        values.put("time", evaluation.getTime());
-//        values.put("start", evaluation.getStart());
-            if(email != null){
+            SharedPreferences sharedPreferences = getContext().getSharedPreferences("LIST_USER", getContext().MODE_PRIVATE);
+            String email_post = sharedPreferences.getString("EMAIL", "");
+            Log.e(TAG, "CreateComment: " + email_post);
+            if (email_post.equals("")) {
+                Toast.makeText(getContext(), "Vui lòng đăng nhập để sử dụng chức năng", Toast.LENGTH_SHORT).show();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PersonalInf_Fragment()).commit();
+            } else {
                 String comment = ed_comment_Evaluation.getText().toString();
-                Evaluation evaluation = new Evaluation();
-                evaluation.setProduct_id(product.getProduct_id());
-                User user = userDao.SelectID(email);
-                Log.e(TAG, "CreateComment: "+user.getId());
-                if(user != null){
-                    evaluation.setUser_id(user.getId());
-                }
-                Calendar calendar = Calendar.getInstance();
-                hour = calendar.get(Calendar.HOUR_OF_DAY);
-                minute = calendar.get(Calendar.MINUTE);
-                evaluation.setTime(hour+":"+minute);
-                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-                String date = sdf.format(new Date());
-                evaluation.setDate(date);
-                evaluation.setComment(comment);
-                evaluation.setStart(start_id);
-                if(evaluationDao.insertData(evaluation)){
-                    Toast.makeText(getContext(), "Đăng bình luận thành công", Toast.LENGTH_SHORT).show();
-                    list_evaluation.add(evaluation);
-                    ed_comment_Evaluation.setText("");
-                    spinner_Evaluation.setSelection(1);
-                    evaluationAdapter.notifyDataSetChanged();
-                }else{
-                    Toast.makeText(getContext(),"Đăng bình luận thất bại",Toast.LENGTH_SHORT).show();
+                if (comment.isEmpty()) {
+                    Toast.makeText(getContext(), "Vui lòng không để trống ô bình luận", Toast.LENGTH_SHORT).show();
+                } else {
+                    Evaluation evaluation = new Evaluation();
+                    evaluation.setProduct_id(product.getProduct_id());
+                    User user = userDao.SelectID(email);
+                    Log.e(TAG, "CreateComment: "+user.getId());
+                    if (user != null) {
+                        evaluation.setUser_id(user.getId());
+                        Calendar calendar = Calendar.getInstance();
+                        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+                        int minute = calendar.get(Calendar.MINUTE);
+                        evaluation.setTime(hour + ":" + minute);
+
+                        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+                        String date = sdf.format(new Date());
+                        evaluation.setDate(date);
+                        evaluation.setComment(comment);
+                        evaluation.setStart(start_id);
+
+                        if (evaluationDao.insertData(evaluation)) {
+                            Toast.makeText(getContext(), "Đăng bình luận thành công", Toast.LENGTH_SHORT).show();
+                            list_evaluation.add(evaluation);
+                            ed_comment_Evaluation.setText("");
+                            spinner_Evaluation.setSelection(1);
+                            evaluationAdapter.notifyDataSetChanged();
+                        } else {
+                            Toast.makeText(getContext(), "Đăng bình luận thất bại", Toast.LENGTH_SHORT).show();
+                        }
+                    }
                 }
             }
         });

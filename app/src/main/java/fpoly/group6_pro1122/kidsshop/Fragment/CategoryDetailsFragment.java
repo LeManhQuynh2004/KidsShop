@@ -4,14 +4,19 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 
@@ -46,6 +51,8 @@ public class CategoryDetailsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         recyclerView = view.findViewById(R.id.recyclerViewDetails_category);
         productDao = new ProductDao(getContext());
+        toolbar = view.findViewById(R.id.toolbar_category_details);
+        CreateToolbar();
         cartItemDao = new CartItemDao(getContext());
         Bundle bundle = getArguments();
         if (bundle!=null){
@@ -57,6 +64,13 @@ public class CategoryDetailsFragment extends Fragment {
             recyclerView.setLayoutManager(gridLayoutManager);
             recyclerView.setAdapter(productCustomerAdapter);
         }
-
+    }
+    private void CreateToolbar() {
+        ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity) requireActivity()).getSupportActionBar().setTitle("Sản phẩm");
+        ((AppCompatActivity) requireActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationOnClickListener(v -> {
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Category_User_Fragment()).commit();
+        });
     }
 }

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Fragment.InvoiceDetails_Fragment">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_invoice_details"
+        android:background="@color/green"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+   <LinearLayout
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:orientation="vertical"
+       android:padding="10dp">
+       <TextView
+           android:id="@+id/tv_orderId_item_invoice_details"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:gravity="center"
+           android:text="@string/app_name"
+           android:textSize="25sp"
+           android:textStyle="bold" />
+
+       <TextView
+           android:id="@+id/tv_Date_item_invoice_details"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:text="@string/app_name"
+           android:textSize="18sp" />
+
+       <TextView
+           android:id="@+id/tv_UserId_item_invoice_details"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:text="@string/app_name"
+           android:textSize="18sp" />
+
+       <TextView
+           android:id="@+id/tv_Total_price_item_invoice_details"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:text="@string/app_name"
+           android:textSize="18sp" />
+       <TextView
+           android:id="@+id/tv_address_item_invoice_details"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:text="@string/app_name"
+           android:textSize="18sp" />
+       <TextView
+           android:id="@+id/tv_status_item_invoice_details"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:text="@string/app_name"
+           android:textSize="18sp" />
+       <TextView
+           android:id="@+id/tv_payment_item_invoice_details"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:text="@string/app_name"
+           android:textSize="18sp" />
+       <TextView
+           android:layout_marginTop="10dp"
+           android:layout_marginBottom="10dp"
+           android:textSize="20sp"
+           android:textStyle="bold"
+           android:text="Sản phẩm đã đặt"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"/>
+       <androidx.recyclerview.widget.RecyclerView
+           android:id="@+id/RecyclerView_Invoice_Details"
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"/>
+   </LinearLayout>
+
+</LinearLayout>

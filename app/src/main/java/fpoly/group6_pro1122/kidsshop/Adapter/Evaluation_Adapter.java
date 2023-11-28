@@ -23,6 +23,8 @@ public class Evaluation_Adapter extends RecyclerView.Adapter<Evaluation_Adapter.
     Context context;
     ArrayList<Evaluation> list;
     UserDao userDao;
+
+    public static final String TAG = "Evaluation_Adapter";
     User user;
 
     public Evaluation_Adapter(Context context, ArrayList<Evaluation> list) {
@@ -41,37 +43,33 @@ public class Evaluation_Adapter extends RecyclerView.Adapter<Evaluation_Adapter.
     @Override
     public void onBindViewHolder(@NonNull EvaluationViewHolder holder, int position) {
         Evaluation evaluation = list.get(position);
-        SharedPreferences sharedPreferences = context.getSharedPreferences("LIST_USER", context.MODE_PRIVATE);
-        String email = sharedPreferences.getString("EMAIL", "");
+//        SharedPreferences sharedPreferences = context.getSharedPreferences("LIST_USER", Context.MODE_PRIVATE);
+//        String email = sharedPreferences.getString("EMAIL", "");
         if (evaluation != null) {
-            if (email != null) {
-                user = userDao.SelectID(email);
-                if (user != null) {
-                    if (user.getFullname() == null || user.getFullname().equalsIgnoreCase("")) {
-                        holder.tv_name.setText("Khách hàng của KidsShop");
-                    } else {
-                        if (user.getRole() == 0) {
-                            holder.tv_name.setText(user.getFullname() + " " + "Quản trị viên");
-                        } else {
-                            holder.tv_name.setText(user.getFullname() + " " + "Khách hàng");
-                        }
-                    }
-                    holder.tv_comment.setText(evaluation.getComment());
-                    holder.tv_start.setText("Đánh giá: " + evaluation.getStart());
-                    if (evaluation.getStart() == 1) {
-                        holder.tv_satisfied_item_Evaluation.setText("(Rất thất vọng)");
-                    } else if (evaluation.getStart() == 2) {
-                        holder.tv_satisfied_item_Evaluation.setText("(Không hài lòng)");
-                    } else if (evaluation.getStart() == 3) {
-                        holder.tv_satisfied_item_Evaluation.setText("(Tạm hài lòng)");
-                    } else if (evaluation.getStart() == 4) {
-                        holder.tv_satisfied_item_Evaluation.setText("(Hài lòng)");
-                    } else {
-                        holder.tv_satisfied_item_Evaluation.setText("(Tuyệt vời)");
-                    }
-                    holder.tv_date.setText(evaluation.getDate() + " " + evaluation.getTime());
-                }
+            user = userDao.SelectIDTwo(String.valueOf(evaluation.getId()));
+            if (user == null || user.getFullname() == null || user.getFullname().isEmpty()) {
+                holder.tv_name.setText("Khách hàng của KidsShop");
+            } else {
+                String roleName = (user.getRole() == 0) ? "(Quản trị viên)" : "(Khách hàng)";
+                holder.tv_name.setText(user.getFullname() + " " + roleName);
             }
+
+            holder.tv_comment.setText(evaluation.getComment());
+            holder.tv_start.setText("Đánh giá: " + evaluation.getStart());
+            int startValue = evaluation.getStart();
+            if (startValue == 1) {
+                holder.tv_satisfied_item_Evaluation.setText("(Rất thất vọng)");
+            } else if (startValue == 2) {
+                holder.tv_satisfied_item_Evaluation.setText("(Không hài lòng)");
+            } else if (startValue == 3) {
+                holder.tv_satisfied_item_Evaluation.setText("(Tạm hài lòng)");
+            } else if (startValue == 4) {
+                holder.tv_satisfied_item_Evaluation.setText("(Hài lòng)");
+            } else {
+                holder.tv_satisfied_item_Evaluation.setText("(Tuyệt vời)");
+            }
+
+            holder.tv_date.setText(evaluation.getDate() + " " + evaluation.getTime());
         }
 //        holder.itemView.setOnLongClickListener(view -> {
 //            try {

@@ -75,6 +75,10 @@ public class WishList_Fragment extends Fragment {
                     UpdateWishList(0);
                 }
             });
+            for (int i = 0; i < list.size(); i++) {
+                list.get(i).setStatus(0);
+                wishListDao.updateData(list.get(i));
+            }
             view.findViewById(R.id.bt_addAllCart).setOnClickListener(view1 -> {
                 int count = 0;
                 for (WishList item : list) {
@@ -84,7 +88,6 @@ public class WishList_Fragment extends Fragment {
                 }
                 if (count > 0) {
                     User user = userDao.SelectID(email);
-
                     if (user != null) {
                         for (WishList item : list) {
                             if (item.getStatus() == 1) {

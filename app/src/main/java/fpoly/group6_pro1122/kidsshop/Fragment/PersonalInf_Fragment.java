@@ -1,5 +1,7 @@
 package fpoly.group6_pro1122.kidsshop.Fragment;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
@@ -29,6 +31,7 @@ import java.util.ArrayList;
 import fpoly.group6_pro1122.kidsshop.Adapter.Admin_Account_Adapter;
 import fpoly.group6_pro1122.kidsshop.Adapter.User_Account_Adapter;
 import fpoly.group6_pro1122.kidsshop.Dao.UserDao;
+import fpoly.group6_pro1122.kidsshop.MainActivity;
 import fpoly.group6_pro1122.kidsshop.Model.AccountItem;
 import fpoly.group6_pro1122.kidsshop.Model.User;
 import fpoly.group6_pro1122.kidsshop.R;
@@ -128,17 +131,23 @@ public class PersonalInf_Fragment extends Fragment {
         btn_logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SharedPreferences sharedPreferences = getContext().getSharedPreferences("LIST_USER", getContext().MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.clear();
-                editor.commit();
-                getActivity().finish();
-                Log.e("TAG", "onClick: "+"LogOut");
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new Home_Fragment()).commit();
-                BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.BottomNavigationView);
-                Menu menu = bottomNavigationView.getMenu();
-                MenuItem menuItem = menu.findItem(R.id.menu_home);
-                menuItem.setChecked(true);
+                AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+                builder.setTitle("Đăng xuất");
+                builder.setMessage("Bạn có chắc chắn muốn đăng xuất không ?");
+                builder.setPositiveButton("Thoát", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        SharedPreferences sharedPreferences = requireContext().getSharedPreferences("LIST_USER", getContext().MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.clear();
+                        editor.commit();
+                        ((MainActivity)getContext()).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Home_Fragment()).commit();
+                        BottomNavigationView bottomNavigationView = requireActivity().findViewById(R.id.BottomNavigationView);
+                        bottomNavigationView.setSelectedItemId(R.id.menu_home);
+                    }
+                });
+                builder.setNegativeButton("Hủy", null);
+                builder.show();
             }
         });
     }

@@ -17,14 +17,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <!-- Status and content layout -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="130dp"
             android:background="@color/green"
             android:orientation="horizontal">
 
-            <!-- Status details -->
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -66,13 +64,11 @@
             </LinearLayout>
         </LinearLayout>
 
-        <!-- Shipment details ListView -->
         <ListView
             android:id="@+id/listViewShipment_details"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <!-- Payment method details -->
         <LinearLayout
             android:id="@+id/l4"
             android:layout_width="match_parent"
@@ -111,13 +107,12 @@
             </LinearLayout>
         </LinearLayout>
 
-        <!-- Order item ListView -->
-        <ListView
-            android:id="@+id/listViewOrderItem"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/RecyclerView_OrderItem"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:padding="5dp" />
 
-        <!-- Divider line -->
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -125,7 +120,6 @@
             android:layout_marginRight="10dp"
             android:background="@color/boder_gray" />
 
-        <!-- Total price layout -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -142,23 +136,21 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:textColor="@color/orange"
                 android:id="@+id/tv_total_price_details"
-                android:gravity="right"
-                android:textSize="18sp"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:gravity="right"
+                android:textSize="18sp" />
         </LinearLayout>
 
-        <!-- Divider line -->
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:background="@color/boder_gray" />
-
-        <!-- Order ID layout -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -175,11 +167,11 @@
 
             <TextView
                 android:id="@+id/tv_orderItem_id_details"
-                android:gravity="right"
-                android:textSize="18sp"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:gravity="right"
+                android:textSize="18sp" />
         </LinearLayout>
 
         <!-- Date layout -->
@@ -198,11 +190,11 @@
 
             <TextView
                 android:id="@+id/tv_date_details"
-                android:gravity="right"
-                android:textSize="18sp"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:gravity="right"
+                android:textSize="18sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -219,13 +211,13 @@
                 android:textSize="18sp" />
 
             <TextView
-                android:text="Đang vận chuyển"
                 android:id="@+id/tv_shipment_details"
-                android:gravity="right"
-                android:textSize="18sp"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:gravity="right"
+                android:text="Đang vận chuyển"
+                android:textSize="18sp" />
         </LinearLayout>
 
         <!-- Divider line -->

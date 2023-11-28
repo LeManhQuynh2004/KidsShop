@@ -51,7 +51,7 @@ import fpoly.group6_pro1122.kidsshop.R;
 public class Payment_Fragment extends Fragment {
     View view;
     Toolbar toolbar;
-    int shipment_id = 0,voucher_id = 0;
+    int shipment_id = 0, voucher_id = 0;
     float voucher_discount = 0;
     Shipment shipment;
     Shipment_Payment_Adapter shipmentSelectAdapter;
@@ -62,6 +62,7 @@ public class Payment_Fragment extends Fragment {
     CartItemDao cartItemDao;
     RecyclerView RecyclerView_Evaluation;
     ArrayList<CartItem> list_cartItem = new ArrayList<>();
+    ArrayList<Shipment> list_shipment = new ArrayList<>();
     ArrayList<Evaluation> list_evaluation = new ArrayList<>();
     CartItem_Payment_Adapter cartItemPaymentAdapter;
     TextView tv_payment, tv_total_price_cart_payment, tv_discount_order, tv_total_price_order_payment, tv_total_price_order_payment_bottom;
@@ -73,8 +74,11 @@ public class Payment_Fragment extends Fragment {
     SharedPreferences sharedPreferences;
     int total_price = 0, discount = 0;
     OrderItemDao orderItemDao;
-    int hour,minute;
+    int hour, minute;
     EvaluationDao evaluationDao;
+
+    Shipment shipment1;
+
     Voucher voucher;
     VoucherDao voucherDao;
     int count = 0;
@@ -100,6 +104,7 @@ public class Payment_Fragment extends Fragment {
         paymentDao = new PaymentDao(getContext());
         userDao = new UserDao(getContext());
         shipmentDao = new ShipmentDao(getContext());
+        list_shipment = shipmentDao.SelectAll();
         orderDao = new OrderDao(getContext());
         productDao = new ProductDao(getContext());
         orderItemDao = new OrderItemDao(getContext());
@@ -117,8 +122,8 @@ public class Payment_Fragment extends Fragment {
             if (voucher != null) {
                 voucher_id = voucher.getId();
                 voucher_discount = (float) (voucher.getDiscount_amount() * 0.01);
-                Log.e(TAG, "onCreateView: "+voucher_discount);
-                tv_voucher.setText("Giảm giá :"+voucher.getDiscount_amount()+" %");
+                Log.e(TAG, "onCreateView: " + voucher_discount);
+                tv_voucher.setText("Giảm giá :" + voucher.getDiscount_amount() + " %");
             }
         }
         CreateToolbar();
@@ -149,58 +154,65 @@ public class Payment_Fragment extends Fragment {
 
         view.findViewById(R.id.bt_order).setOnClickListener(view1 -> {
             User user = userDao.SelectID(email);
-            Toast.makeText(getContext(), "Shipment_id" + shipment_id, Toast.LENGTH_SHORT).show();
+            if (list_shipment.isEmpty()) {
+                Toast.makeText(getContext(), "Vui lòng chọn địa chỉ nhận hàng", Toast.LENGTH_SHORT).show();
+            } else {
+                shipment1 = shipmentDao.SelectID(String.valueOf(shipment_id));
+                Toast.makeText(getContext(), "Shipment_id" + shipment_id, Toast.LENGTH_SHORT).show();
+                if (user != null) {
+                    Order order = new Order();
+                    order.setUser_id(user.getId());
+                    order.setPayment_id(1);
+                    order.setStatus(0);
+                    order.setTotal_price(total_price - discount);
+                    order.setShipment_id(shipment_id);
+                    Calendar calendar = Calendar.getInstance();
+                    hour = calendar.get(Calendar.HOUR_OF_DAY);
+                    minute = calendar.get(Calendar.MINUTE);
+                    order.setTime(hour + ":" + minute);
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+                    String date = sdf.format(new Date());
+                    Log.e(TAG, "onCreateView: " + date);
+                    shipment1.setStatus(0);
+                    shipmentDao.updateData(shipment1);
+                    order.setDate(date);
 
-            if (user != null) {
-                Order order = new Order();
-                order.setUser_id(user.getId());
-                order.setPayment_id(1);
-                order.setStatus(0);
-                order.setTotal_price(total_price - discount);
-                order.setShipment_id(shipment_id);
-                Calendar calendar = Calendar.getInstance();
-                hour = calendar.get(Calendar.HOUR_OF_DAY);
-                minute = calendar.get(Calendar.MINUTE);
-                order.setTime(hour+":"+minute);
-                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-                String date = sdf.format(new Date());
-                Log.e(TAG, "onCreateView: " + date);
-                order.setDate(date);
+                    Toast.makeText(getContext(), String.valueOf(total_price - discount), Toast.LENGTH_SHORT).show();
 
-                Toast.makeText(getContext(), String.valueOf(total_price - discount), Toast.LENGTH_SHORT).show();
-
-                if (orderDao.insertData(order)) {
-                    Toast.makeText(getContext(), "Đặt hàng thành công", Toast.LENGTH_SHORT).show();
-                    if(voucher_id != 0){
-                        Voucher voucherFinish = voucherDao.SelectID(String.valueOf(voucher_id));
-                        voucherDao.deleteData(voucherFinish);
-                    }
-                    for (int i = 0; i < list_cartItem.size(); i++) {
-                        CartItem cartItem = list_cartItem.get(i);
-                        Log.e(TAG, "List_Size: " + list_cartItem.size());
-                        Product product = productDao.SelectID(String.valueOf(cartItem.getProduct_id()));
-                        Log.e(TAG, "List_Size: " + product.getProduct_id());
-                        if (product != null) {
-                            OrderItem orderItem = new OrderItem();
-                            orderItem.setProduct_id(product.getProduct_id());
-                            orderItem.setQuantity(cartItem.getQuantity());
-                            discount = discount / list_cartItem.size();
-                            if(voucher_discount != 0){
-                                discount = (int) (product.getProduct_price() * voucher_discount);
-                            }
-                            orderItem.setPrice(product.getProduct_price() * cartItem.getQuantity() - discount);
-                            orderItem.setOrder_id(order.getId());
-                            orderItemDao.insertData(orderItem);
-                            product.setQuantity(product.getQuantity() - orderItem.getQuantity());
-                            productDao.updateData(product);
-                            cartItemDao.deleteData(cartItem);
+                    if (orderDao.insertData(order)) {
+                        Toast.makeText(getContext(), "Đặt hàng thành công", Toast.LENGTH_SHORT).show();
+                        if (voucher_id != 0) {
+                            Voucher voucherFinish = voucherDao.SelectID(String.valueOf(voucher_id));
+                            voucherDao.deleteData(voucherFinish);
                         }
+                        for (int i = 0; i < list_cartItem.size(); i++) {
+                            CartItem cartItem = list_cartItem.get(i);
+                            Log.e(TAG, "List_Size: " + list_cartItem.size());
+                            Product product = productDao.SelectID(String.valueOf(cartItem.getProduct_id()));
+                            Log.e(TAG, "List_Size: " + product.getProduct_id());
+                            if (product != null) {
+                                OrderItem orderItem = new OrderItem();
+                                orderItem.setProduct_id(product.getProduct_id());
+                                orderItem.setQuantity(cartItem.getQuantity());
+                                discount = discount / list_cartItem.size();
+                                if (voucher_discount != 0) {
+                                    discount = (int) (product.getProduct_price() * voucher_discount);
+                                }
+                                orderItem.setPrice(product.getProduct_price() * cartItem.getQuantity() - discount);
+                                orderItem.setOrder_id(order.getId());
+                                orderItemDao.insertData(orderItem);
+                                product.setQuantity(product.getQuantity() - orderItem.getQuantity());
+                                productDao.updateData(product);
+                                cartItemDao.deleteData(cartItem);
+                            }
+                        }
+                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Finish_Order_Fragment()).commit();
+                    } else {
+                        Toast.makeText(getContext(), "Đặt hàng thất bại", Toast.LENGTH_SHORT).show();
                     }
-                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Finish_Order_Fragment()).commit();
-                } else {
-                    Toast.makeText(getContext(), "Đặt hàng thất bại", Toast.LENGTH_SHORT).show();
                 }
             }
+
         });
         return view;
     }
@@ -243,12 +255,13 @@ public class Payment_Fragment extends Fragment {
             tv_payment.setText(payment.getType());
         }
     }
+
     private void CreateListViewCartItem() {
         list_cartItem = cartItemDao.SelectPay(1);
         for (int i = 0; i < list_cartItem.size(); i++) {
             total_price += list_cartItem.get(i).getTotal_price();
             Product product = productDao.SelectID(String.valueOf(list_cartItem.get(i).getProduct_id()));
-            if(voucher_discount != 0){
+            if (voucher_discount != 0) {
                 discount += (int) (product.getProduct_price() * voucher_discount);
             }
         }

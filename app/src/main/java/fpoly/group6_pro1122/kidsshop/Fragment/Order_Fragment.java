@@ -5,6 +5,8 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
+import fpoly.group6_pro1122.kidsshop.Adapter.Invoice_Adapter;
 import fpoly.group6_pro1122.kidsshop.Adapter.OrderAdapter;
 import fpoly.group6_pro1122.kidsshop.Dao.OrderDao;
 import fpoly.group6_pro1122.kidsshop.Dao.OrderItemDao;
@@ -26,18 +29,18 @@ import fpoly.group6_pro1122.kidsshop.R;
 public class Order_Fragment extends Fragment {
 
     View view;
-    ListView listView;
+    RecyclerView recyclerView;
     Toolbar toolbar;
     OrderDao orderDao;
-    OrderAdapter orderAdapter;
+    Invoice_Adapter invoiceAdapter;
     ArrayList<DetailsOrder> list = new ArrayList<>();
     OrderItemDao orderItemDao;
 
     public static final String TAG = "Order_Fragment";
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_order, container, false);
         orderDao = new OrderDao(getContext());
         toolbar = view.findViewById(R.id.toolbar_order);
@@ -46,9 +49,10 @@ public class Order_Fragment extends Fragment {
         ((AppCompatActivity) requireActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         orderItemDao = new OrderItemDao(getContext());
         list = orderItemDao.SelectAllJoin();
-        listView = view.findViewById(R.id.listViewOrder);
-        orderAdapter = new OrderAdapter(getContext(),list);
-        listView.setAdapter(orderAdapter);
+        recyclerView = view.findViewById(R.id.RecyclerView_Order);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        invoiceAdapter = new Invoice_Adapter(getContext(), list);
+        recyclerView.setAdapter(invoiceAdapter);
         return view;
     }
 }

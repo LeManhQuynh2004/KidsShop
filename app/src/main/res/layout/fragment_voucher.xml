@@ -11,11 +11,20 @@
         android:layout_height="wrap_content"
         android:background="@color/green" />
 
+    <EditText
+        android:padding="15dp"
+        android:drawableLeft="@drawable/baseline_search_24"
+        android:hint="Tìm kiếm thể loại bạn cần"
+        android:id="@+id/ed_search_Voucher"
+        android:layout_below="@id/toolbar_admin_voucher"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
     <ListView
         android:id="@+id/listView_admin_voucher"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/toolbar_admin_voucher" />
+        android:layout_below="@id/ed_search_Voucher" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_add_voucher"
@@ -23,7 +32,10 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_margin="40dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="40dp"
         android:src="@drawable/baseline_add_24" />
 
 </RelativeLayout>

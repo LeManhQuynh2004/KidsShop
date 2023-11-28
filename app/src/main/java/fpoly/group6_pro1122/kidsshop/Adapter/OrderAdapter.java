@@ -1,6 +1,7 @@
 package fpoly.group6_pro1122.kidsshop.Adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -108,12 +109,14 @@ public class OrderAdapter extends BaseAdapter {
             notifyDataSetChanged();
         }
         if (detailsOrder.getStatus() == 0) {
-            orderViewHolder.tv_status.setText("Đang xác nhận");
+            orderViewHolder.tv_status.setText("Chờ xác nhận");
         } else if (detailsOrder.getStatus() == 1) {
             orderViewHolder.tv_status.setText("Đã xác nhận");
         } else if (detailsOrder.getStatus() == 2) {
+            orderViewHolder.tv_status.setTextColor(Color.BLUE);
             orderViewHolder.tv_status.setText("Thành công");
         } else {
+            orderViewHolder.tv_status.setTextColor(Color.BLACK);
             orderViewHolder.tv_status.setText("Đã hủy");
         }
         view.setOnClickListener(view1 -> {

@@ -10,6 +10,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +28,7 @@ import java.util.Locale;
 
 import fpoly.group6_pro1122.kidsshop.Adapter.Voucher_Admin_Adapter;
 import fpoly.group6_pro1122.kidsshop.Dao.VoucherDao;
+import fpoly.group6_pro1122.kidsshop.Model.Category;
 import fpoly.group6_pro1122.kidsshop.Model.Voucher;
 import fpoly.group6_pro1122.kidsshop.R;
 
@@ -36,9 +39,11 @@ public class Voucher_Admin_Fragment extends Fragment {
     ListView listView;
     VoucherDao voucherDao;
     ArrayList<Voucher> list = new ArrayList<>();
+    ArrayList<Voucher> temp_list = new ArrayList<>();
     EditText ed_discount, ed_startDate, ed_endDate;
     ImageView img_date;
     Voucher_Admin_Adapter voucherAdminAdapter;
+    EditText edSearch;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -48,10 +53,13 @@ public class Voucher_Admin_Fragment extends Fragment {
         voucherDao = new VoucherDao(getContext());
         toolbar = view.findViewById(R.id.toolbar_admin_voucher);
         CreateToolbar();
+        edSearch = view.findViewById(R.id.ed_search_Voucher);
         listView = view.findViewById(R.id.listView_admin_voucher);
         list = voucherDao.SelectAll();
+        temp_list = voucherDao.SelectAll();
         voucherAdminAdapter = new Voucher_Admin_Adapter(getContext(), list);
         listView.setAdapter(voucherAdminAdapter);
+        SearchVoucher();
         view.findViewById(R.id.fab_add_voucher).setOnClickListener(view1 -> {
             ShowDialogAddOrEditVoucher(0, null);
         });
@@ -146,8 +154,45 @@ public class Voucher_Admin_Fragment extends Fragment {
         list.addAll(voucherDao.SelectAll());
         voucherAdminAdapter.notifyDataSetChanged();
     }
+
     private void CreateToolbar() {
         ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity) requireActivity()).getSupportActionBar().setTitle("Quản lý Voucher");
+    }
+
+    private void SearchVoucher() {
+        edSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                String query = charSequence.toString();
+                list.clear();
+
+
+                if (query.isEmpty()) {
+                    list.addAll(temp_list);
+                } else {
+                    try {
+                        for (Voucher voucher : temp_list) {
+                            int discount = voucher.getDiscount_amount();
+                            if (discount <= Integer.parseInt(query)) {
+                                list.add(voucher);
+                            }
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                voucherAdminAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
     }
 }

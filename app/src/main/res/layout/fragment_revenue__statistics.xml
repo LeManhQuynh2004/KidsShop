@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context=".Fragment.Revenue_Statistics_Fragment">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_revenue_statistics"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/green" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="Thống kê doanh số"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/ed_start_date_statistics"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Chọn ngày bắt đầu" />
+
+        <ImageView
+            android:id="@+id/img_statistics_start_date"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="bottom|end"
+            android:layout_marginRight="7dp"
+            android:layout_marginBottom="10dp"
+            android:src="@drawable/chronometer" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/ed_end_date_statistics"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Chọn ngày kết thúc" />
+
+        <ImageView
+            android:id="@+id/img_statistics_end_date"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="bottom|end"
+            android:layout_marginRight="7dp"
+            android:layout_marginBottom="10dp"
+            android:src="@drawable/chronometer" />
+    </FrameLayout>
+
+
+    <TextView
+        android:id="@+id/tv_doanhThu"
+        android:layout_width="180dp"
+        android:layout_height="180dp"
+        android:background="@drawable/hinhtron"
+        android:gravity="center"
+        android:textColor="@color/green"
+        android:textSize="25sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:text="Thống kê sản phẩm bán ra"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/RecyclerView_DoanhSo"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="10dp" />
+
+</LinearLayout>

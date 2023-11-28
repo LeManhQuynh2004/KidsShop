@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -114,6 +115,10 @@ public class ShipmentDao {
     public Shipment SelectID(String id) {
         String query = "SELECT * FROM Shipment WHERE id = ?";
         ArrayList<Shipment> list = getAll(query, id);
-        return list.get(0);
+        if(!list.isEmpty()){
+            return list.get(0);
+        }else{
+            return null;
+        }
     }
 }

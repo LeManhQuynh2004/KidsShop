@@ -4,16 +4,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Fragment.Order_Fragment">
+    tools:context=".Fragment.Invoice_Fragment">
 
     <androidx.appcompat.widget.Toolbar
-        android:background="@color/green"
-        android:id="@+id/toolbar_order"
+        android:id="@+id/toolbar_invoice"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:background="@color/green" />
+
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/RecyclerView_Order"
+        android:id="@+id/RecyclerView_Invoice"
         android:padding="5dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
+
 </LinearLayout>

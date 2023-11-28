@@ -12,21 +12,31 @@
         android:layout_alignParentTop="true"
         android:background="@color/green" />
 
+    <EditText
+        android:padding="15dp"
+        android:drawableLeft="@drawable/baseline_search_24"
+        android:hint="Tìm kiếm sản phẩm bạn cần"
+        android:id="@+id/ed_search_Product"
+        android:layout_below="@id/toolbar_product_admin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView_Product_admin"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/toolbar_product_admin"
+        android:layout_below="@id/ed_search_Product"
         android:padding="5dp" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:src="@drawable/baseline_add_24"
         android:id="@+id/fab_product_admin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginBottom="30dp" />
+        android:layout_marginStart="35dp"
+        android:layout_marginTop="35dp"
+        android:layout_marginEnd="35dp"
+        android:layout_marginBottom="35dp" />
 </RelativeLayout>

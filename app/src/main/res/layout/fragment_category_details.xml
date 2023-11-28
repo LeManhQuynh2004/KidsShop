@@ -6,7 +6,7 @@
     android:orientation="vertical"
     tools:context=".Fragment.CategoryDetailsFragment">
     <androidx.appcompat.widget.Toolbar
-        android:background="@color/blue"
+        android:background="@color/green"
         android:id="@+id/toolbar_category_details"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>

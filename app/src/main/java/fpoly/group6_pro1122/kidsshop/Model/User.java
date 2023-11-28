@@ -8,7 +8,6 @@ public class User {
     private String email;
     private String image;
     private String phone;
-
     private String address;
     private int role;
 

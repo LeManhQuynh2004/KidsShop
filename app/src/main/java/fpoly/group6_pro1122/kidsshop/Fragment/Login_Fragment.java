@@ -58,7 +58,7 @@ public class Login_Fragment extends Fragment {
         tv_signUp = view.findViewById(R.id.tv_signUp);
         userDao = new UserDao(getContext());
         CreateToolbar();
-        chk_remember_account = view.findViewById(R.id.remember_account_login);
+//        chk_remember_account = view.findViewById(R.id.remember_account_login);
         view.findViewById(R.id.sendSigUp).setOnClickListener(view -> {
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new SigUp_Fragment()).commit();
         });
@@ -78,7 +78,7 @@ public class Login_Fragment extends Fragment {
                             role_value = "customer";
                         }
                         Toast.makeText(getContext(), R.string.login_success, Toast.LENGTH_SHORT).show();
-                        rememberUser(email, password, chk_remember_account.isChecked());
+                        rememberUser(email, password);
                         getActivity().startActivity(new Intent(getContext(), MainActivity.class));
                     } else {
                         Toast.makeText(getContext(), "Nhập sai mật khẩu", Toast.LENGTH_SHORT).show();
@@ -106,7 +106,7 @@ public class Login_Fragment extends Fragment {
 //        }
 //    }
 
-    private void rememberUser(String email, String password, boolean checked) {
+    private void rememberUser(String email, String password) {
         SharedPreferences sharedPreferences = getContext().getSharedPreferences("LIST_USER", getContext().MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 //        if (!checked) {
@@ -114,7 +114,6 @@ public class Login_Fragment extends Fragment {
 //        } else {
             editor.putString("EMAIL", email);
             editor.putString("PASSWORD", password);
-            editor.putBoolean("REMEMBER", checked);
 //        }
         editor.commit();
     }

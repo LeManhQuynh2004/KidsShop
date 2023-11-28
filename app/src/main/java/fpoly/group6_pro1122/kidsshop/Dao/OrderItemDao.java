@@ -107,6 +107,45 @@ public class OrderItemDao {
         cursor.close();
         return list;
     }
+    public ArrayList<DetailsOrder> SelectOrderJoin(String order_id) {
+        SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
+        ArrayList<DetailsOrder> list = new ArrayList<>();
+        String dk [] = {order_id};
+        String query = "SELECT " +
+                "Product.product_name, Product.product_price, Product.image, " +
+                "OrderItem.price AS order_item_price, Orders.date, Orders.status, OrderItem.quantity AS soLuong, " +
+                "Orders.payment_id, Orders.shipment_id, Orders.user_id, OrderItem.product_id, " +
+                "OrderItem.order_id, Orders.total_price ,OrderItem.id AS orderItem_id,Orders.time " +
+                "FROM OrderItem " +
+                "INNER JOIN Orders ON OrderItem.order_id = Orders.id " +
+                "INNER JOIN Product ON OrderItem.product_id = Product.id " +
+                "WHERE Orders.id = ?";
+
+        Cursor cursor = sqLiteDatabase.rawQuery(query, dk);
+        if (cursor.getCount() > 0) {
+            while (cursor.moveToNext()) {
+                int id = cursor.getInt(cursor.getColumnIndexOrThrow("orderItem_id"));
+                String productName = cursor.getString(cursor.getColumnIndexOrThrow("product_name"));
+                int productPrice = cursor.getInt(cursor.getColumnIndexOrThrow("product_price"));
+                String image = cursor.getString(cursor.getColumnIndexOrThrow("image"));
+                int orderItemPrice = cursor.getInt(cursor.getColumnIndexOrThrow("order_item_price"));
+                String date = cursor.getString(cursor.getColumnIndexOrThrow("date"));
+                int status = Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow("status")));
+                int quantity = cursor.getInt(cursor.getColumnIndexOrThrow("soLuong"));
+                int paymentId = cursor.getInt(cursor.getColumnIndexOrThrow("payment_id"));
+                int shipmentId = cursor.getInt(cursor.getColumnIndexOrThrow("shipment_id"));
+                int userId = cursor.getInt(cursor.getColumnIndexOrThrow("user_id"));
+                int productId = cursor.getInt(cursor.getColumnIndexOrThrow("product_id"));
+                int orderId = cursor.getInt(cursor.getColumnIndexOrThrow("order_id"));
+                int totalPrice = cursor.getInt(cursor.getColumnIndexOrThrow("total_price"));
+                String time = cursor.getString(cursor.getColumnIndexOrThrow("time"));
+                list.add(new DetailsOrder(id,productName, productPrice, image, orderItemPrice, date, status, quantity,
+                        paymentId, shipmentId, userId, productId, orderId, totalPrice,time));
+            }
+        }
+        cursor.close();
+        return list;
+    }
 
 
     public ArrayList<OrderItem> SelectAll() {

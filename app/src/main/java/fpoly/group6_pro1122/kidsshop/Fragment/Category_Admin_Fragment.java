@@ -21,6 +21,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +40,7 @@ import fpoly.group6_pro1122.kidsshop.Adapter.CategoryAdmin_Adapter;
 import fpoly.group6_pro1122.kidsshop.Dao.CategoryDao;
 import fpoly.group6_pro1122.kidsshop.Intefaces.ItemClickListener;
 import fpoly.group6_pro1122.kidsshop.Model.Category;
+import fpoly.group6_pro1122.kidsshop.Model.Product;
 import fpoly.group6_pro1122.kidsshop.R;
 
 
@@ -51,7 +54,9 @@ public class Category_Admin_Fragment extends Fragment {
     Uri imageUri;
     Button btn_them, btn_huy;
     ArrayList<Category> list = new ArrayList<>();
+    ArrayList<Category> temp_list = new ArrayList<>();
     CategoryAdmin_Adapter adapter;
+    EditText ed_Search;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -65,13 +70,16 @@ public class Category_Admin_Fragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         categoryDao = new CategoryDao(getContext());
         list = categoryDao.getAll();
+        temp_list = categoryDao.getAll();
         toolbar = view.findViewById(R.id.toolbar_category_admin);
+        ed_Search = view.findViewById(R.id.ed_search_Category);
         CreateToolbar();
         recyclerView = view.findViewById(R.id.recyclerView_Category_admin);
         adapter = new CategoryAdmin_Adapter(list, getContext());
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
         btn_add = view.findViewById(R.id.btn_add);
+        SearchCategory();
         btn_add.setOnClickListener(view1 -> {
             showDiaglog(0, null);
         });
@@ -182,5 +190,31 @@ public class Category_Admin_Fragment extends Fragment {
     private void CreateToolbar() {
         ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity) requireActivity()).getSupportActionBar().setTitle("Quản lý thể loại");
+    }
+    private void SearchCategory() {
+        ed_Search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                String query = charSequence.toString();
+                list.clear();
+
+                for (Category category : temp_list) {
+                    if (category.getName().contains(query)) {
+                        list.add(category);
+                    }
+                }
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
     }
 }

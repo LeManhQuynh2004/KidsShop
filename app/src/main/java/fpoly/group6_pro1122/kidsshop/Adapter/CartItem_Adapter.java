@@ -123,14 +123,10 @@ public class CartItem_Adapter extends RecyclerView.Adapter<CartItem_Adapter.Cart
 
             tv_sum.setOnClickListener(view -> {
                 int quantity = cartItem.getQuantity();
-                if (quantity > 1) {
-                    quantity--;
-                    cartItem.setQuantity(quantity);
-                    cartItem.setTotal_price(product.getProduct_price() * quantity);
-                    UpdateDate(cartItem);
-                } else {
-                    Toast.makeText(context, "Không thực hiện được", Toast.LENGTH_SHORT).show();
-                }
+                quantity++;
+                cartItem.setQuantity(quantity);
+                cartItem.setTotal_price(product.getProduct_price() * quantity);
+                UpdateDate(cartItem);
             });
 
             tv_signal.setOnClickListener(view -> {

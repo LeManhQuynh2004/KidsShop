@@ -100,17 +100,17 @@
                 android:layout_height="wrap_content"
                 android:hint="Mật khẩu" />
         </com.google.android.material.textfield.TextInputLayout>
-        <CheckBox
-            android:id="@+id/remember_account_login"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Ghi nhớ tài khoản"
-            android:textColor="#6078F8"
-            android:textColorHint="#6078F8"
-            android:textSize="15dp"
-            android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@+id/textInputLayout2"
-            tools:layout_editor_absoluteX="10dp" />
+<!--        <CheckBox-->
+<!--            android:id="@+id/remember_account_login"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Ghi nhớ tài khoản"-->
+<!--            android:textColor="#6078F8"-->
+<!--            android:textColorHint="#6078F8"-->
+<!--            android:textSize="15dp"-->
+<!--            android:textStyle="bold"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/textInputLayout2"-->
+<!--            tools:layout_editor_absoluteX="10dp" />-->
 
         <Button
             android:id="@+id/bt_login"
@@ -118,10 +118,11 @@
             android:layout_height="wrap_content"
             android:background="@drawable/btn_login"
             android:text="Đăng nhập"
+            android:layout_marginTop="40dp"
             android:textSize="18dp"
             android:textStyle="bold"
             app:backgroundTint="@null"
-            app:layout_constraintTop_toBottomOf="@+id/remember_account_login"
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayout2"
             tools:layout_editor_absoluteX="10dp" />
 
         <TextView

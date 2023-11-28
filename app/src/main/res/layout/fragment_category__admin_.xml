@@ -9,21 +9,30 @@
         android:layout_alignParentTop="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
+    <EditText
+        android:padding="15dp"
+        android:drawableLeft="@drawable/baseline_search_24"
+        android:hint="Tìm kiếm thể loại bạn cần"
+        android:id="@+id/ed_search_Category"
+        android:layout_below="@id/toolbar_category_admin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
     <androidx.recyclerview.widget.RecyclerView
         android:padding="5dp"
-        android:layout_below="@id/toolbar_category_admin"
+        android:layout_below="@id/ed_search_Category"
         android:id="@+id/recyclerView_Category_admin"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:src="@drawable/baseline_add_24"
         android:id="@+id/btn_add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginBottom="30dp" />
+        android:layout_marginStart="35dp"
+        android:layout_marginTop="35dp"
+        android:layout_marginEnd="35dp"
+        android:layout_marginBottom="35dp" />
 </RelativeLayout>

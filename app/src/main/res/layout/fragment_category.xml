@@ -22,7 +22,6 @@
                 android:background="@color/green"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-
 <!--                    <EditText-->
 <!--                        android:layout_width="0dp"-->
 <!--                        android:layout_height="wrap_content"-->
@@ -31,29 +30,6 @@
 <!--                        android:drawableLeft="@drawable/baseline_search_24"-->
 <!--                        android:hint="Tìm kiếm những thứ bạn cần"-->
 <!--                        android:padding="5dp" />-->
-
-                    <FrameLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="7dp"
-                        android:layout_gravity="right">
-
-                        <TextView
-                            android:background="@color/orange"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="right"
-                            android:padding="2dp"
-                            android:text="0"
-                            android:textColor="@color/white"
-                            android:textSize="16dp"
-                            android:textStyle="bold" />
-
-                        <ImageView
-                            android:layout_width="50dp"
-                            android:layout_height="35dp"
-                            android:src="@drawable/shopping" />
-                    </FrameLayout>
             </androidx.appcompat.widget.Toolbar>
 
             <androidx.recyclerview.widget.RecyclerView
