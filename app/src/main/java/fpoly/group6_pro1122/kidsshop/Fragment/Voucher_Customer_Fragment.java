@@ -51,7 +51,7 @@ public class Voucher_Customer_Fragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         voucherCustomerAdapter = new Voucher_Customer_Adapter(getContext(),list);
         if(list.size() == 0){
-            Toast.makeText(getContext(), "Hiện tại bạn chưa sở hữa voucher", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Hiện tại bạn chưa sở hữu voucher", Toast.LENGTH_SHORT).show();
         }
         recyclerView.setAdapter(voucherCustomerAdapter);
         return view;
