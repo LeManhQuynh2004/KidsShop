@@ -3,6 +3,7 @@ package fpoly.group6_pro1122.kidsshop.Adapter;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,11 +11,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -38,6 +42,9 @@ public class Invoice_Adapter extends RecyclerView.Adapter<Invoice_Adapter.Invoic
     ShipmentDao shipmentDao;
     UserDao userDao;
     OrderDao orderDao;
+    boolean hasRunOnceForOneDay = false;
+    boolean hasRunOnceForTwoDay = false;
+    int i = 1;
 
     public static final String TAG = "Invoice_Adapter";
 
@@ -68,7 +75,8 @@ public class Invoice_Adapter extends RecyclerView.Adapter<Invoice_Adapter.Invoic
                 Log.e(TAG, "onBindViewHolder: " + user.getId());
                 Shipment shipment = shipmentDao.SelectID(String.valueOf(detailsOrder.getShipmentID()));
                 holder.tv_date.setText("Ngày đặt hàng: " + detailsOrder.getDate() + " - " + detailsOrder.getTime());
-                holder.tv_order_id.setText("Đơn hàng số: " + detailsOrder.getOrder_id());
+                holder.tv_order_id.setText("Đơn hàng");
+
                 Log.e(TAG, "role: " + user.getRole());
                 Log.e(TAG, "role: " + user.getEmail());
                 if (user.getRole() == 0) {
@@ -103,15 +111,44 @@ public class Invoice_Adapter extends RecyclerView.Adapter<Invoice_Adapter.Invoic
                 } else {
                     holder.tv_payment_item_order_admin.setText("Vận chuyển: Hoãn giao hàng");
                 }
-                String AfterOneDay = date(1);
-                String AfterTwoDay = date(2);
-                Log.e(TAG, "getView: " + AfterOneDay);
-                if (detailsOrder.getDate().equalsIgnoreCase(AfterOneDay)) {
-                    UpdateStatus(1, shipment, order);
-                } else if (detailsOrder.getDate().equalsIgnoreCase(AfterTwoDay)) {
-                    UpdateStatus(2, shipment, order);
+                if (order.getStatus() == 4) {
+                    holder.tv_payment_item_order_admin.setPaintFlags(holder.tv_payment_item_order_admin.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                } else {
+                    holder.tv_payment_item_order_admin.setPaintFlags(holder.tv_payment_item_order_admin.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
                 }
+                String startDate = order.getDate();
 
+                String AfterOneDay = date(1, startDate);
+                String AfterTwoDay = date(2, startDate);
+                Log.e(TAG, "onBindViewHolder: " + detailsOrder.getDate());
+
+                Date currentDate = new Date();
+
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+                String currentDateString = sdf.format(currentDate);
+                Log.e(TAG, "onBindViewHolder: " + currentDateString);
+
+                try {
+                    hasRunOnceForOneDay = false;
+                    hasRunOnceForTwoDay = false;
+
+                    if (!hasRunOnceForOneDay && currentDateString.equalsIgnoreCase(AfterOneDay)) {
+                        if (order.getStatus() != 4) {
+                            UpdateStatus(1, shipment, order);
+                            Log.e(TAG, "onBindViewHolder: " + order.getStatus());
+                            hasRunOnceForOneDay = true;
+                        }
+                    } else if (!hasRunOnceForTwoDay && currentDateString.equalsIgnoreCase(AfterTwoDay)) {
+                        if (order.getStatus() != 4) {
+                            UpdateStatus(2, shipment, order);
+                            Log.e(TAG, "onBindViewHolder: +True");
+                            hasRunOnceForTwoDay = true;
+                        }
+                    }
+                } catch (Exception e) {
+                    Log.e(TAG, "onBindViewHolder: " + e);
+                    Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show();
+                }
                 if (detailsOrder.getStatus() == 0) {
                     holder.tv_status.setText("Trạng thái: Chờ xác nhận");
                 } else if (detailsOrder.getStatus() == 1) {
@@ -123,9 +160,10 @@ public class Invoice_Adapter extends RecyclerView.Adapter<Invoice_Adapter.Invoic
                     holder.tv_status.setTextColor(Color.BLACK);
                     holder.tv_status.setText("Trạng thái: Đã hủy");
                 }
+                Log.e(TAG, "Order_id: " + detailsOrder.getStatus());
+                Log.e(TAG, "Shipment_id: " + shipment.getStatus());
             }
         }
-
     }
 
     private void UpdateStatus(int i, Shipment shipment, Order order) {
@@ -133,7 +171,6 @@ public class Invoice_Adapter extends RecyclerView.Adapter<Invoice_Adapter.Invoic
         order.setStatus(i);
         shipmentDao.updateData(shipment);
         orderDao.updateData(order);
-        notifyDataSetChanged();
     }
 
     @Override
@@ -157,14 +194,17 @@ public class Invoice_Adapter extends RecyclerView.Adapter<Invoice_Adapter.Invoic
         }
     }
 
-    private String date(int day) {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-        Date currentDate = new Date();
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(currentDate);
-        calendar.add(Calendar.DAY_OF_MONTH, day);
-        Date newDate = calendar.getTime();
-        String newDateString = sdf.format(newDate);
+    private String date(int day, String startDate) {
+        DateTimeFormatter formatter = null;
+        LocalDate localDate = null;
+        LocalDate newDate = null;
+        String newDateString = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            localDate = LocalDate.parse(startDate, formatter);
+            newDate = localDate.plusDays(day);
+            newDateString = newDate.format(formatter);
+        }
         return newDateString;
     }
 }

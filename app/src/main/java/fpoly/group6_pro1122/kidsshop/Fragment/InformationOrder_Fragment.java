@@ -50,13 +50,10 @@ public class InformationOrder_Fragment extends Fragment {
     Details_Adapter detailsAdapter;
     Toolbar toolbar;
     OrderDao orderDao;
+    Shipment shipment;
     RecyclerView recyclerView;
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_information_order, container, false);
+    private void MinMap() {
         tv_status = view.findViewById(R.id.tv_status_details);
         tv_content = view.findViewById(R.id.tv_content_details);
         tv_date = view.findViewById(R.id.tv_date_details);
@@ -73,14 +70,20 @@ public class InformationOrder_Fragment extends Fragment {
         orderDao = new OrderDao(getContext());
         toolbar = view.findViewById(R.id.toolbar_details);
         bt_Cancle = view.findViewById(R.id.bt_cancel_order);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        view = inflater.inflate(R.layout.fragment_information_order, container, false);
+        MinMap();
         ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity) requireActivity()).getSupportActionBar().setTitle("Chi tiết đơn hàng");
         ((AppCompatActivity) requireActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationOnClickListener(v -> {
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Home_Fragment()).commit();
         });
-
-
         Bundle bundle = getArguments();
         if (bundle != null) {
             DetailsOrder detailsOrder = (DetailsOrder) bundle.getSerializable("details_order");
@@ -110,8 +113,8 @@ public class InformationOrder_Fragment extends Fragment {
             recyclerView.setAdapter(detailsAdapter);
             Payment payment = paymentDao.SelectID(String.valueOf(detailsOrder.getPaymentID()));
             tv_payment.setText(payment.getType());
-            Shipment shipment = shipmentDao.SelectID(String.valueOf(detailsOrder.getShipmentID()));
-            Log.e("TAG", "onCreateView: "+shipment.getStatus());
+            shipment = shipmentDao.SelectID(String.valueOf(detailsOrder.getShipmentID()));
+
             if (shipment.getStatus() == 0) {
                 tv_shipment_details.setText("Đang chuẩn bị hàng");
             } else if (shipment.getStatus() == 1) {
@@ -121,6 +124,8 @@ public class InformationOrder_Fragment extends Fragment {
             } else {
                 tv_shipment_details.setText("Hoãn giao hàng");
             }
+            Log.e("TAG", "onCreateView: "+shipment.getStatus());
+
             bt_Cancle.setOnClickListener(view1 -> {
                 Order order = orderDao.SelectID(String.valueOf(detailsOrder.getOrder_id()));
                 order.setStatus(4);

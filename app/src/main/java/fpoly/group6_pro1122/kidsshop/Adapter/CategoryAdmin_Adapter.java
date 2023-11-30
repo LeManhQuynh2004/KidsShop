@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.sqlite.SQLiteConstraintException;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -39,10 +40,11 @@ public class CategoryAdmin_Adapter extends RecyclerView.Adapter<CategoryAdmin_Ad
     ImageView imageView;
     Uri imageUri;
 
-    public void setImageUri(Uri uri){
+    public void setImageUri(Uri uri) {
         this.imageUri = uri;
         notifyDataSetChanged();
     }
+
     Category_Admin_Fragment admin_fragment;
 
 
@@ -95,12 +97,15 @@ public class CategoryAdmin_Adapter extends RecyclerView.Adapter<CategoryAdmin_Ad
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 int id = list.get(position).getCategory_id();
-                boolean check = categoryDao.deleteTL(id);
-                if (check) {
-                    list.remove(position);
-                    Toast.makeText(context, R.string.delete_success, Toast.LENGTH_SHORT).show();
-                    notifyDataSetChanged();
-                } else {
+                try {
+                    if (categoryDao.deleteTL(id)) {
+                        list.remove(position);
+                        Toast.makeText(context, R.string.delete_success, Toast.LENGTH_SHORT).show();
+                        notifyDataSetChanged();
+                    } else {
+                        Toast.makeText(context, R.string.delete_not_success, Toast.LENGTH_SHORT).show();
+                    }
+                } catch (SQLiteConstraintException e) {
                     Toast.makeText(context, R.string.delete_not_success, Toast.LENGTH_SHORT).show();
                 }
             }

@@ -98,7 +98,7 @@ public class ShipmentDao {
                 int status = Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_STATUS)));
                 int user_id = Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_USER_ID)));
 //              public Shipment(int id, String date, String city, String district, String address, int status, int address_type, int user_id) {
-                list.add(new Shipment(id,name,phone, date, city, district, address, status, address_type, user_id));
+                list.add(new Shipment(id, name, phone, date, city, district, address, status, address_type, user_id));
             }
         }
         return list;
@@ -108,16 +108,34 @@ public class ShipmentDao {
         String query = "SELECT * FROM " + TABLE_NAME;
         return getAll(query);
     }
+
+    public ArrayList<Shipment> SelectAllUser(String user_id) {
+        String query = "SELECT * FROM Shipment WHERE user_id = ?";
+        return getAll(query, user_id);
+    }
+
+    public ArrayList<Shipment> SelectUser(String user_id) {
+        String query = "SELECT * FROM Shipment WHERE user_id = ?";
+        ArrayList<Shipment> list = getAll(query, user_id);
+        return list;
+    }
+
     public ArrayList<Shipment> Select_Shipment(int id) {
         String query = "SELECT * FROM Shipment WHERE id = ?";
         return getAll(query, String.valueOf(id));
     }
+
+    public ArrayList<Shipment> Select_Shipment_User(int id, int user_id) {
+        String query = "SELECT * FROM Shipment WHERE id = ? AND user_id = ?";
+        return getAll(query, String.valueOf(id), String.valueOf(user_id));
+    }
+
     public Shipment SelectID(String id) {
         String query = "SELECT * FROM Shipment WHERE id = ?";
         ArrayList<Shipment> list = getAll(query, id);
-        if(!list.isEmpty()){
+        if (!list.isEmpty()) {
             return list.get(0);
-        }else{
+        } else {
             return null;
         }
     }

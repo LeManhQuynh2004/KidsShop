@@ -32,7 +32,6 @@ import fpoly.group6_pro1122.kidsshop.Model.CartItem;
 import fpoly.group6_pro1122.kidsshop.Intefaces.OnChange_Price;
 import fpoly.group6_pro1122.kidsshop.Model.User;
 import fpoly.group6_pro1122.kidsshop.R;
-
 public class CartFragment extends Fragment {
     View view;
     CartItemDao cartItemDao;
@@ -72,6 +71,7 @@ public class CartFragment extends Fragment {
             User user = userDao.SelectID(email);
             if (user != null) {
                 list = cartItemDao.SelectUser(String.valueOf(user.getId()));
+                Log.e(TAG, "onCreateView: "+list.size());
                 cartItemAdapter = new CartItem_Adapter(getContext(), list);
                 recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                 recyclerView.setAdapter(cartItemAdapter);

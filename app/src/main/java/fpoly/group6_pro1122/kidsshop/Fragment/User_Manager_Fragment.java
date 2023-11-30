@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -13,8 +14,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 
@@ -42,6 +47,7 @@ public class User_Manager_Fragment extends Fragment {
         toolbar = view.findViewById(R.id.toolbar_ql_user);
         recyclerView = view.findViewById(R.id.recyclerView_ql_user);
         userDao = new UserDao(getContext());
+        CreateToolbar();
 
         SharedPreferences sharedPreferences = getContext().getSharedPreferences("LIST_USER", Context.MODE_PRIVATE);
         String email = sharedPreferences.getString("EMAIL","");
@@ -58,5 +64,17 @@ public class User_Manager_Fragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
 
+    }
+    private void CreateToolbar() {
+        ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity) requireActivity()).getSupportActionBar().setTitle("Quản Lý Người Dùng");
+        ((AppCompatActivity) requireActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationOnClickListener(v -> {
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PersonalInf_Fragment()).commit();
+            BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.BottomNavigationView);
+            Menu menu = bottomNavigationView.getMenu();
+            MenuItem menuItem = menu.findItem(R.id.menu_account);
+            menuItem.setChecked(true);
+        });
     }
 }

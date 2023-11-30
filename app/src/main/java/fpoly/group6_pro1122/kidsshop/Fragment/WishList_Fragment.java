@@ -101,12 +101,12 @@ public class WishList_Fragment extends Fragment {
                                     cartItem.setTotal_price(1 * product.getProduct_price());
                                     cartItemDao.insertData(cartItem);
                                     wishListDao.deleteData(item);
+                                    Toast.makeText(getContext(), R.string.add_success, Toast.LENGTH_SHORT).show();
                                 } else {
                                     Toast.makeText(getContext(), "Sản phẩm đã có trong giỏ hàng", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         }
-                        Toast.makeText(getContext(), R.string.add_success, Toast.LENGTH_SHORT).show();
                         wishListAdapter.notifyDataSetChanged();
                         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new WishList_Fragment()).commit();
                     }

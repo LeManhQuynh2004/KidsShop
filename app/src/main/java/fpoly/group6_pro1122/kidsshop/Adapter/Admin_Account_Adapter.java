@@ -17,16 +17,19 @@ import fpoly.group6_pro1122.kidsshop.Fragment.Invoice_Fragment;
 import fpoly.group6_pro1122.kidsshop.Fragment.Product_Admin_Fragment;
 import fpoly.group6_pro1122.kidsshop.Fragment.Revenue_Statistics_Fragment;
 import fpoly.group6_pro1122.kidsshop.Fragment.StatisticalFragment;
+import fpoly.group6_pro1122.kidsshop.Fragment.User_Manager_Fragment;
 import fpoly.group6_pro1122.kidsshop.Fragment.Voucher_Admin_Fragment;
 import fpoly.group6_pro1122.kidsshop.MainActivity;
 import fpoly.group6_pro1122.kidsshop.Model.AccountItem;
 import fpoly.group6_pro1122.kidsshop.R;
 
-public class Admin_Account_Adapter extends BaseAccount_Adapter{
+public class Admin_Account_Adapter extends BaseAccount_Adapter {
     Fragment fragment = null;
+
     public Admin_Account_Adapter(Context context, ArrayList<AccountItem> list) {
         super(context, list);
     }
+
     public void addNewItem(AccountItem newItem) {
         list.add(newItem);
         notifyDataSetChanged();
@@ -42,23 +45,23 @@ public class Admin_Account_Adapter extends BaseAccount_Adapter{
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         super.onBindViewHolder(holder, position);
         AccountItem accountItem = list.get(position);
-        holder.itemView.setOnClickListener(v->{
-            if (accountItem.getTenChucNang().equalsIgnoreCase("Quản Lý Sản Phẩm")){
+        holder.itemView.setOnClickListener(v -> {
+            if (accountItem.getTenChucNang().equalsIgnoreCase("Quản Lý Sản Phẩm")) {
                 fragment = new Product_Admin_Fragment();
             } else if (accountItem.getTenChucNang().equalsIgnoreCase("Quản Lý Thể Loại")) {
                 fragment = new Category_Admin_Fragment();
             } else if (accountItem.getTenChucNang().equalsIgnoreCase("Thiết Lập Tài Khoản")) {
                 fragment = new Product_Admin_Fragment();
-            }else if(accountItem.getTenChucNang().equalsIgnoreCase("Quản lý Mã Giảm Giá")){
+            } else if (accountItem.getTenChucNang().equalsIgnoreCase("Quản lý Mã Giảm Giá")) {
                 fragment = new Voucher_Admin_Fragment();
-            }else if(accountItem.getTenChucNang().equalsIgnoreCase("Thống kê doanh thu")){
+            } else if (accountItem.getTenChucNang().equalsIgnoreCase("Thống kê doanh thu")) {
                 fragment = new Revenue_Statistics_Fragment();
-            }else if(accountItem.getTenChucNang().equalsIgnoreCase("Thống kê sản phẩm bán chạy")){
+            } else if (accountItem.getTenChucNang().equalsIgnoreCase("Thống kê sản phẩm bán chạy")) {
                 fragment = new StatisticalFragment();
-            }else {
-                fragment = new Invoice_Fragment();
+            } else if (accountItem.getTenChucNang().equalsIgnoreCase("quản lý người dùng")){
+                fragment = new User_Manager_Fragment();
             }
-            ((MainActivity)context).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,fragment).commit();
+            ((MainActivity) context).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
         });
     }
 }

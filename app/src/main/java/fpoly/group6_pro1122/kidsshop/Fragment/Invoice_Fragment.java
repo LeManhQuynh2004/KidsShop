@@ -1,5 +1,6 @@
 package fpoly.group6_pro1122.kidsshop.Fragment;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -8,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,8 +22,10 @@ import java.util.ArrayList;
 
 import fpoly.group6_pro1122.kidsshop.Adapter.Invoice_Adapter;
 import fpoly.group6_pro1122.kidsshop.Dao.OrderItemDao;
+import fpoly.group6_pro1122.kidsshop.Dao.UserDao;
 import fpoly.group6_pro1122.kidsshop.Model.DetailsOrder;
 import fpoly.group6_pro1122.kidsshop.Model.OrderItem;
+import fpoly.group6_pro1122.kidsshop.Model.User;
 import fpoly.group6_pro1122.kidsshop.R;
 
 public class Invoice_Fragment extends Fragment {
@@ -31,6 +35,8 @@ public class Invoice_Fragment extends Fragment {
     RecyclerView recyclerView;
     Invoice_Adapter invoiceAdapter;
     Toolbar toolbar;
+    public static final String TAG = "Invoice_Fragment";
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -41,11 +47,12 @@ public class Invoice_Fragment extends Fragment {
         CreateToolbar();
         orderItemDao = new OrderItemDao(getContext());
         list = orderItemDao.SelectAllJoin();
-        invoiceAdapter = new Invoice_Adapter(getContext(),list);
+        invoiceAdapter = new Invoice_Adapter(getContext(), list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(invoiceAdapter);
         return view;
     }
+
     private void CreateToolbar() {
         ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity) requireActivity()).getSupportActionBar().setTitle("Đơn hàng");

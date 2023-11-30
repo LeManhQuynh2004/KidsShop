@@ -104,7 +104,6 @@ public class Payment_Fragment extends Fragment {
         paymentDao = new PaymentDao(getContext());
         userDao = new UserDao(getContext());
         shipmentDao = new ShipmentDao(getContext());
-        list_shipment = shipmentDao.SelectAll();
         orderDao = new OrderDao(getContext());
         productDao = new ProductDao(getContext());
         orderItemDao = new OrderItemDao(getContext());
@@ -116,6 +115,10 @@ public class Payment_Fragment extends Fragment {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_payment, container, false);
         MinMap();
+        if (email != null) {
+            User user = userDao.SelectID(email);
+            list_shipment = shipmentDao.SelectAllUser(String.valueOf(user.getId()));
+        }
         Bundle bundle = getArguments();
         if (bundle != null) {
             voucher = (Voucher) bundle.getSerializable("voucher");
@@ -165,7 +168,7 @@ public class Payment_Fragment extends Fragment {
                     order.setPayment_id(1);
                     order.setStatus(0);
                     order.setTotal_price(total_price - discount);
-                    order.setShipment_id(shipment_id);
+                    order.setShipment_id(shipment1.getId());
                     Calendar calendar = Calendar.getInstance();
                     hour = calendar.get(Calendar.HOUR_OF_DAY);
                     minute = calendar.get(Calendar.MINUTE);
@@ -176,11 +179,11 @@ public class Payment_Fragment extends Fragment {
                     shipment1.setStatus(0);
                     shipmentDao.updateData(shipment1);
                     order.setDate(date);
-
                     Toast.makeText(getContext(), String.valueOf(total_price - discount), Toast.LENGTH_SHORT).show();
 
                     if (orderDao.insertData(order)) {
                         Toast.makeText(getContext(), "Đặt hàng thành công", Toast.LENGTH_SHORT).show();
+
                         if (voucher_id != 0) {
                             Voucher voucherFinish = voucherDao.SelectID(String.valueOf(voucher_id));
                             voucherDao.deleteData(voucherFinish);
@@ -222,21 +225,31 @@ public class Payment_Fragment extends Fragment {
         if (bundle != null) {
             shipment = (Shipment) bundle.getSerializable("shipment");
             if (shipment != null) {
-                shipment_id = shipment.getId();
-                list = shipmentDao.Select_Shipment(shipment_id);
-                shipmentSelectAdapter = new Shipment_Payment_Adapter(getContext(), list);
-                listView.setAdapter(shipmentSelectAdapter);
+                if (email != null) {
+                    User user = userDao.SelectID(email);
+                    shipment_id = shipment.getId();
+                    list = shipmentDao.Select_Shipment_User(shipment_id, user.getId());
+                    shipmentSelectAdapter = new Shipment_Payment_Adapter(getContext(), list);
+                    listView.setAdapter(shipmentSelectAdapter);
+                }
             }
         }
     }
-
     private void CreateListViewShipment() {
-        shipment_id = 1;
-        list = shipmentDao.Select_Shipment(1);
-        shipmentSelectAdapter = new Shipment_Payment_Adapter(getContext(), list);
-        listView.setAdapter(shipmentSelectAdapter);
+        if (email != null) {
+            User user = userDao.SelectID(email);
+            list = shipmentDao.SelectUser(String.valueOf(user.getId()));
+            Log.e(TAG, "CreateListViewShipment: " + user.getId());
+            Log.e(TAG, "CreateListViewShipment: " + list.size());
+            ArrayList<Shipment> singleItemList = new ArrayList<>();
+            if (!list.isEmpty()) {
+                singleItemList.add(list.get(0));
+                shipment_id = list.get(0).getId();
+            }
+            shipmentSelectAdapter = new Shipment_Payment_Adapter(getContext(), singleItemList);
+            listView.setAdapter(shipmentSelectAdapter);
+        }
     }
-
     private void CreateToolbar() {
         ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity) requireActivity()).getSupportActionBar().setTitle("Thanh toán");
@@ -258,6 +271,7 @@ public class Payment_Fragment extends Fragment {
 
     private void CreateListViewCartItem() {
         list_cartItem = cartItemDao.SelectPay(1);
+        Log.e(TAG, "CreateListViewCartItem: "+list_cartItem.size());
         for (int i = 0; i < list_cartItem.size(); i++) {
             total_price += list_cartItem.get(i).getTotal_price();
             Product product = productDao.SelectID(String.valueOf(list_cartItem.get(i).getProduct_id()));

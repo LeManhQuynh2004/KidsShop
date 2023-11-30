@@ -2,6 +2,7 @@ package fpoly.group6_pro1122.kidsshop.Adapter;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.database.sqlite.SQLiteConstraintException;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -99,11 +100,15 @@ public class Product_Admin_Adapter extends RecyclerView.Adapter<Product_Admin_Ad
         builder.setPositiveButton("Xóa", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                if (productDao.deleteData(product)) {
-                    Toast.makeText(context, R.string.delete_success, Toast.LENGTH_SHORT).show();
-                    list.remove(position);
-                    notifyDataSetChanged();
-                } else {
+                try {
+                    if (productDao.deleteData(product)) {
+                        Toast.makeText(context, R.string.delete_success, Toast.LENGTH_SHORT).show();
+                        list.remove(position);
+                        notifyDataSetChanged();
+                    } else {
+                        Toast.makeText(context, R.string.delete_not_success, Toast.LENGTH_SHORT).show();
+                    }
+                } catch (SQLiteConstraintException e) {
                     Toast.makeText(context, R.string.delete_not_success, Toast.LENGTH_SHORT).show();
                 }
             }

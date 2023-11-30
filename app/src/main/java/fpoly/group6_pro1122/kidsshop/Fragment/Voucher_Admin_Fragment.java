@@ -28,6 +28,7 @@ import java.util.Locale;
 
 import fpoly.group6_pro1122.kidsshop.Adapter.Voucher_Admin_Adapter;
 import fpoly.group6_pro1122.kidsshop.Dao.VoucherDao;
+import fpoly.group6_pro1122.kidsshop.Intefaces.ItemClickListener;
 import fpoly.group6_pro1122.kidsshop.Model.Category;
 import fpoly.group6_pro1122.kidsshop.Model.Voucher;
 import fpoly.group6_pro1122.kidsshop.R;
@@ -63,6 +64,13 @@ public class Voucher_Admin_Fragment extends Fragment {
         view.findViewById(R.id.fab_add_voucher).setOnClickListener(view1 -> {
             ShowDialogAddOrEditVoucher(0, null);
         });
+        voucherAdminAdapter.setItemClickListener(new ItemClickListener() {
+            @Override
+            public void UpdateItem(int position) {
+                Voucher voucher = list.get(position);
+                ShowDialogAddOrEditVoucher(1, voucher);
+            }
+        });
         return view;
     }
 
@@ -77,6 +85,10 @@ public class Voucher_Admin_Fragment extends Fragment {
         img_date.setOnClickListener(view1 -> {
             showDatePickerDialog(ed_endDate);
         });
+        if (type == 1) {
+            ed_discount.setText(voucher.getDiscount_amount() + "");
+            ed_endDate.setText(voucher.getExpiration_date());
+        }
 
         dialogView.findViewById(R.id.bt_add_dialog_voucher).setOnClickListener(view1 -> {
             String code = "Tẩt cả hình thức";
@@ -84,6 +96,7 @@ public class Voucher_Admin_Fragment extends Fragment {
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
             String date = sdf.format(new Date());
             String end = ed_endDate.getText().toString().trim();
+
             if (ValidateForm(discount, date, end)) {
                 if (type == 0) {
                     Voucher voucherNew = new Voucher();
@@ -106,6 +119,7 @@ public class Voucher_Admin_Fragment extends Fragment {
                     if (voucherDao.updateData(voucher)) {
                         Toast.makeText(getContext(), R.string.update_success, Toast.LENGTH_SHORT).show();
                         updateUI();
+                        alertDialog.dismiss();
                     } else {
                         Toast.makeText(getContext(), R.string.update_not_success, Toast.LENGTH_SHORT).show();
                     }
@@ -166,6 +180,7 @@ public class Voucher_Admin_Fragment extends Fragment {
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
             }
+
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 String query = charSequence.toString();
