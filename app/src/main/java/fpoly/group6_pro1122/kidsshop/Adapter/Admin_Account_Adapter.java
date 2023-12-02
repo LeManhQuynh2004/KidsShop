@@ -60,6 +60,8 @@ public class Admin_Account_Adapter extends BaseAccount_Adapter {
                 fragment = new StatisticalFragment();
             } else if (accountItem.getTenChucNang().equalsIgnoreCase("quản lý người dùng")){
                 fragment = new User_Manager_Fragment();
+            }else{
+                fragment = new Invoice_Fragment();
             }
             ((MainActivity) context).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
         });

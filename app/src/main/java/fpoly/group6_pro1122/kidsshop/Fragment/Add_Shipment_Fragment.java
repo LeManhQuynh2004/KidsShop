@@ -60,7 +60,8 @@ public class Add_Shipment_Fragment extends Fragment {
     private boolean isAddress(String str) {
         return str.matches("[a-z A-Z 0-9]+");
     }
-    private void MinMap(){
+
+    private void MinMap() {
         toolbar = view.findViewById(R.id.toolbar_add_shipment);
         ed_name = view.findViewById(R.id.ed_name_add_shipment);
         ed_Phone_number = view.findViewById(R.id.ed_phone_add_shipment);
@@ -86,10 +87,8 @@ public class Add_Shipment_Fragment extends Fragment {
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
                 if (i == R.id.rd_address_type_1) {
                     result = 0;
-                    Toast.makeText(getContext(), "1", Toast.LENGTH_SHORT).show();
                 } else if (i == R.id.rd_address_type_2) {
                     result = 1;
-                    Toast.makeText(getContext(), "2", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getContext(), "Vui lòng không bỏ trống", Toast.LENGTH_SHORT).show();
                 }

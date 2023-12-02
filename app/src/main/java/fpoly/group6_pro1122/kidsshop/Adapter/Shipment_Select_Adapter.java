@@ -58,6 +58,7 @@ public class Shipment_Select_Adapter extends BaseAdapter{
             shipmentViewHolder.tv_information = view.findViewById(R.id.tv_information_shipment2);
             shipmentViewHolder.tv_address = view.findViewById(R.id.tv_address_shipment2);
             shipmentViewHolder.chk_select = view.findViewById(R.id.chk_select_shipment);
+            shipmentViewHolder.tv_Update = view.findViewById(R.id.tv_update_shipment);
             view.setTag(shipmentViewHolder);
         } else {
             shipmentViewHolder = (ShipmentViewHolder) view.getTag();
@@ -77,6 +78,9 @@ public class Shipment_Select_Adapter extends BaseAdapter{
                         .replace(R.id.fragment_container, paymentFragment)
                         .commit();
             }
+        });
+        shipmentViewHolder.tv_Update.setOnClickListener(view1 -> {
+
         });
         return view;
     }

@@ -48,7 +48,7 @@ public class Home_Fragment extends Fragment {
     UserDao userDao;
     CartItemDao cartItemDao;
     ArrayList<CartItem> list_CartItem = new ArrayList<>();
-    TextView txt_quantity;
+    TextView txt_quantity,tv_ShowAllProduct;
     Product_Customer_Adapter productCustomerAdapter, productCustomerAdapter_new, productCustomerAdapter_discount;
     int[] imageResIds = {R.drawable.banner1, R.drawable.banner2, R.drawable.banner3, R.drawable.banner4};
 
@@ -58,6 +58,7 @@ public class Home_Fragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_home, container, false);
         recyclerView_new = view.findViewById(R.id.recyclerView_Product_new);
         userDao = new UserDao(getContext());
+        tv_ShowAllProduct = view.findViewById(R.id.tv_ShowAllProduct);
         recyclerView_discount = view.findViewById(R.id.recyclerView_Product_discount);
         recyclerView_suggest = view.findViewById(R.id.recyclerView_Product_suggest);
         productDao = new ProductDao(getContext());
@@ -68,6 +69,9 @@ public class Home_Fragment extends Fragment {
             Menu menu = bottomNavigationView.getMenu();
             MenuItem menuItem = menu.findItem(R.id.menu_bag);
             menuItem.setChecked(true);
+        });
+        tv_ShowAllProduct.setOnClickListener(view1 -> {
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new ShowAllProduct()).commit();
         });
         list_product = productDao.SelectAll();
         list_product_new = productDao.SelectAllNew(1);

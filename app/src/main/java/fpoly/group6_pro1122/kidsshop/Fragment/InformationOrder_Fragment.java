@@ -52,6 +52,7 @@ public class InformationOrder_Fragment extends Fragment {
     OrderDao orderDao;
     Shipment shipment;
     RecyclerView recyclerView;
+    Order order;
 
     private void MinMap() {
         tv_status = view.findViewById(R.id.tv_status_details);
@@ -87,6 +88,7 @@ public class InformationOrder_Fragment extends Fragment {
         Bundle bundle = getArguments();
         if (bundle != null) {
             DetailsOrder detailsOrder = (DetailsOrder) bundle.getSerializable("details_order");
+            order = orderDao.SelectID(String.valueOf(detailsOrder.getOrder_id()));
             if (detailsOrder.getStatus() == 0) {
                 tv_status.setText("Chờ xác nhận");
                 tv_content.setText("Đang chờ hệ thống xác nhận đơn hàng . Trong thời gian này , bạn có thể liên hệ với Người bán để xác nhận thêm thông tind đơn hàng nhé.");
@@ -115,19 +117,22 @@ public class InformationOrder_Fragment extends Fragment {
             tv_payment.setText(payment.getType());
             shipment = shipmentDao.SelectID(String.valueOf(detailsOrder.getShipmentID()));
 
-            if (shipment.getStatus() == 0) {
+            if (order.getStatus() == 0) {
                 tv_shipment_details.setText("Đang chuẩn bị hàng");
-            } else if (shipment.getStatus() == 1) {
+            } else if (order.getStatus() == 1) {
                 tv_shipment_details.setText("Đang vận chuyển");
-            } else if (shipment.getStatus() == 2) {
+            } else if (order.getStatus() == 2) {
                 tv_shipment_details.setText("Giao hàng thành công");
             } else {
                 tv_shipment_details.setText("Hoãn giao hàng");
             }
             Log.e("TAG", "onCreateView: "+shipment.getStatus());
-
+            if(order.getStatus() == 2){
+                bt_Cancle.setText("Thành công");
+                bt_Cancle.setEnabled(false);
+            }
             bt_Cancle.setOnClickListener(view1 -> {
-                Order order = orderDao.SelectID(String.valueOf(detailsOrder.getOrder_id()));
+
                 order.setStatus(4);
                 shipment.setStatus(4);
                 if (orderDao.updateData(order)) {

@@ -10,7 +10,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="#E1E1E1" />
+        android:background="@color/green" />
 
     <LinearLayout
         android:layout_width="match_parent"

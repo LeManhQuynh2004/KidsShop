@@ -57,6 +57,7 @@ public class Details_Fragment extends Fragment {
     ImageView img_product;
     CartItem_Adapter cartItemAdapter;
     ArrayList<CartItem> list = new ArrayList<>();
+    ArrayList<CartItem> list_cartItem = new ArrayList<>();
     ArrayList<Evaluation> list_evaluation_All = new ArrayList<>();
     ArrayList<Evaluation> list_evaluation = new ArrayList<>();
     ImageView img_wishlist;
@@ -88,10 +89,8 @@ public class Details_Fragment extends Fragment {
         tv_sum = view.findViewById(R.id.bt_sum_quantity_details);
         tv_showAll = view.findViewById(R.id.showAllDescribe);
         cartItemDao = new CartItemDao(getContext());
-        list = cartItemDao.SelectAll();
         img_product = view.findViewById(R.id.img_details);
         list = cartItemDao.SelectAll();
-        tv_quantity.setText(list.size() + "");
         wishListDao = new WishListDao(getContext());
         cartItemAdapter = new CartItem_Adapter(getContext(), list);
         isCheck = false;
@@ -221,9 +220,26 @@ public class Details_Fragment extends Fragment {
                 }
             }
         });
+        ShowQuantityCartItem();
         return view;
     }
 
+    private void ShowQuantityCartItem() {
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences("LIST_USER", getContext().MODE_PRIVATE);
+        String email = sharedPreferences.getString("EMAIL", "");
+        Log.e(TAG, "ShowQuantityCartItem: " + email);
+        if (email.equals("")) {
+            tv_quantity.setText(0+"");
+        } else {
+            User user = userDao.SelectID(email);
+            if (user != null) {
+                cartItemDao = new CartItemDao(getContext());
+                list_cartItem = cartItemDao.SelectUser(String.valueOf(user.getId()));
+                Log.e(TAG, "ShowQuantityCartItem: "+list_cartItem.size());
+                tv_quantity.setText(list_cartItem.size() + "");
+            }
+        }
+    }
     private void CreateComment() {
         ArrayList<Integer> listStart = new ArrayList<>();
         listStart.add(1);
@@ -277,7 +293,7 @@ public class Details_Fragment extends Fragment {
                             Toast.makeText(getContext(), "Đăng bình luận thành công", Toast.LENGTH_SHORT).show();
                             list_evaluation.add(evaluation);
                             ed_comment_Evaluation.setText("");
-                            spinner_Evaluation.setSelection(1);
+                            spinner_Evaluation.setSelection(0);
                             evaluationAdapter.notifyDataSetChanged();
                         } else {
                             Toast.makeText(getContext(), "Đăng bình luận thất bại", Toast.LENGTH_SHORT).show();

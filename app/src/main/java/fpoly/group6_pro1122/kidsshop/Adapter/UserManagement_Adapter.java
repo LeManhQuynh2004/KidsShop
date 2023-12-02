@@ -68,59 +68,59 @@ public class UserManagement_Adapter extends RecyclerView.Adapter<UserManagement_
         holder.btn_xoa.setOnClickListener(v -> {
             DeleteUser(position);
         });
-        holder.btn_sua.setOnClickListener(v -> {
-            UpdateUser(position);
-        });
+//        holder.btn_sua.setOnClickListener(v -> {
+//            UpdateUser(position);
+//        });
     }
 
-    private void UpdateUser(int position) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_sua_user, null);
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setView(view);
-        AlertDialog alertDialog = builder.create();
-        edt_ten = view.findViewById(R.id.edt_name_user);
-        edt_email = view.findViewById(R.id.edt_email_user);
-        img_anh = view.findViewById(R.id.img_user);
-        btn_save = view.findViewById(R.id.btn_save_user);
-        btn_cancel = view.findViewById(R.id.btn_cancel_user);
-        User user = list.get(position);
-        edt_ten.setText(user.getFullname());
-        edt_email.setText(user.getEmail());
-        Glide.with(context).load(user.getImage()).placeholder(R.drawable.anhdaidien).into(img_anh);
-        btn_save.setOnClickListener(v -> {
-            if (edt_ten.getText().toString().isEmpty() || edt_email.getText().toString().isEmpty()) {
-                Toast.makeText(context, "Vui lòng không bỏ trống", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            if (!isFullName(edt_ten.getText().toString().trim())){
-                Toast.makeText(context, "Sai định dạng họ tên", Toast.LENGTH_SHORT).show();
-                edt_ten.requestFocus();
-                return;
-            }
-            if (!isEmail(edt_email.getText().toString().trim())){
-                Toast.makeText(context, "Sai định dạng email", Toast.LENGTH_SHORT).show();
-                edt_email.requestFocus();
-                return;
-            }
-            String name = edt_ten.getText().toString().trim();
-            String email = edt_email.getText().toString().trim();
-            User userNew = new User(user.getId(), user.getPassword(), name, email, user.getImage(), user.getPhone(), user.getAddress(), user.getRole());
-            userDao = new UserDao(context);
-            if (userDao.updateData(userNew)) {
-               list.set(position,userNew);
-                notifyDataSetChanged();
-                Toast.makeText(context, R.string.update_success, Toast.LENGTH_SHORT).show();
-                alertDialog.dismiss();
-            } else {
-                Toast.makeText(context, R.string.update_not_success, Toast.LENGTH_SHORT).show();
-            }
-        });
-        btn_cancel.setOnClickListener(v -> {
-            alertDialog.dismiss();
-        });
-        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        alertDialog.show();
-    }
+//    private void UpdateUser(int position) {
+//        View view = LayoutInflater.from(context).inflate(R.layout.item_sua_user, null);
+//        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+//        builder.setView(view);
+//        AlertDialog alertDialog = builder.create();
+//        edt_ten = view.findViewById(R.id.edt_name_user);
+//        edt_email = view.findViewById(R.id.edt_email_user);
+//        img_anh = view.findViewById(R.id.img_user);
+//        btn_save = view.findViewById(R.id.btn_save_user);
+//        btn_cancel = view.findViewById(R.id.btn_cancel_user);
+//        User user = list.get(position);
+//        edt_ten.setText(user.getFullname());
+//        edt_email.setText(user.getEmail());
+//        Glide.with(context).load(user.getImage()).placeholder(R.drawable.anhdaidien).into(img_anh);
+//        btn_save.setOnClickListener(v -> {
+//            if (edt_ten.getText().toString().isEmpty() || edt_email.getText().toString().isEmpty()) {
+//                Toast.makeText(context, "Vui lòng không bỏ trống", Toast.LENGTH_SHORT).show();
+//                return;
+//            }
+//            if (!isFullName(edt_ten.getText().toString().trim())){
+//                Toast.makeText(context, "Sai định dạng họ tên", Toast.LENGTH_SHORT).show();
+//                edt_ten.requestFocus();
+//                return;
+//            }
+//            if (!isEmail(edt_email.getText().toString().trim())){
+//                Toast.makeText(context, "Sai định dạng email", Toast.LENGTH_SHORT).show();
+//                edt_email.requestFocus();
+//                return;
+//            }
+//            String name = edt_ten.getText().toString().trim();
+//            String email = edt_email.getText().toString().trim();
+//            User userNew = new User(user.getId(), user.getPassword(), name, email, user.getImage(), user.getPhone(), user.getAddress(), user.getRole());
+//            userDao = new UserDao(context);
+//            if (userDao.updateData(userNew)) {
+//               list.set(position,userNew);
+//                notifyDataSetChanged();
+//                Toast.makeText(context, R.string.update_success, Toast.LENGTH_SHORT).show();
+//                alertDialog.dismiss();
+//            } else {
+//                Toast.makeText(context, R.string.update_not_success, Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//        btn_cancel.setOnClickListener(v -> {
+//            alertDialog.dismiss();
+//        });
+//        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+//        alertDialog.show();
+//    }
 
 
     private void DeleteUser(int position) {
@@ -159,7 +159,7 @@ public class UserManagement_Adapter extends RecyclerView.Adapter<UserManagement_
             tv_id = itemView.findViewById(R.id.tv_id_user);
             tv_email = itemView.findViewById(R.id.tv_email_user);
             img_daiDien = itemView.findViewById(R.id.img_anh_user);
-            btn_sua = itemView.findViewById(R.id.btn_update_user);
+//            btn_sua = itemView.findViewById(R.id.btn_update_user);
             btn_xoa = itemView.findViewById(R.id.btn_delete_user);
         }
     }

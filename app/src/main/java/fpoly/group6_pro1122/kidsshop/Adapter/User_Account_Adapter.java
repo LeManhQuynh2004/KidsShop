@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import java.util.ArrayList;
 
 import fpoly.group6_pro1122.kidsshop.Dao.UserDao;
+import fpoly.group6_pro1122.kidsshop.Fragment.CartFragment;
 import fpoly.group6_pro1122.kidsshop.Fragment.Category_Admin_Fragment;
 import fpoly.group6_pro1122.kidsshop.Fragment.ChangePass_Fragment;
 import fpoly.group6_pro1122.kidsshop.Fragment.EditInfor_Fragment;
@@ -57,6 +58,10 @@ public class User_Account_Adapter extends BaseAccount_Adapter{
                 } else if (accountItem.getTenChucNang().equalsIgnoreCase("Thay Đổi Mật khẩu")) {
                     ((MainActivity)context).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new ChangePass_Fragment()).commit();
                 }else if (accountItem.getTenChucNang().equalsIgnoreCase("Lịch sử mua hàng")){
+                    ((MainActivity)context).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new Order_Fragment()).commit();
+                }else if (accountItem.getTenChucNang().equalsIgnoreCase("Rỏ hàng")) {
+                    ((MainActivity)context).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new CartFragment()).commit();
+                }else if (accountItem.getTenChucNang().equalsIgnoreCase("Kho Voucher")){
                     ((MainActivity)context).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new Order_Fragment()).commit();
                 }
             }else {

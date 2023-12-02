@@ -67,7 +67,7 @@ public class CategoryDetailsFragment extends Fragment {
     }
     private void CreateToolbar() {
         ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
-        ((AppCompatActivity) requireActivity()).getSupportActionBar().setTitle("Sản phẩm");
+        ((AppCompatActivity) requireActivity()).getSupportActionBar().setTitle("Danh sách sản phẩm");
         ((AppCompatActivity) requireActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationOnClickListener(v -> {
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Category_User_Fragment()).commit();

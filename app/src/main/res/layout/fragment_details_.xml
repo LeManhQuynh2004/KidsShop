@@ -245,6 +245,8 @@
              android:layout_height="wrap_content"
              android:gravity="center">
              <Button
+                 android:background="@drawable/background_button_green"
+                 app:backgroundTint="@null"
                  android:id="@+id/bt_post_Evaluation"
                  android:text="Gửi bình luận"
                  android:layout_width="wrap_content"

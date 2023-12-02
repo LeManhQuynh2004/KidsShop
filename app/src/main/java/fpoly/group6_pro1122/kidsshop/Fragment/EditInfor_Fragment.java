@@ -6,12 +6,14 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +22,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import fpoly.group6_pro1122.kidsshop.Dao.UserDao;
 import fpoly.group6_pro1122.kidsshop.MainActivity;
@@ -30,7 +34,7 @@ public class EditInfor_Fragment extends Fragment {
     UserDao dao;
     EditText edt_ten, edt_gmail, edt_phone, edt_adress;
     Button btn_chinhsua;
-    TextView tv_ten,tv_email;
+    TextView tv_ten, tv_email;
     Toolbar toolbar;
 
     @Override
@@ -51,18 +55,18 @@ public class EditInfor_Fragment extends Fragment {
         btn_chinhsua = view.findViewById(R.id.btn_edit_chinhSua);
         tv_ten = view.findViewById(R.id.tv_edit_hoTen);
         tv_email = view.findViewById(R.id.tv_edit_email);
-        toolbar =view.findViewById(R.id.toolbar);
-        ((MainActivity)getContext()).setSupportActionBar(toolbar);
-        ((MainActivity)getContext()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar = view.findViewById(R.id.toolbar);
+        CreateToolbar();
+
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((MainActivity)getContext()).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new PersonalInf_Fragment()).commit();
+                ((MainActivity) getContext()).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PersonalInf_Fragment()).commit();
             }
         });
         SharedPreferences sharedPreferences = getContext().getSharedPreferences("LIST_USER", getContext().MODE_PRIVATE);
         String email = sharedPreferences.getString("EMAIL", "");
-        if(email!=null){
+        if (email != null) {
             User user = dao.SelectID(email);
 //            ((MainActivity)getContext()).disableBottomNavigationView();
             tv_ten.setText(user.getFullname());
@@ -81,7 +85,7 @@ public class EditInfor_Fragment extends Fragment {
                     }
                 });
 
-            }else {
+            } else {
                 edt_ten.setText(user.getFullname());
             }
             edt_gmail.setText(user.getEmail());
@@ -99,7 +103,7 @@ public class EditInfor_Fragment extends Fragment {
                         edt_adress.setHintTextColor(Color.TRANSPARENT);
                     }
                 });
-            }else {
+            } else {
                 edt_adress.setText(user.getAddress());
             }
             if (user.getPhone() == null) {
@@ -115,28 +119,28 @@ public class EditInfor_Fragment extends Fragment {
                         edt_phone.setHintTextColor(Color.TRANSPARENT);
                     }
                 });
-            }else {
+            } else {
                 edt_phone.setText(user.getPhone());
             }
             btn_chinhsua.setOnClickListener(v -> {
-                if (!validate(edt_ten, "Vui lòng không để trống tên")){
+                if (!validate(edt_ten, "Vui lòng không để trống tên")) {
                     return;
                 }
 
-                if (!validate(edt_adress, "Vui lòng không để trống địa chỉ")){
+                if (!validate(edt_adress, "Vui lòng không để trống địa chỉ")) {
                     return;
                 }
-                if (!validate(edt_phone,"Vui lòng không để trống số điện thoại")){
+                if (!validate(edt_phone, "Vui lòng không để trống số điện thoại")) {
                     return;
                 }
                 String nameNew = edt_ten.getText().toString().trim();
                 String phoneNew = edt_phone.getText().toString().trim();
                 String addressNew = edt_adress.getText().toString().trim();
-                User userNew = new User(user.getId(), user.getPassword(),nameNew, user.getEmail(), user.getImage(), phoneNew,addressNew, user.getRole());
-                if (dao.updateData(userNew)){
+                User userNew = new User(user.getId(), user.getPassword(), nameNew, user.getEmail(), user.getImage(), phoneNew, addressNew, user.getRole());
+                if (dao.updateData(userNew)) {
                     Toast.makeText(getContext(), "Cập nhật thông tin thành công", Toast.LENGTH_SHORT).show();
-                    Log.e("User new",userNew.getFullname());
-                }else {
+                    Log.e("User new", userNew.getFullname());
+                } else {
                     Toast.makeText(getContext(), "Cập nhật thông tin thất bại", Toast.LENGTH_SHORT).show();
                 }
             });
@@ -145,15 +149,13 @@ public class EditInfor_Fragment extends Fragment {
 
 //
     }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        Log.d("EditInfoFragment", "onOptionsItemSelected: " + item.getItemId());
-        if (item.getItemId() == android.R.id.home){
-            requireActivity().onBackPressed();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+    private void CreateToolbar() {
+        ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity) requireActivity()).getSupportActionBar().setTitle("Sửa thông tin cá nhân");
+        ((AppCompatActivity) requireActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationOnClickListener(v -> {
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PersonalInf_Fragment()).commit();
+        });
     }
 
     private boolean validate(EditText editText, String errorMessage) {

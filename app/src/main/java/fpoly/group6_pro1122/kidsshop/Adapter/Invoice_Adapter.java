@@ -102,20 +102,21 @@ public class Invoice_Adapter extends RecyclerView.Adapter<Invoice_Adapter.Invoic
                 holder.tv_total_price.setText("Tổng đơn hàng: " + "$" + detailsOrder.getTotal_price());
                 holder.tv_total_price.setTextColor(Color.RED);
                 holder.tv_address.setText("Địa chỉ :" + shipment.getAddress() + " - " + shipment.getDistrict() + " - " + shipment.getCity());
-                if (shipment.getStatus() == 0) {
-                    holder.tv_payment_item_order_admin.setText("Vận chuyển: Đang chuẩn bị hàng");
-                } else if (shipment.getStatus() == 1) {
-                    holder.tv_payment_item_order_admin.setText("Vận chuyển: Đang vận chuyển");
-                } else if (shipment.getStatus() == 2) {
-                    holder.tv_payment_item_order_admin.setText("Vận chuyển: Giao hàng thành công");
-                } else {
-                    holder.tv_payment_item_order_admin.setText("Vận chuyển: Hoãn giao hàng");
-                }
-                if (order.getStatus() == 4) {
-                    holder.tv_payment_item_order_admin.setPaintFlags(holder.tv_payment_item_order_admin.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-                } else {
-                    holder.tv_payment_item_order_admin.setPaintFlags(holder.tv_payment_item_order_admin.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
-                }
+//                if (shipment.getStatus() == 0) {
+//                    holder.tv_payment_item_order_admin.setText("Vận chuyển: Đang chuẩn bị hàng");
+//                } else if (shipment.getStatus() == 1) {
+//                    holder.tv_payment_item_order_admin.setText("Vận chuyển: Đang vận chuyển");
+//                } else if (shipment.getStatus() == 2) {
+//                    holder.tv_payment_item_order_admin.setText("Vận chuyển: Giao hàng thành công");
+//                } else {
+//                    holder.tv_payment_item_order_admin.setText("Vận chuyển: Hoãn giao hàng");
+//                }
+//                if (order.getStatus() == 4) {
+//                    holder.tv_payment_item_order_admin.setPaintFlags(holder.tv_payment_item_order_admin.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+//                } else {
+//                    holder.tv_payment_item_order_admin.setPaintFlags(holder.tv_payment_item_order_admin.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+//                }
+                holder.tv_payment_item_order_admin.setText("Phương thức : Thanh toán khi nhận hàng");
                 String startDate = order.getDate();
 
                 String AfterOneDay = date(1, startDate);
@@ -134,13 +135,13 @@ public class Invoice_Adapter extends RecyclerView.Adapter<Invoice_Adapter.Invoic
 
                     if (!hasRunOnceForOneDay && currentDateString.equalsIgnoreCase(AfterOneDay)) {
                         if (order.getStatus() != 4) {
-                            UpdateStatus(1, shipment, order);
+                            UpdateStatus(1, order);
                             Log.e(TAG, "onBindViewHolder: " + order.getStatus());
                             hasRunOnceForOneDay = true;
                         }
                     } else if (!hasRunOnceForTwoDay && currentDateString.equalsIgnoreCase(AfterTwoDay)) {
                         if (order.getStatus() != 4) {
-                            UpdateStatus(2, shipment, order);
+                            UpdateStatus(2, order);
                             Log.e(TAG, "onBindViewHolder: +True");
                             hasRunOnceForTwoDay = true;
                         }
@@ -166,10 +167,8 @@ public class Invoice_Adapter extends RecyclerView.Adapter<Invoice_Adapter.Invoic
         }
     }
 
-    private void UpdateStatus(int i, Shipment shipment, Order order) {
-        shipment.setStatus(i);
+    private void UpdateStatus(int i, Order order) {
         order.setStatus(i);
-        shipmentDao.updateData(shipment);
         orderDao.updateData(order);
     }
 

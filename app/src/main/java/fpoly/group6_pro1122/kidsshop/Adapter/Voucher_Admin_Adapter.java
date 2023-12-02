@@ -89,7 +89,9 @@ public class Voucher_Admin_Adapter extends BaseAdapter {
             voucherHolder.tv_discount.setText("Có hiệu lực từ : " + voucher.getStart_date());
             voucherHolder.tv_end.setText("Có hiệu lực đến : " + voucher.getExpiration_date());
             if (currentDate.equalsIgnoreCase(voucher.getExpiration_date())) {
-                voucherHolder.tv_code.setText("Giảm tối đa: " + voucher.getDiscount_amount() + "%" + "(Hết hạn)");
+                voucherHolder.tv_code.setPaintFlags(voucherHolder.tv_code.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            }else{
+                voucherHolder.tv_code.setPaintFlags(voucherHolder.tv_code.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
             }
         }
         voucherHolder.img_delete_voucher.setOnClickListener(view1 -> {
