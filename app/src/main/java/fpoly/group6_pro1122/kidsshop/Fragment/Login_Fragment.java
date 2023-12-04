@@ -89,6 +89,9 @@ public class Login_Fragment extends Fragment {
         view.findViewById(R.id.tv_signUp).setOnClickListener(view -> {
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new SigUp_Fragment()).commit();
         });
+        view.findViewById(R.id.textView3).setOnClickListener(view ->{
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new ForgotPassword_Fragment()).commit();
+        });
         return view;
     }
 

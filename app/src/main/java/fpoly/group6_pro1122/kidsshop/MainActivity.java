@@ -4,13 +4,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
-import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -21,13 +19,9 @@ import fpoly.group6_pro1122.kidsshop.Fragment.CartFragment;
 import fpoly.group6_pro1122.kidsshop.Fragment.Category_Admin_Fragment;
 import fpoly.group6_pro1122.kidsshop.Fragment.Category_User_Fragment;
 import fpoly.group6_pro1122.kidsshop.Fragment.Home_Fragment;
-import fpoly.group6_pro1122.kidsshop.Fragment.InformationOrder_Fragment;
-import fpoly.group6_pro1122.kidsshop.Fragment.Login_Fragment;
 import fpoly.group6_pro1122.kidsshop.Fragment.PersonalInf_Fragment;
 import fpoly.group6_pro1122.kidsshop.Fragment.Product_Admin_Fragment;
-import fpoly.group6_pro1122.kidsshop.Fragment.Product_Customer_Fragment;
 import fpoly.group6_pro1122.kidsshop.Fragment.StatisticalFragment;
-import fpoly.group6_pro1122.kidsshop.Fragment.User_Fragment;
 import fpoly.group6_pro1122.kidsshop.Fragment.Voucher_Admin_Fragment;
 import fpoly.group6_pro1122.kidsshop.Fragment.WishList_Fragment;
 import fpoly.group6_pro1122.kidsshop.Model.User;
