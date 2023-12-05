@@ -47,6 +47,11 @@ public class UserDao {
         long check = sqLiteDatabase.delete(TABLE_NAME, COLUMN_EMAIL + "=?", dk);
         return check != -1;
     }
+    public boolean deleteUser(User user){
+        SQLiteDatabase database = dbHelper.getWritableDatabase();
+        long kq = database.delete(TABLE_NAME,"id = ?",new String[]{String.valueOf(user.getId())});
+        return kq !=-1;
+    }
 
     public boolean updateData(User user) {
         SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();

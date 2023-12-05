@@ -22,8 +22,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
@@ -45,6 +47,7 @@ public class PersonalInf_Fragment extends Fragment {
     UserDao dao;
     TextView tv_hoTen, tv_email;
     Button btnSignIn, btnSignUp;
+    ImageView imageView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -65,7 +68,7 @@ public class PersonalInf_Fragment extends Fragment {
         btnSignIn = view.findViewById(R.id.btn_sign_in);
         btnSignUp = view.findViewById(R.id.btn_sign_up);
         recyclerView = view.findViewById(R.id.recyclerView_account_admin);
-
+        imageView = view.findViewById(R.id.img_anh);
 
         adminAccountAdapter = new Admin_Account_Adapter(getContext(), list);
         userAccountAdapter = new User_Account_Adapter(getContext(), list);
@@ -73,7 +76,12 @@ public class PersonalInf_Fragment extends Fragment {
         String email = sharedPreferences.getString("EMAIL", "");
         User user = dao.SelectID(email);
 
+
         if (user != null) {
+            Glide.with(getContext())
+                    .load(user.getImage())
+                    .placeholder(R.drawable.anhdaidien)
+                    .into(imageView);
             if (user.getRole() == 0) {//Admin
                 adminAccountAdapter.addNewItem(new AccountItem(R.drawable.icon_ql_user, "Quản Lý Người Dùng"));
                 adminAccountAdapter.addNewItem(new AccountItem(R.drawable.icon_sanpham, "Quản Lý Sản Phẩm"));

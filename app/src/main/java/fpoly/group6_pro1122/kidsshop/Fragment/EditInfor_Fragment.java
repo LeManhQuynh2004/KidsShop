@@ -1,15 +1,22 @@
 package fpoly.group6_pro1122.kidsshop.Fragment;
 
+import static android.app.Activity.RESULT_OK;
+
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -19,10 +26,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import fpoly.group6_pro1122.kidsshop.Dao.UserDao;
@@ -36,6 +45,8 @@ public class EditInfor_Fragment extends Fragment {
     Button btn_chinhsua;
     TextView tv_ten, tv_email;
     Toolbar toolbar;
+    ImageView imageView;
+    Uri imageUri;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -56,6 +67,7 @@ public class EditInfor_Fragment extends Fragment {
         tv_ten = view.findViewById(R.id.tv_edit_hoTen);
         tv_email = view.findViewById(R.id.tv_edit_email);
         toolbar = view.findViewById(R.id.toolbar);
+        imageView = view.findViewById(R.id.img_edit_anh);
         CreateToolbar();
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -71,6 +83,15 @@ public class EditInfor_Fragment extends Fragment {
 //            ((MainActivity)getContext()).disableBottomNavigationView();
             tv_ten.setText(user.getFullname());
             tv_email.setText(user.getEmail());
+            Glide.with(getContext())
+                    .load(user.getImage())
+                    .placeholder(R.drawable.anhdaidien)
+                    .into(imageView);
+            imageView.setOnClickListener(v->{
+                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                intent.setType("image/*");
+                pickImage.launch(intent);
+            });
             if (user.getFullname() == null) {
                 edt_ten.setHint("Thiết lập ngay");
                 edt_ten.setHintTextColor(Color.parseColor("#FF0000"));
@@ -133,10 +154,16 @@ public class EditInfor_Fragment extends Fragment {
                 if (!validate(edt_phone, "Vui lòng không để trống số điện thoại")) {
                     return;
                 }
+                String imgUri;
+                if (imageUri != null) {
+                    imgUri = imageUri.toString();
+                } else {
+                    imgUri = user.getImage();
+                }
                 String nameNew = edt_ten.getText().toString().trim();
                 String phoneNew = edt_phone.getText().toString().trim();
                 String addressNew = edt_adress.getText().toString().trim();
-                User userNew = new User(user.getId(), user.getPassword(), nameNew, user.getEmail(), user.getImage(), phoneNew, addressNew, user.getRole());
+                User userNew = new User(user.getId(), user.getPassword(), nameNew, user.getEmail(),imgUri, phoneNew, addressNew, user.getRole());
                 if (dao.updateData(userNew)) {
                     Toast.makeText(getContext(), "Cập nhật thông tin thành công", Toast.LENGTH_SHORT).show();
                     Log.e("User new", userNew.getFullname());
@@ -166,5 +193,13 @@ public class EditInfor_Fragment extends Fragment {
         }
         return true;
     }
+    private final ActivityResultLauncher<Intent> pickImage = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        if (result.getResultCode() == RESULT_OK && result.getData()!= null){
+            imageUri = result.getData().getData();
+            if (imageUri != null) {
+                imageView.setImageURI(imageUri);
+            }
+        }
+    });
 
 }
