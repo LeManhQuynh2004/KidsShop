@@ -132,7 +132,8 @@ public class UserManagement_Adapter extends RecyclerView.Adapter<UserManagement_
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                boolean check = userDao.deleteData(user);
+                userDao = new UserDao(context);
+                boolean check = userDao.deleteUser(user);
                 if (check) {
                     list.remove(position);
                     Toast.makeText(context, R.string.delete_success, Toast.LENGTH_SHORT).show();
