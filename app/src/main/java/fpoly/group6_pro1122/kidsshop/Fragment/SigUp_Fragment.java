@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,6 +29,7 @@ public class SigUp_Fragment extends Fragment {
     CheckBox chkAgreeTerms;
     Button btnGetStarted;
     UserDao userDao;
+    TextView sendLogin;
 
     private boolean isEmail(String str) {
         return str.matches(
@@ -44,15 +46,18 @@ public class SigUp_Fragment extends Fragment {
         edConfirmPassword = view.findViewById(R.id.confirm_pass);
         chkAgreeTerms = view.findViewById(R.id.chk_singUp);
         btnGetStarted = view.findViewById(R.id.bt_getStart);
+        sendLogin = view.findViewById(R.id.sendLogin);
         toolbar = view.findViewById(R.id.toolbar_signup);
         CreateToolbar();
-
         userDao = new UserDao(getContext());
         btnGetStarted.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 signUp();
             }
+        });
+        sendLogin.setOnClickListener(view1 -> {
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Login_Fragment()).commit();
         });
         return view;
     }
@@ -68,12 +73,16 @@ public class SigUp_Fragment extends Fragment {
             newUser.setRole(1);
             newUser.setEmail(email);
             newUser.setPassword(password);
-
-            if (userDao.insertData(newUser)) {
-                Toast.makeText(getContext(), "Đăng ký thành công", Toast.LENGTH_SHORT).show();
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Login_Fragment()).commit();
-            } else {
-                Toast.makeText(getContext(), "Đăng ký thất bại", Toast.LENGTH_SHORT).show();
+            User user = userDao.checkUser(email);
+            if(user != null){
+                Toast.makeText(getContext(), "Tài khoản đã tồn tại !!", Toast.LENGTH_SHORT).show();
+            }else{
+                if (userDao.insertData(newUser)) {
+                    Toast.makeText(getContext(), "Đăng ký thành công", Toast.LENGTH_SHORT).show();
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Login_Fragment()).commit();
+                } else {
+                    Toast.makeText(getContext(), "Đăng ký thất bại", Toast.LENGTH_SHORT).show();
+                }
             }
         }
     }

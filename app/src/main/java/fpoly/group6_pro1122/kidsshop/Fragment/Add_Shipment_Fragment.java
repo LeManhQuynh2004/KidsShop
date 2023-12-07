@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -82,18 +83,6 @@ public class Add_Shipment_Fragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_add_shipment, container, false);
         MinMap();
         CreateToolbar();
-        group_address_type.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                if (i == R.id.rd_address_type_1) {
-                    result = 0;
-                } else if (i == R.id.rd_address_type_2) {
-                    result = 1;
-                } else {
-                    Toast.makeText(getContext(), "Vui lòng không bỏ trống", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
         view.findViewById(R.id.bt_finish_add_shipment).setOnClickListener(view1 -> {
             SharedPreferences sharedPreferences = getContext().getSharedPreferences("LIST_USER", getContext().MODE_PRIVATE);
             String email = sharedPreferences.getString("EMAIL", "");
@@ -112,24 +101,30 @@ public class Add_Shipment_Fragment extends Fragment {
                     Date currentDate = calendar.getTime();
                     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
                     String date = sdf.format(currentDate);
-                    if (ValidateForm(city, district, name, phone, address)) {
-                        Shipment shipment = new Shipment();
-                        shipment.setCity(city);
-                        shipment.setAddress(address);
-                        shipment.setDate(date);
-                        shipment.setStatus(0);
-                        shipment.setAddress_type(result);
-                        shipment.setDistrict(district);
-                        shipment.setName(name);
-                        shipment.setPhone(phone);
-                        shipment.setUser_id(user.getId());
-                        if (shipmentDao.insertData(shipment)) {
-                            Toast.makeText(getContext(), R.string.add_success, Toast.LENGTH_SHORT).show();
-                            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Shipment_Fragment()).commit();
-                            list.add(shipment);
-                        } else {
-                            Toast.makeText(getContext(), R.string.add_not_success, Toast.LENGTH_SHORT).show();
+                    Shipment shipmentFind = shipmentDao.SelectPhone(phone);
+                    if(shipmentFind == null){
+                        if (ValidateForm(city, district, name, phone, address,rd_type_1,rd_type_2)) {
+                            Shipment shipment = new Shipment();
+                            shipment.setCity(city);
+                            shipment.setAddress(address);
+                            shipment.setDate(date);
+                            shipment.setStatus(0);
+                            shipment.setAddress_type(result);
+                            Log.e("TAG", "onCreateView: "+result);
+                            shipment.setDistrict(district);
+                            shipment.setName(name);
+                            shipment.setPhone(phone);
+                            shipment.setUser_id(user.getId());
+                            if (shipmentDao.insertData(shipment)) {
+                                Toast.makeText(getContext(), R.string.add_success, Toast.LENGTH_SHORT).show();
+                                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Shipment_Fragment()).commit();
+                                list.add(shipment);
+                            } else {
+                                Toast.makeText(getContext(), R.string.add_not_success, Toast.LENGTH_SHORT).show();
+                            }
                         }
+                    }else{
+                        Toast.makeText(getContext(), "Số điện thoại đã tồn tại", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -149,12 +144,12 @@ public class Add_Shipment_Fragment extends Fragment {
 
     //    EditText ed_city, ed_district, ed_address, ed_name, ed_Phone_number;
     private boolean ValidateForm(String city, String district, String name,
-                                 String phone, String address) {
+                                 String phone, String address,RadioButton rd_type_1,RadioButton rd_type_2) {
         boolean isCheck = true;
-        if (city.isEmpty() || district.isEmpty() || name.isEmpty() || phone.isEmpty() || address.isEmpty()) {
-            Toast.makeText(getContext(), "Vui lòng không bỏ trống", Toast.LENGTH_SHORT).show();
+        if (city.isEmpty() || district.isEmpty() || name.isEmpty() || phone.isEmpty() || address.isEmpty() || !rd_type_1.isChecked() && !rd_type_2.isChecked()) {
+            Toast.makeText(getContext(), "Vui lòng không bỏ trống các trường thông tin", Toast.LENGTH_SHORT).show();
             isCheck = false;
-        } else {
+        }else {
             if (!isFullName(name) || !isFullName(city) || !isFullName(district)) {
                 Toast.makeText(getContext(), "Nhập sai định dạng", Toast.LENGTH_SHORT).show();
                 isCheck = false;
@@ -166,6 +161,11 @@ public class Add_Shipment_Fragment extends Fragment {
             if (!isPhone(phone)) {
                 Toast.makeText(getContext(), "Nhập sai định dạng số điện thoại", Toast.LENGTH_SHORT).show();
                 isCheck = false;
+            }
+            if (rd_type_1.isChecked()) {
+                result = 0;
+            } else if (rd_type_2.isChecked()) {
+                result = 1;
             }
         }
         return isCheck;

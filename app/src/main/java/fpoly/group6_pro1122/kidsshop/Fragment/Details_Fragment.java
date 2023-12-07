@@ -114,7 +114,7 @@ public class Details_Fragment extends Fragment {
             if (product != null) {
                 tv_name.setText(product.getProduct_name());
                 tv_price.setText("$" + product.getProduct_price());
-                Glide.with(requireContext()).load(product.getImage()).placeholder(R.drawable.productimg).into(img_product);
+                Glide.with(requireContext()).load(product.getImage()).placeholder(R.drawable.product2).into(img_product);
             }
         }
         CreateComment();

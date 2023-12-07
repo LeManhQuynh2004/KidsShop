@@ -10,6 +10,14 @@
         android:id="@+id/toolbar_category_details"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
+    <EditText
+        android:padding="15dp"
+        android:drawableLeft="@drawable/baseline_search_24"
+        android:hint="Tìm kiếm sản phẩm bạn cần"
+        android:id="@+id/ed_search_Product_Show"
+        android:layout_below="@id/toolbar_product_admin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
     <androidx.recyclerview.widget.RecyclerView
         android:padding="10dp"
         android:layout_width="match_parent"

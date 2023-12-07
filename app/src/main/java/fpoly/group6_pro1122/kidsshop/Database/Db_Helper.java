@@ -8,7 +8,7 @@ import androidx.annotation.Nullable;
 
 public class Db_Helper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "kidsShop.1db";
-    public static final int DATABASE_VERSION = 5;
+    public static final int DATABASE_VERSION = 1;
     public Db_Helper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -39,31 +39,31 @@ public class Db_Helper extends SQLiteOpenHelper {
                         "FOREIGN KEY(category_id) REFERENCES Category(category_id)," +
                         "FOREIGN KEY(tag_id) REFERENCES Tag(id))";
         sqLiteDatabase.execSQL(CreateTableProduct);
-        String insertDefaultProduct = "INSERT OR IGNORE INTO Product(" +
-                "id,product_name,product_price,quantity,description,image,category_id,tag_id) " +
-                "VALUES (1,'product 1',2000,2000,'ngon bo re','https://www.google.com/url?sa=i&url=https%3A%2F%2Fbansidotreem.com%2Fbo-18-mon-quan-ao-so-sinh-phong-cach-cho-tre-0-3-thang-mua-he-cho-tre-so-sinh-226.html&psig=AOvVaw2zth2mbRG8P7J8wWHsQBaa&ust=1700646894678000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCJCdgMTp1IIDFQAAAAAdAAAAABAD'," +
-                "1,1)";
-        String insertDefaultProduct2 = "INSERT OR IGNORE INTO Product(" +
-                "id,product_name,product_price,quantity,description,image,category_id,tag_id) " +
-                "VALUES (2,'product 2',3000,2000,'ngon bo re','https://www.google.com/url?sa=i&url=https%3A%2F%2Fbansidotreem.com%2Fbo-18-mon-quan-ao-so-sinh-phong-cach-cho-tre-0-3-thang-mua-he-cho-tre-so-sinh-226.html&psig=AOvVaw2zth2mbRG8P7J8wWHsQBaa&ust=1700646894678000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCJCdgMTp1IIDFQAAAAAdAAAAABAD'," +
-                "1,2)";
-        String insertDefaultProduct3 = "INSERT OR IGNORE INTO Product(" +
-                "id,product_name,product_price,quantity,description,image,category_id,tag_id) " +
-                "VALUES (3,'product 3',4000,2000,'ngon bo re','https://www.google.com/url?sa=i&url=https%3A%2F%2Fbansidotreem.com%2Fbo-18-mon-quan-ao-so-sinh-phong-cach-cho-tre-0-3-thang-mua-he-cho-tre-so-sinh-226.html&psig=AOvVaw2zth2mbRG8P7J8wWHsQBaa&ust=1700646894678000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCJCdgMTp1IIDFQAAAAAdAAAAABAD'," +
-                "1,2)";
-        String insertDefaultProduct4 = "INSERT OR IGNORE INTO Product(" +
-                "id,product_name,product_price,quantity,description,image,category_id,tag_id) " +
-                "VALUES (4,'product 4',5000,2000,'ngon bo re','https://www.google.com/url?sa=i&url=https%3A%2F%2Fbansidotreem.com%2Fbo-18-mon-quan-ao-so-sinh-phong-cach-cho-tre-0-3-thang-mua-he-cho-tre-so-sinh-226.html&psig=AOvVaw2zth2mbRG8P7J8wWHsQBaa&ust=1700646894678000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCJCdgMTp1IIDFQAAAAAdAAAAABAD'," +
-                "1,2)";
-        String insertDefaultProduct5 = "INSERT OR IGNORE INTO Product(" +
-                "id,product_name,product_price,quantity,description,image,category_id,tag_id) " +
-                "VALUES (5,'product 5',6000,2000,'ngon bo re','https://www.google.com/url?sa=i&url=https%3A%2F%2Fbansidotreem.com%2Fbo-18-mon-quan-ao-so-sinh-phong-cach-cho-tre-0-3-thang-mua-he-cho-tre-so-sinh-226.html&psig=AOvVaw2zth2mbRG8P7J8wWHsQBaa&ust=1700646894678000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCJCdgMTp1IIDFQAAAAAdAAAAABAD'," +
-                "1,1)";
-        sqLiteDatabase.execSQL(insertDefaultProduct);
-        sqLiteDatabase.execSQL(insertDefaultProduct2);
-        sqLiteDatabase.execSQL(insertDefaultProduct3);
-        sqLiteDatabase.execSQL(insertDefaultProduct4);
-        sqLiteDatabase.execSQL(insertDefaultProduct5);
+//        String insertDefaultProduct = "INSERT OR IGNORE INTO Product(" +
+//                "id,product_name,product_price,quantity,description,image,category_id,tag_id) " +
+//                "VALUES (1,'Nước Giặt Đồ Sơ Sinh Chiết Xuất Thảo Mộc Tự Nhiên K-Mom Hàn Quốc DạngTúi(1300ml)',2000,2000,'ngon bo re','https://www.google.com/url?sa=i&url=https%3A%2F%2Fbansidotreem.com%2Fbo-18-mon-quan-ao-so-sinh-phong-cach-cho-tre-0-3-thang-mua-he-cho-tre-so-sinh-226.html&psig=AOvVaw2zth2mbRG8P7J8wWHsQBaa&ust=1700646894678000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCJCdgMTp1IIDFQAAAAAdAAAAABAD'," +
+//                "1,1)";
+//        String insertDefaultProduct2 = "INSERT OR IGNORE INTO Product(" +
+//                "id,product_name,product_price,quantity,description,image,category_id,tag_id) " +
+//                "VALUES (2,'1 chiếc quần dài quần dài chục cotton in hình ngộ nghĩnh cho bé từ 2-5',3000,2000,'ngon bo re','https://www.google.com/url?sa=i&url=https%3A%2F%2Fbansidotreem.com%2Fbo-18-mon-quan-ao-so-sinh-phong-cach-cho-tre-0-3-thang-mua-he-cho-tre-so-sinh-226.html&psig=AOvVaw2zth2mbRG8P7J8wWHsQBaa&ust=1700646894678000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCJCdgMTp1IIDFQAAAAAdAAAAABAD'," +
+//                "1,2)";
+//        String insertDefaultProduct3 = "INSERT OR IGNORE INTO Product(" +
+//                "id,product_name,product_price,quantity,description,image,category_id,tag_id) " +
+//                    "VALUES (3,'Mua 3 Cái/bộ Sơ Sinh Đạo Cụ Chụp Ảnh Phù Hợp Với Cotton Dệt Kim Jumpsuit Nón Chuột Búp Bê Sơ Sinh',4000,2000,'ngon bo re','https://www.google.com/url?sa=i&url=https%3A%2F%2Fbansidotreem.com%2Fbo-18-mon-quan-ao-so-sinh-phong-cach-cho-tre-0-3-thang-mua-he-cho-tre-so-sinh-226.html&psig=AOvVaw2zth2mbRG8P7J8wWHsQBaa&ust=1700646894678000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCJCdgMTp1IIDFQAAAAAdAAAAABAD'," +
+//                "1,2)";
+//        String insertDefaultProduct4 = "INSERT OR IGNORE INTO Product(" +
+//                "id,product_name,product_price,quantity,description,image,category_id,tag_id) " +
+//                "VALUES (4,'Đồ Dùng Cho Mẹ Và Bé, Đôi Giày Em Bé, Chứng Cứ PNG trong suốt\n',5000,2000,'ngon bo re','https://www.google.com/url?sa=i&url=https%3A%2F%2Fbansidotreem.com%2Fbo-18-mon-quan-ao-so-sinh-phong-cach-cho-tre-0-3-thang-mua-he-cho-tre-so-sinh-226.html&psig=AOvVaw2zth2mbRG8P7J8wWHsQBaa&ust=1700646894678000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCJCdgMTp1IIDFQAAAAAdAAAAABAD'," +
+//                "1,2)";
+//        String insertDefaultProduct5 = "INSERT OR IGNORE INTO Product(" +
+//                "id,product_name,product_price,quantity,description,image,category_id,tag_id) " +
+//                "VALUES (5,'Set 3 Bộ quần áo sơ sinh dài tay in hình chất cotton co giãn mềm mịn cho bé sơ sinh - BSS- TK0180 / bộ',6000,2000,'ngon bo re','https://www.google.com/url?sa=i&url=https%3A%2F%2Fbansidotreem.com%2Fbo-18-mon-quan-ao-so-sinh-phong-cach-cho-tre-0-3-thang-mua-he-cho-tre-so-sinh-226.html&psig=AOvVaw2zth2mbRG8P7J8wWHsQBaa&ust=1700646894678000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCJCdgMTp1IIDFQAAAAAdAAAAABAD'," +
+//                "1,1)";
+//        sqLiteDatabase.execSQL(insertDefaultProduct);
+//        sqLiteDatabase.execSQL(insertDefaultProduct2);
+//        sqLiteDatabase.execSQL(insertDefaultProduct3);
+//        sqLiteDatabase.execSQL(insertDefaultProduct4);
+//        sqLiteDatabase.execSQL(insertDefaultProduct5);
         String CreateTableTag =
                 "CREATE TABLE IF NOT EXISTS Tag(" +
                         "id INTEGER PRIMARY KEY AUTOINCREMENT," +

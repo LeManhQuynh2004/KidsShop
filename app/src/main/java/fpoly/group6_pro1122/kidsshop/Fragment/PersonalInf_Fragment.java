@@ -91,7 +91,6 @@ public class PersonalInf_Fragment extends Fragment {
                 userAccountAdapter.addNewItem(new AccountItem(R.drawable.heartred, "Đã Thích"));
                 userAccountAdapter.addNewItem(new AccountItem(R.drawable.icon_change_pass, "Thay Đổi Mật Khẩu"));
                 userAccountAdapter.addNewItem(new AccountItem(R.drawable.shopping, "Rỏ hàng"));
-                userAccountAdapter.addNewItem(new AccountItem(R.drawable.icon_voucher, "Kho Voucher"));
 
                 recyclerView.setAdapter(userAccountAdapter);
                 recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));

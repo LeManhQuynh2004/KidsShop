@@ -59,7 +59,7 @@ public class Product_Customer_Adapter extends RecyclerView.Adapter<Product_Custo
     public void onBindViewHolder(@NonNull Product_Customer_ViewHolder holder, int position) {
         Product product = list.get(position);
         if (product != null) {
-            Glide.with(context).load(product.getImage()).placeholder(R.drawable.productimg).into(holder.imgProduct);
+            Glide.with(context).load(product.getImage()).placeholder(R.drawable.product2).into(holder.imgProduct);
             holder.name.setText(product.getProduct_name());
             holder.price.setText("$" + product.getProduct_price());
         }

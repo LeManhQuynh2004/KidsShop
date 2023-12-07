@@ -132,6 +132,7 @@ public class Category_Admin_Fragment extends Fragment {
                     boolean check = categoryDao.insertTL(category);
                     if (check) {
                         list.add(category);
+                        adapter.notifyDataSetChanged();
                         Toast.makeText(getContext(), R.string.add_success, Toast.LENGTH_SHORT).show();
                         alertDialog.dismiss();
                     } else {

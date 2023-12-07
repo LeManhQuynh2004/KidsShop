@@ -13,6 +13,7 @@
         android:orientation="horizontal"
         android:padding="7dp">
         <ImageView
+            android:padding="10dp"
             android:id="@+id/img_item_product_admin"
             android:src="@drawable/image"
             android:layout_width="100dp"
@@ -24,6 +25,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <TextView
+                android:maxLength="20"
                 android:id="@+id/tv_name_item_product_admin"
                 android:textStyle="bold"
                 android:textSize="20sp"

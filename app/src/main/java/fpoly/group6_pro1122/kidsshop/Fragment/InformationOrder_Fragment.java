@@ -118,13 +118,13 @@ public class InformationOrder_Fragment extends Fragment {
             shipment = shipmentDao.SelectID(String.valueOf(detailsOrder.getShipmentID()));
 
             if (order.getStatus() == 0) {
-                tv_shipment_details.setText("Đang chuẩn bị hàng");
+                tv_shipment_details.setText("Chờ xác nhận đơn hàng");
             } else if (order.getStatus() == 1) {
-                tv_shipment_details.setText("Đang vận chuyển");
+                tv_shipment_details.setText("Chờ xác nhận đơn hàng");
             } else if (order.getStatus() == 2) {
-                tv_shipment_details.setText("Giao hàng thành công");
+                tv_shipment_details.setText("Đang chuẩn bị hàng");
             } else {
-                tv_shipment_details.setText("Hoãn giao hàng");
+                tv_shipment_details.setText("Đơn hàng đã hủy");
             }
             Log.e("TAG", "onCreateView: "+shipment.getStatus());
             if(order.getStatus() == 2){
@@ -132,11 +132,8 @@ public class InformationOrder_Fragment extends Fragment {
                 bt_Cancle.setEnabled(false);
             }
             bt_Cancle.setOnClickListener(view1 -> {
-
                 order.setStatus(4);
-                shipment.setStatus(4);
                 if (orderDao.updateData(order)) {
-                    shipmentDao.updateData(shipment);
                     Toast.makeText(getContext(), "Hủy đơn hàng thành công", Toast.LENGTH_SHORT).show();
                     getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Order_Fragment()).commit();
                 } else {

@@ -32,6 +32,7 @@ import fpoly.group6_pro1122.kidsshop.Model.CartItem;
 import fpoly.group6_pro1122.kidsshop.Intefaces.OnChange_Price;
 import fpoly.group6_pro1122.kidsshop.Model.User;
 import fpoly.group6_pro1122.kidsshop.R;
+
 public class CartFragment extends Fragment {
     View view;
     CartItemDao cartItemDao;
@@ -71,7 +72,7 @@ public class CartFragment extends Fragment {
             User user = userDao.SelectID(email);
             if (user != null) {
                 list = cartItemDao.SelectUser(String.valueOf(user.getId()));
-                Log.e(TAG, "onCreateView: "+list.size());
+                Log.e(TAG, "onCreateView: " + list.size());
                 cartItemAdapter = new CartItem_Adapter(getContext(), list);
                 recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                 recyclerView.setAdapter(cartItemAdapter);
@@ -80,13 +81,17 @@ public class CartFragment extends Fragment {
                     cartItemDao.updateData(list.get(i));
                 }
                 view.findViewById(R.id.bt_payment).setOnClickListener(view1 -> {
+                    int count = 0;
                     if (list.size() == 0) {
                         Toast.makeText(getContext(), "Danh sách trống", Toast.LENGTH_SHORT).show();
                     } else {
                         for (int i = 0; i < list.size(); i++) {
-                            if (list.get(i).getStatus() == 0) {
-                                Toast.makeText(getContext(), "Vui lòng nhấn chọn sản phẩm", Toast.LENGTH_SHORT).show();
-                            } else {
+                            count++;
+                        }
+                        if (count <= 0) {
+                            Toast.makeText(getContext(), "Vui lòng nhấn chọn sản phẩm", Toast.LENGTH_SHORT).show();
+                        }else{
+                            for (int i = 0; i < list.size(); i++) {
                                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Payment_Fragment()).commit();
                             }
                         }

@@ -37,6 +37,7 @@
               android:layout_width="match_parent"
               android:layout_height="wrap_content">
               <TextView
+                  android:maxLength="20"
                   android:id="@+id/tv_name_item_cart"
                   android:textStyle="bold"
                   android:textSize="20sp"

@@ -10,9 +10,12 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import java.util.ArrayList;
 
@@ -26,7 +29,9 @@ public class Category_User_Fragment extends Fragment {
     CategoryUser_Adapter adapter;
     CategoryDao categoryDao;
     RecyclerView recyclerView;
-    ArrayList<Category> list;
+    ArrayList<Category> list = new ArrayList<>();
+    ArrayList<Category> temp_list = new ArrayList<>();
+    EditText ed_search_Category_Customer;
     Toolbar toolbar;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -40,12 +45,15 @@ public class Category_User_Fragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         categoryDao = new CategoryDao(getContext());
         list = categoryDao.getAll();
+        temp_list = categoryDao.getAll();
         toolbar = view.findViewById(R.id.toolbar_category_user);
+        ed_search_Category_Customer = view.findViewById(R.id.ed_search_Category_Customer);
         CreateToolbar();
         adapter = new CategoryUser_Adapter(list,getContext());
         recyclerView = view.findViewById(R.id.recyclerView_Category_user);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(),2));
+        SearchCategory();
     }
     private void CreateToolbar() {
         ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
@@ -53,6 +61,32 @@ public class Category_User_Fragment extends Fragment {
         ((AppCompatActivity) requireActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationOnClickListener(v -> {
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new Home_Fragment()).commit();
+        });
+    }
+    private void SearchCategory() {
+        ed_search_Category_Customer.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                String query = charSequence.toString();
+                list.clear();
+
+                for (Category category : temp_list) {
+                    if (category.getName().contains(query)) {
+                        list.add(category);
+                    }
+                }
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
         });
     }
 }

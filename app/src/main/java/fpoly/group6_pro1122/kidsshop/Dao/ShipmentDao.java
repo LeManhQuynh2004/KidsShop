@@ -139,4 +139,13 @@ public class ShipmentDao {
             return null;
         }
     }
+    public Shipment SelectPhone(String id) {
+        String query = "SELECT * FROM Shipment WHERE phone = ?";
+        ArrayList<Shipment> list = getAll(query, id);
+        if (!list.isEmpty()) {
+            return list.get(0);
+        } else {
+            return null;
+        }
+    }
 }

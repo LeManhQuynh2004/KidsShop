@@ -10,12 +10,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,10 +41,12 @@ public class Home_Fragment extends Fragment {
     ImageView imageShow;
     int index;
     private Handler handler;
+
     public static final String TAG = "Home_Fragment";
     RecyclerView recyclerView_new, recyclerView_discount, recyclerView_suggest;
     ProductDao productDao;
     ArrayList<Product> list_product = new ArrayList<>();
+    ArrayList<Product> temp_list = new ArrayList<>();
     ArrayList<Product> list_product_new = new ArrayList<>();
     ArrayList<Product> list_product_discount = new ArrayList<>();
     int Columns = 2;
@@ -49,6 +54,7 @@ public class Home_Fragment extends Fragment {
     CartItemDao cartItemDao;
     ArrayList<CartItem> list_CartItem = new ArrayList<>();
     TextView txt_quantity,tv_ShowAllProduct;
+    EditText ed_search_Product_Customer;
     Product_Customer_Adapter productCustomerAdapter, productCustomerAdapter_new, productCustomerAdapter_discount;
     int[] imageResIds = {R.drawable.banner1, R.drawable.banner2, R.drawable.banner3, R.drawable.banner4};
 
@@ -62,6 +68,7 @@ public class Home_Fragment extends Fragment {
         recyclerView_discount = view.findViewById(R.id.recyclerView_Product_discount);
         recyclerView_suggest = view.findViewById(R.id.recyclerView_Product_suggest);
         productDao = new ProductDao(getContext());
+        ed_search_Product_Customer = view.findViewById(R.id.ed_search_Product_Customer);
         ShowQuantityCartItem();
         view.findViewById(R.id.img_bag_home).setOnClickListener(view1 -> {
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new CartFragment()).commit();
@@ -73,10 +80,11 @@ public class Home_Fragment extends Fragment {
         tv_ShowAllProduct.setOnClickListener(view1 -> {
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new ShowAllProduct()).commit();
         });
+        temp_list = productDao.SelectAll();
         list_product = productDao.SelectAll();
         list_product_new = productDao.SelectAllNew(1);
         Log.e(TAG, "onCreateView: " + list_product_new.size());
-        list_product_discount = productDao.SelectAllNew(2);
+        list_product_discount = productDao.SelectAll();
         CreateAdapter();
         layout_HORIZONTAL(recyclerView_suggest, productCustomerAdapter_new);
         layout_HORIZONTAL(recyclerView_discount, productCustomerAdapter_discount);
@@ -89,6 +97,30 @@ public class Home_Fragment extends Fragment {
         imageShow.setImageResource(R.drawable.banner1);
         handler = new Handler(Looper.getMainLooper());
         startRead();
+        ed_search_Product_Customer.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                String query = charSequence.toString();
+                list_product_discount.clear();
+
+                for (Product product : temp_list) {
+                    if (product.getProduct_name().contains(query)) {
+                        list_product_discount.add(product);
+                    }
+                }
+                productCustomerAdapter_discount.notifyDataSetChanged();
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
         return view;
     }
     private void CreateAdapter(){

@@ -36,6 +36,17 @@ public class EditInfor_Fragment extends Fragment {
     Button btn_chinhsua;
     TextView tv_ten, tv_email;
     Toolbar toolbar;
+    private boolean isPhone(String str) {
+        return str.matches("(09|08|03)\\d{8}");
+    }
+
+    private boolean isFullName(String str) {
+        return str.matches("[a-z A-Z]+");
+    }
+
+    private boolean isAddress(String str) {
+        return str.matches("[a-z A-Z 0-9]+");
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -96,7 +107,6 @@ public class EditInfor_Fragment extends Fragment {
                 edt_adress.setGravity(Gravity.END);
                 edt_adress.setOnFocusChangeListener((v, hasFocus) -> {
                     if (hasFocus) {
-                        // Mở khóa trường nhập liệu khi nhận được focus
                         edt_adress.setEnabled(true);
                         edt_adress.setHint(null);
                         edt_adress.setGravity(Gravity.START);
@@ -123,30 +133,30 @@ public class EditInfor_Fragment extends Fragment {
                 edt_phone.setText(user.getPhone());
             }
             btn_chinhsua.setOnClickListener(v -> {
-                if (!validate(edt_ten, "Vui lòng không để trống tên")) {
-                    return;
-                }
-
-                if (!validate(edt_adress, "Vui lòng không để trống địa chỉ")) {
-                    return;
-                }
-                if (!validate(edt_phone, "Vui lòng không để trống số điện thoại")) {
-                    return;
-                }
+//                if (!validate(edt_ten, "Vui lòng không để trống tên")) {
+//                    return;
+//                }
+//                if (!validate(edt_adress, "Vui lòng không để trống địa chỉ")) {
+//                    return;
+//                }
+//                if (!validate(edt_phone, "Vui lòng không để trống số điện thoại")) {
+//                    return;
+//                }
                 String nameNew = edt_ten.getText().toString().trim();
                 String phoneNew = edt_phone.getText().toString().trim();
                 String addressNew = edt_adress.getText().toString().trim();
-                User userNew = new User(user.getId(), user.getPassword(), nameNew, user.getEmail(), user.getImage(), phoneNew, addressNew, user.getRole());
-                if (dao.updateData(userNew)) {
-                    Toast.makeText(getContext(), "Cập nhật thông tin thành công", Toast.LENGTH_SHORT).show();
-                    Log.e("User new", userNew.getFullname());
-                } else {
-                    Toast.makeText(getContext(), "Cập nhật thông tin thất bại", Toast.LENGTH_SHORT).show();
+                if(ValidateForm(nameNew,phoneNew,addressNew)){
+                    User userNew = new User(user.getId(), user.getPassword(), nameNew, user.getEmail(), user.getImage(), phoneNew, addressNew, user.getRole());
+                    if (dao.updateData(userNew)) {
+                        Toast.makeText(getContext(), "Cập nhật thông tin thành công", Toast.LENGTH_SHORT).show();
+                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new EditInfor_Fragment()).commit();
+                        Log.e("User new", userNew.getFullname());
+                    } else {
+                        Toast.makeText(getContext(), "Cập nhật thông tin thất bại", Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
         }
-
-
 //
     }
     private void CreateToolbar() {
@@ -167,4 +177,21 @@ public class EditInfor_Fragment extends Fragment {
         return true;
     }
 
+    private boolean ValidateForm(String name,String phone ,String address) {
+        boolean isCheck = true;
+        if (name.isEmpty() || phone.isEmpty() || address.isEmpty()) {
+            Toast.makeText(getContext(), "Vui lòng không bỏ trống", Toast.LENGTH_SHORT).show();
+            isCheck = false;
+        } else {
+            if (!isFullName(name) || !isFullName(address)) {
+                Toast.makeText(getContext(), "Nhập sai định dạng", Toast.LENGTH_SHORT).show();
+                isCheck = false;
+            }
+            if (!isPhone(phone)) {
+                Toast.makeText(getContext(), "Nhập sai định dạng số điện thoại", Toast.LENGTH_SHORT).show();
+                isCheck = false;
+            }
+        }
+        return isCheck;
+    }
 }

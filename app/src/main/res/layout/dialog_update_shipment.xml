@@ -1,108 +1,144 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/gray"
-    android:orientation="vertical">
-
-    <TextView
-        android:textStyle="bold"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:text="Liên hệ" />
-
-    <EditText
-        android:id="@+id/ed_name_add_dialog_shipment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:hint="Họ và tên"
-        android:padding="10dp" />
-
-    <EditText
-        android:id="@+id/ed_phone_add_dialog_shipment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:background="@color/white"
-        android:hint="Số điện thoại"
-        android:padding="10dp" />
-
-    <TextView
-        android:textStyle="bold"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:text="Địa chỉ" />
-
-    <EditText
-        android:id="@+id/ed_address_add_dialog_shipment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:hint="Địa chỉ nhà"
-        android:padding="10dp" />
-
-    <EditText
-        android:id="@+id/ed_district_add_dialog_shipment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:background="@color/white"
-        android:hint="Huyện / Quận"
-        android:padding="10dp" />
-
-    <EditText
-        android:id="@+id/ed_city_add_dialog_shipment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:background="@color/white"
-        android:hint="Thành phố / Tỉnh"
-        android:padding="10dp" />
-
-    <TextView
-        android:textStyle="bold"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:text="Cài đặt" />
-
+    app:cardElevation="10dp"
+    android:layout_margin="10dp"
+    app:cardCornerRadius="20dp">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:orientation="horizontal">
-
+        android:background="@color/gray"
+        android:orientation="vertical">
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:padding="10dp"
-            android:text="Loại địa chỉ:"
-            android:textSize="16sp"
+            android:text="Liên hệ"
             android:textStyle="bold" />
 
-        <RadioGroup
-            android:id="@+id/rg_address_type"
-            android:layout_width="0dp"
+        <EditText
+            android:id="@+id/ed_name_add_dialog_shipment"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:orientation="vertical">
+            android:background="@color/white"
+            android:hint="Họ và tên"
+            android:padding="10dp" />
 
-            <RadioButton
-                android:id="@+id/rd_address_type_1_dialog"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Văn phòng" />
+        <EditText
+            android:id="@+id/ed_phone_add_dialog_shipment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:background="@color/white"
+            android:hint="Số điện thoại"
+            android:padding="10dp" />
 
-            <RadioButton
-                android:id="@+id/rd_address_type_2_dialog"
-                android:layout_width="wrap_content"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="Địa chỉ"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/ed_address_add_dialog_shipment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:hint="Địa chỉ nhà"
+            android:padding="10dp" />
+
+        <EditText
+            android:id="@+id/ed_district_add_dialog_shipment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:background="@color/white"
+            android:hint="Huyện / Quận"
+            android:padding="10dp" />
+
+        <EditText
+            android:id="@+id/ed_city_add_dialog_shipment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:background="@color/white"
+            android:hint="Thành phố / Tỉnh"
+            android:padding="10dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="Cài đặt"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Nhà riêng" />
-        </RadioGroup>
+                android:layout_weight="1"
+                android:padding="10dp"
+                android:text="Loại địa chỉ:"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <RadioGroup
+                android:id="@+id/rg_address_type"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:orientation="vertical">
+
+                <RadioButton
+                    android:id="@+id/rd_address_type_1_dialog"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Văn phòng" />
+
+                <RadioButton
+                    android:id="@+id/rd_address_type_2_dialog"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Nhà riêng" />
+            </RadioGroup>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:padding="10dp">
+
+            <Button
+                android:id="@+id/bt_update_shipment"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="20dp"
+                android:layout_weight="1"
+                android:background="@drawable/background_button_green"
+                android:drawableLeft="@drawable/baseline_add_24"
+                android:text="Lưu"
+                android:textSize="18sp"
+                app:backgroundTint="@null" />
+
+            <Button
+                android:id="@+id/bt_cancle_shipment"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableLeft="@drawable/baseline_cancel_24"
+                android:text="Hủy"
+                android:textSize="18sp" />
+        </LinearLayout>
     </LinearLayout>
 
-</LinearLayout>
+</androidx.cardview.widget.CardView>

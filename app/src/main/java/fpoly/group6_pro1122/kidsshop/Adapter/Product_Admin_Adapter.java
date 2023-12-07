@@ -57,7 +57,7 @@ public class Product_Admin_Adapter extends RecyclerView.Adapter<Product_Admin_Ad
     public void onBindViewHolder(@NonNull Product_Admin_ViewHolder holder, int position) {
         Product product = list.get(position);
         if (product != null) {
-            Glide.with(context).load(product.getImage()).placeholder(R.drawable.banner1).into(holder.imgProduct);
+            Glide.with(context).load(product.getImage()).placeholder(R.drawable.product2).into(holder.imgProduct);
             holder.name.setText(product.getProduct_name());
             holder.id.setText("Mã sản phẩm :" + product.getProduct_id());
             holder.price.setText("Giá bán :" + product.getProduct_price() + "");

@@ -61,8 +61,6 @@ public class User_Account_Adapter extends BaseAccount_Adapter{
                     ((MainActivity)context).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new Order_Fragment()).commit();
                 }else if (accountItem.getTenChucNang().equalsIgnoreCase("Rỏ hàng")) {
                     ((MainActivity)context).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new CartFragment()).commit();
-                }else if (accountItem.getTenChucNang().equalsIgnoreCase("Kho Voucher")){
-                    ((MainActivity)context).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new Order_Fragment()).commit();
                 }
             }else {
                 Toast.makeText(context, "Bạn cần đăng nhập để dùng chức năng của hệ thống", Toast.LENGTH_SHORT).show();
