@@ -66,6 +66,10 @@ public class Product_Admin_Fragment extends Fragment {
     Product_Admin_Adapter product_admin_adapter;
     EditText ed_Search;
 
+    private boolean isInteger(String str) {
+        return str.matches("[\\d]+");
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -108,7 +112,7 @@ public class Product_Admin_Fragment extends Fragment {
         spinner_category = dialogView.findViewById(R.id.spinner_category_id_dialog);
         spinner_tag = dialogView.findViewById(R.id.spinner_tag_dialog);
 
-        if (type != 0) {
+        if (type != 0) { // Update
             ed_name.setText(product.getProduct_name());
             ed_price.setText(product.getProduct_price() + "");
             ed_describe.setText(product.getDescribe());
@@ -168,7 +172,7 @@ public class Product_Admin_Fragment extends Fragment {
             String quantity = ed_quantity.getText().toString().trim();
             String describe = ed_describe.getText().toString().trim();
             if (type == 0) {
-                if (validateForm(name, price, quantity, describe) && imageUri != null) {
+                if (validateForm(name, price,describe,quantity) && imageUri != null) {
                     String imagePath = imageUri.toString();
                     Product productNew = new Product();
                     productNew.setProduct_name(name);
@@ -246,9 +250,21 @@ public class Product_Admin_Fragment extends Fragment {
 
     private boolean validateForm(String name, String price, String describe, String quantity) {
         boolean isCheck = true;
-        if (name.isEmpty() || price.isEmpty() || describe.isEmpty() || quantity.isEmpty()) {
-            Toast.makeText(getContext(), "Vui lòng không bỏ trống", Toast.LENGTH_SHORT).show();
-            isCheck = false;
+        try {
+            if (name.isEmpty() || price.isEmpty() || describe.isEmpty() || quantity.isEmpty()) {
+                Toast.makeText(getContext(), "Vui lòng không bỏ trống", Toast.LENGTH_SHORT).show();
+                isCheck = false;
+            }
+            if (!isInteger(price)) {
+                Toast.makeText(getContext(), "Vui lòng nhập đúng định dạng giá", Toast.LENGTH_SHORT).show();
+                isCheck = false;
+            }
+            if (!isInteger(quantity)) {
+                Toast.makeText(getContext(), "Vui lòng nhập đúng định dạng số lượng", Toast.LENGTH_SHORT).show();
+                isCheck = false;
+            }
+        } catch (Exception e) {
+            Toast.makeText(getContext(), "Xẩy ra lỗi, Vui lòng thử lại", Toast.LENGTH_SHORT).show();
         }
         return isCheck;
     }
@@ -263,7 +279,8 @@ public class Product_Admin_Fragment extends Fragment {
         ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity) requireActivity()).getSupportActionBar().setTitle("Quản lý sản phẩm");
     }
-    private void SearchProduct(){
+
+    private void SearchProduct() {
         ed_Search.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {

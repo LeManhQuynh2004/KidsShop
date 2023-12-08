@@ -102,6 +102,7 @@ public class ChangePass_Fragment extends Fragment {
         String email = sharedPreferences.getString("EMAIL", "");
         if (dao.updatePass(email,passNew)){
             Log.e("MK",passNew);
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PersonalInf_Fragment()).commit();
             Toast.makeText(getContext(), "Mật khẩu đã được cập nhật thành công!", Toast.LENGTH_SHORT).show();
         }else {
             Toast.makeText(getContext(), "Cập nhật mật khẩu thất bại. Hãy thử lại.", Toast.LENGTH_SHORT).show();

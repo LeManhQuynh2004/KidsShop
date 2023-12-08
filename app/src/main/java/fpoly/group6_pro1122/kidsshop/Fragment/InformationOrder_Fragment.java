@@ -126,8 +126,8 @@ public class InformationOrder_Fragment extends Fragment {
             } else {
                 tv_shipment_details.setText("Đơn hàng đã hủy");
             }
-            Log.e("TAG", "onCreateView: "+shipment.getStatus());
-            if(order.getStatus() == 2){
+            Log.e("TAG", "onCreateView: " + shipment.getStatus());
+            if (order.getStatus() == 2) {
                 bt_Cancle.setText("Thành công");
                 bt_Cancle.setEnabled(false);
             }
