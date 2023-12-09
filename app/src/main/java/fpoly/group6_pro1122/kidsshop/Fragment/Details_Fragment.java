@@ -109,6 +109,7 @@ public class Details_Fragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_details_, container, false);
         MinMap();
         Bundle bundle = getArguments();
+        //Nhận về một đối tượng bundle
         if (bundle != null) {
             product = (Product) bundle.getSerializable("product");
             if (product != null) {
@@ -144,6 +145,7 @@ public class Details_Fragment extends Fragment {
             MenuItem menuItem = menu.findItem(R.id.menu_bag);
             menuItem.setChecked(true);
         });
+        // Cộng sản phẩm
         tv_sum.setOnClickListener(view1 -> {
             if (quantity < product.getQuantity()) {
                 quantity++;
@@ -152,6 +154,7 @@ public class Details_Fragment extends Fragment {
                 Toast.makeText(getContext(), "Số lượng vượt quá số lượng có trong kho", Toast.LENGTH_SHORT).show();
             }
         });
+        // Trừ sản phẩm
         tv_signal.setOnClickListener(view1 -> {
             if (quantity > 1) {
                 quantity--;
@@ -162,11 +165,13 @@ public class Details_Fragment extends Fragment {
         });
         img_wishlist = view.findViewById(R.id.img_wishlist);
         findwishList = wishListDao.getWishListByProductId(product.getProduct_id());
+
         if (findwishList != null) {
             img_wishlist.setImageResource(R.drawable.heartred);
         } else {
             img_wishlist.setImageResource(R.drawable.heart);
         }
+        //Thêm sản phẩm vào yêu thích
         img_wishlist.setOnClickListener(view1 -> {
             if (email.equals("")) {
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Login_Fragment()).commit();
@@ -195,6 +200,7 @@ public class Details_Fragment extends Fragment {
                 }
             }
         });
+        //Thêm vào rỏ hàng
         view.findViewById(R.id.bt_addCartItem).setOnClickListener(view1 -> {
             if (email.equals("")) {
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Login_Fragment()).commit();
@@ -240,6 +246,7 @@ public class Details_Fragment extends Fragment {
             }
         }
     }
+    //Tạo mới comment
     private void CreateComment() {
         ArrayList<Integer> listStart = new ArrayList<>();
         listStart.add(1);

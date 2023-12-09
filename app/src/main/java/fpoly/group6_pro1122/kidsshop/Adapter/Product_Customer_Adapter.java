@@ -63,6 +63,7 @@ public class Product_Customer_Adapter extends RecyclerView.Adapter<Product_Custo
             holder.name.setText(product.getProduct_name());
             holder.price.setText("$" + product.getProduct_price());
         }
+        //Thêm sản phẩm vào rỏ hàng
         holder.fab.setOnClickListener(view -> {
             SharedPreferences sharedPreferences = context.getSharedPreferences("LIST_USER", context.MODE_PRIVATE);
             String email = sharedPreferences.getString("EMAIL", "");
@@ -97,6 +98,7 @@ public class Product_Customer_Adapter extends RecyclerView.Adapter<Product_Custo
                 }
             }
         });
+        //
         holder.itemView.setOnClickListener(view -> {
             Details_Fragment show_detail_fragment = new Details_Fragment();
             Product send_product = list.get(position);

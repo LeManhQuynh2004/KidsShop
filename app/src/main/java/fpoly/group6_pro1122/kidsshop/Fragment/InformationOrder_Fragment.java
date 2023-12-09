@@ -117,6 +117,7 @@ public class InformationOrder_Fragment extends Fragment {
             tv_payment.setText(payment.getType());
             shipment = shipmentDao.SelectID(String.valueOf(detailsOrder.getShipmentID()));
 
+            //Status đơn hàng
             if (order.getStatus() == 0) {
                 tv_shipment_details.setText("Chờ xác nhận đơn hàng");
             } else if (order.getStatus() == 1) {
@@ -131,6 +132,7 @@ public class InformationOrder_Fragment extends Fragment {
                 bt_Cancle.setText("Thành công");
                 bt_Cancle.setEnabled(false);
             }
+            //Hủy đơn hàng
             bt_Cancle.setOnClickListener(view1 -> {
                 order.setStatus(4);
                 if (orderDao.updateData(order)) {

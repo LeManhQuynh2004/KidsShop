@@ -51,11 +51,13 @@ public class Finish_Order_Fragment extends Fragment {
         list_CartItem = cartItemDao.SelectAll();
         list_voucher = voucherDao.SelectAllLIMIT();
 
+        //recyclerView Voucher
         giveVoucherAdapter = new Give_Voucher_Adapter(getContext(),list_voucher);
         GridLayoutManager gridLayoutManagerVoucher = new GridLayoutManager(getContext(), 2, GridLayoutManager.HORIZONTAL, false);
         recyclerView_Voucher_Finish.setLayoutManager(gridLayoutManagerVoucher);
         recyclerView_Voucher_Finish.setAdapter(giveVoucherAdapter);
 
+        //recyclerView Product
         productCustomerAdapter = new Product_Customer_Adapter(getContext(),list,list_CartItem);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
         recyclerView.setLayoutManager(gridLayoutManager);

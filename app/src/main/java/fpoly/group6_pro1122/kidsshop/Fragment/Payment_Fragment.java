@@ -154,7 +154,6 @@ public class Payment_Fragment extends Fragment {
             }
         });
 
-
         view.findViewById(R.id.bt_order).setOnClickListener(view1 -> {
             User user = userDao.SelectID(email);
             if (list_shipment.isEmpty()) {

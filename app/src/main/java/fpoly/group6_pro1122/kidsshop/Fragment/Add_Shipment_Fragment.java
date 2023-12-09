@@ -141,7 +141,6 @@ public class Add_Shipment_Fragment extends Fragment {
         }
         return super.onOptionsItemSelected(item);
     }
-
     //    EditText ed_city, ed_district, ed_address, ed_name, ed_Phone_number;
     private boolean ValidateForm(String city, String district, String name,
                                  String phone, String address,RadioButton rd_type_1,RadioButton rd_type_2) {
